@@ -1,0 +1,29 @@
+import type { Metadata } from "next";
+
+import { getAllBahasa } from "@/lib/api/server";
+import { PageHeader } from "@/components/site/page-header";
+import { DictionarySearch } from "./dictionary-search";
+
+export const metadata: Metadata = {
+  title: "Kamus Bahasa Kei",
+  description:
+    "Kamus praktis Bahasa Indonesia ke Bahasa Kei (Veveu Evav). Pelajari kosakata dasar untuk menyapa dan berbincang dengan warga Kei Kecil.",
+  alternates: { canonical: "/bahasa" },
+};
+
+export default async function BahasaPage() {
+  const entries = await getAllBahasa();
+
+  return (
+    <>
+      <PageHeader
+        eyebrow="Bahasa Kei"
+        title="Sapa warga dengan bahasanya sendiri"
+        description="Beberapa kata Kei yang Anda ucapkan akan membuka lebih banyak senyum daripada seribu foto. Mulai dari sini."
+      />
+      <section className="container-page py-12 md:py-16">
+        <DictionarySearch entries={entries} />
+      </section>
+    </>
+  );
+}
