@@ -14,5 +14,5 @@
   "files.associations": {
     "*.css": "tailwindcss"
   },
-  "typescript.tsdk": "web/node_modules/typescript/lib"
+  "typescript.tsdk": "frontend/node_modules/typescript/lib"
 }

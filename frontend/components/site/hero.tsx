@@ -63,7 +63,7 @@ export function Hero() {
           initial={{ opacity: 0, y: reduceMotion ? 0 : 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: EASE_OUT_EXPO }}
-          className="font-display text-display-xl max-w-4xl text-balance"
+          className="font-display text-display-xl max-w-4xl font-bold text-balance"
         >
           Surga kecil di timur Indonesia
         </motion.h1>

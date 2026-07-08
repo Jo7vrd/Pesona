@@ -3,7 +3,7 @@
   "configurations": [
     {
       "name": "web",
-      "cwd": "web",
+      "cwd": "frontend",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "port": 3000,

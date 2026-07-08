@@ -46,7 +46,7 @@ Kredensial awal: `admin@keikecil.id` / `KeiKecil#2026` (ubah lewat env
 | CRUD `/api/v1/admin/{makanan,budaya,bahasa}` | JWT + RBAC |
 
 Kontrak respons: sukses `{"data": …}`, gagal `{"message": …}` — cocok
-dengan `web/lib/api/admin.ts`.
+dengan `frontend/lib/api/admin.ts`.
 
 ## Catatan implementasi
 

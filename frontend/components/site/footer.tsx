@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Mail, MapPin } from "lucide-react";
 
@@ -8,11 +9,14 @@ export function SiteFooter() {
     <footer className="bg-ocean-950 text-sand-100">
       <div className="container-page grid gap-12 py-16 md:grid-cols-[2fr_1fr_1fr] md:py-20">
         <div>
-          <p className="font-display text-2xl">
-            {siteConfig.name}
-            <span className="text-lagoon-400">.</span>
-          </p>
-          <p className="text-sand-100/70 mt-4 max-w-sm text-sm leading-relaxed">
+          <Image
+            src="/logo/pesona-kei-putih.png"
+            alt="Pesona Kei"
+            width={150}
+            height={60}
+            className="h-12 w-auto"
+          />
+          <p className="text-sand-100/70 mt-5 max-w-sm text-sm leading-relaxed">
             {siteConfig.description}
           </p>
         </div>

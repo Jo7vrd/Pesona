@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
@@ -42,13 +43,15 @@ export function SiteHeader() {
       )}
     >
       <div className="container-page flex h-16 items-center justify-between">
-        <Link
-          href="/"
-          className="font-display text-lg tracking-tight"
-          aria-label={`${siteConfig.name} — beranda`}
-        >
-          {siteConfig.shortName}
-          <span className="text-lagoon-400">.</span>
+        <Link href="/" aria-label={`${siteConfig.name} — beranda`}>
+          <Image
+            src={overHero ? "/logo/pesona-kei-putih.png" : "/logo/pesona-kei.png"}
+            alt="Pesona Kei"
+            width={125}
+            height={50}
+            priority
+            className="h-9 w-auto"
+          />
         </Link>
 
         <nav aria-label="Navigasi utama" className="hidden lg:block">
@@ -94,9 +97,14 @@ export function SiteHeader() {
             </Button>
           </SheetTrigger>
           <SheetContent side="right" className="w-72">
-            <SheetTitle className="font-display px-4 pt-4 text-lg">
-              {siteConfig.shortName}
-              <span className="text-lagoon-600">.</span>
+            <SheetTitle className="px-4 pt-4">
+              <Image
+                src="/logo/pesona-kei.png"
+                alt="Pesona Kei"
+                width={113}
+                height={45}
+                className="h-8 w-auto"
+              />
             </SheetTitle>
             <nav aria-label="Navigasi utama (mobile)" className="mt-2 px-2">
               <ul className="flex flex-col gap-1">

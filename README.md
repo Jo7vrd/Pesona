@@ -4,18 +4,27 @@ Website pariwisata Desa Kei Kecil, Maluku Tenggara — portal informasi kuliner,
 
 ## Struktur monorepo
 
-| Folder  | Isi                                                       |
-| ------- | --------------------------------------------------------- |
-| `web/`  | Frontend — Next.js 15, React 19, Tailwind v4, shadcn/ui   |
-| `api/`  | Backend — Go + Gin, PostgreSQL, GORM (dibangun di Fase 8) |
-| `docs/` | PRD dan dokumen arsitektur                                |
+| Folder      | Isi                                                     |
+| ----------- | ------------------------------------------------------- |
+| `frontend/` | Next.js 15, React 19, Tailwind v4, shadcn/ui            |
+| `backend/`  | Go + Gin, PostgreSQL, GORM, JWT + RBAC, Cloudflare R2   |
+| `docs/`     | PRD dan dokumen arsitektur                              |
 
 ## Menjalankan frontend
 
 ```bash
-cd web
+cd frontend
 npm install
 npm run dev
+```
+
+## Menjalankan backend
+
+```bash
+cd backend
+createdb keikecil
+make seed
+make run
 ```
 
 Buka http://localhost:3000.

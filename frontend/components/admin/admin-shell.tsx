@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -17,7 +18,6 @@ import {
 import { toast } from "sonner";
 
 import { adminApi, SESSION_COOKIE } from "@/lib/api/admin";
-import { siteConfig } from "@/lib/content/site";
 import type { AdminSession } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -116,13 +116,18 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
     <div className={cn(dark && "dark")}>
       <div className="bg-background text-foreground flex min-h-svh">
         <aside className="bg-card sticky top-0 hidden h-svh w-60 shrink-0 flex-col border-r lg:flex">
-          <p className="font-display px-6 py-6 text-xl">
-            {siteConfig.shortName}
-            <span className="text-lagoon-400">.</span>
-            <span className="text-muted-foreground ml-2 text-xs font-normal tracking-wide">
+          <div className="flex items-center gap-2 px-6 py-6">
+            <Image
+              src={dark ? "/logo/pesona-kei-putih.png" : "/logo/pesona-kei.png"}
+              alt="Pesona Kei"
+              width={100}
+              height={40}
+              className="h-8 w-auto"
+            />
+            <span className="text-muted-foreground text-xs font-normal tracking-wide">
               admin
             </span>
-          </p>
+          </div>
           <NavLinks />
           <div className="border-t p-3">
             <Link
@@ -148,9 +153,18 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
                 side="left"
                 className={cn("w-64 p-0", dark && "dark")}
               >
-                <SheetTitle className="font-display px-6 pt-6 pb-4 text-lg">
-                  {siteConfig.shortName}
-                  <span className="text-lagoon-400">.</span>
+                <SheetTitle className="px-6 pt-6 pb-4">
+                  <Image
+                    src={
+                      dark
+                        ? "/logo/pesona-kei-putih.png"
+                        : "/logo/pesona-kei.png"
+                    }
+                    alt="Pesona Kei"
+                    width={100}
+                    height={40}
+                    className="h-8 w-auto"
+                  />
                 </SheetTitle>
                 <NavLinks onNavigate={() => setMobileOpen(false)} />
               </SheetContent>

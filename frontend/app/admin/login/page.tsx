@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import Image from "next/image";
 
-import { siteConfig } from "@/lib/content/site";
 import {
   Card,
   CardContent,
@@ -20,13 +20,19 @@ export default function AdminLoginPage() {
   return (
     <main className="dark bg-background text-foreground flex min-h-svh items-center justify-center p-4">
       <div className="w-full max-w-sm">
-        <p className="font-display mb-8 text-center text-2xl text-white">
-          {siteConfig.shortName}
-          <span className="text-lagoon-400">.</span>
-          <span className="text-muted-foreground ml-2 text-sm font-normal tracking-wide">
+        <div className="mb-8 flex items-center justify-center gap-2">
+          <Image
+            src="/logo/pesona-kei-putih.png"
+            alt="Pesona Kei"
+            width={138}
+            height={55}
+            priority
+            className="h-11 w-auto"
+          />
+          <span className="text-muted-foreground text-sm font-normal tracking-wide">
             admin
           </span>
-        </p>
+        </div>
         <Card>
           <CardHeader>
             <CardTitle>Masuk ke panel admin</CardTitle>
