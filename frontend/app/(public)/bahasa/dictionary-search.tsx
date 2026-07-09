@@ -67,7 +67,7 @@ export function DictionarySearch({ entries }: { entries: BahasaLokal[] }) {
           ))}
         </ul>
       ) : (
-        <div className="bg-card mt-6 rounded-(--radius-card) border border-dashed p-12 text-center">
+        <div className="bg-card mt-6 rounded-card border border-dashed p-12 text-center">
           <p className="font-medium">Kata &ldquo;{query}&rdquo; belum ada</p>
           <p className="text-muted-foreground mt-1 text-sm">
             Kamus ini terus dilengkapi oleh warga desa. Coba kata lain.

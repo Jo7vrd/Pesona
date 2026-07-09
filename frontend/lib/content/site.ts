@@ -14,9 +14,10 @@ export const siteConfig = {
 
 export const navItems = [
   { label: "Beranda", href: "/" },
+  { label: "Destinasi", href: "/destinasi" },
   { label: "Kuliner", href: "/makanan" },
   { label: "Budaya", href: "/budaya" },
-  { label: "Peta Karang", href: "/peta" },
+  { label: "Peta", href: "/peta" },
   { label: "Bahasa Kei", href: "/bahasa" },
   { label: "Kedaruratan", href: "/kedaruratan" },
 ] as const;

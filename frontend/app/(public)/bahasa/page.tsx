@@ -20,6 +20,7 @@ export default async function BahasaPage() {
         eyebrow="Bahasa Kei"
         title="Sapa warga dengan bahasanya sendiri"
         description="Beberapa kata Kei yang Anda ucapkan akan membuka lebih banyak senyum daripada seribu foto. Mulai dari sini."
+        imageUrl="https://images.unsplash.com/photo-1541417904950-b855846fe074?w=2000&q=80"
       />
       <section className="container-page py-12 md:py-16">
         <DictionarySearch entries={entries} />

@@ -9,7 +9,7 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, MapPin } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -44,7 +44,9 @@ export function Hero() {
           sizes="100vw"
           className="object-cover"
         />
-        <div className="from-ocean-950/85 via-ocean-950/40 absolute inset-0 bg-gradient-to-t to-ocean-950/10" />
+        {/* Vignette diagonal: pekat di pojok kiri atas, larut ke kanan
+            bawah — teks hero duduk di area tergelap */}
+        <div className="from-ocean-950/90 via-ocean-950/45 to-ocean-950/0 absolute inset-0 bg-gradient-to-br via-40% to-80%" />
       </motion.div>
 
       <motion.div
@@ -55,9 +57,12 @@ export function Hero() {
           initial={{ opacity: 0, y: reduceMotion ? 0 : 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1, ease: EASE_OUT_EXPO }}
-          className="eyebrow text-lagoon-300 mb-5"
+          className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-white/25 bg-white/10 py-2.5 pr-5 pl-4 backdrop-blur-md"
         >
-          Maluku Tenggara · Indonesia
+          <MapPin className="text-lagoon-300 size-4" aria-hidden />
+          <span className="text-xs font-semibold tracking-[0.22em] text-white/90 uppercase">
+            Maluku Tenggara · Indonesia
+          </span>
         </motion.p>
         <motion.h1
           initial={{ opacity: 0, y: reduceMotion ? 0 : 28 }}

@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu } from "lucide-react";
+import { motion } from "framer-motion";
+import { ArrowUpRight, Menu } from "lucide-react";
 
 import { navItems, siteConfig } from "@/lib/content/site";
 import { cn } from "@/lib/utils";
@@ -42,20 +43,20 @@ export function SiteHeader() {
           : "bg-background/80 text-foreground border-b backdrop-blur-md"
       )}
     >
-      <div className="container-page flex h-16 items-center justify-between">
+      <div className="container-page flex h-20 items-center justify-between md:h-24">
         <Link href="/" aria-label={`${siteConfig.name} — beranda`}>
           <Image
             src={overHero ? "/logo/pesona-kei-putih.png" : "/logo/pesona-kei.png"}
             alt="Pesona Kei"
-            width={125}
-            height={50}
+            width={160}
+            height={64}
             priority
-            className="h-9 w-auto"
+            className="h-10 w-auto lg:h-12 xl:h-14"
           />
         </Link>
 
-        <nav aria-label="Navigasi utama" className="hidden lg:block">
-          <ul className="flex items-center gap-1">
+        <nav aria-label="Navigasi utama" className="hidden md:block">
+          <ul className="flex items-center gap-0.5 xl:gap-1">
             {navItems.map((item) => {
               const active =
                 item.href === "/"
@@ -67,7 +68,7 @@ export function SiteHeader() {
                     href={item.href}
                     aria-current={active ? "page" : undefined}
                     className={cn(
-                      "rounded-full px-4 py-2 text-sm font-medium transition-colors",
+                      "rounded-full px-2.5 py-2 text-sm font-semibold transition-colors lg:px-4 xl:text-[15px]",
                       active
                         ? overHero
                           ? "bg-white/15"
@@ -86,7 +87,7 @@ export function SiteHeader() {
         </nav>
 
         <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger asChild className="lg:hidden">
+          <SheetTrigger asChild className="md:hidden">
             <Button
               variant="ghost"
               size="icon"
@@ -96,31 +97,67 @@ export function SiteHeader() {
               <Menu className="size-5" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="w-72">
-            <SheetTitle className="px-4 pt-4">
+          <SheetContent
+            side="right"
+            className="bg-background/95 w-80 rounded-l-3xl border-l-0 shadow-2xl backdrop-blur-xl"
+          >
+            <SheetTitle className="px-6 pt-8">
               <Image
                 src="/logo/pesona-kei.png"
                 alt="Pesona Kei"
-                width={113}
-                height={45}
-                className="h-8 w-auto"
+                width={140}
+                height={56}
+                className="h-10 w-auto"
               />
             </SheetTitle>
-            <nav aria-label="Navigasi utama (mobile)" className="mt-2 px-2">
-              <ul className="flex flex-col gap-1">
-                {navItems.map((item) => (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      onClick={() => setOpen(false)}
-                      className="hover:bg-secondary block rounded-lg px-4 py-3 text-base font-medium"
+            <nav aria-label="Navigasi utama (mobile)" className="mt-4 px-4">
+              <ul className="space-y-1.5">
+                {navItems.map((item, i) => {
+                  const active =
+                    item.href === "/"
+                      ? pathname === "/"
+                      : pathname.startsWith(item.href);
+                  return (
+                    <motion.li
+                      key={item.href}
+                      initial={{ opacity: 0, x: 32 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{
+                        delay: 0.1 + i * 0.055,
+                        duration: 0.45,
+                        ease: [0.16, 1, 0.3, 1],
+                      }}
                     >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
+                      <Link
+                        href={item.href}
+                        onClick={() => setOpen(false)}
+                        aria-current={active ? "page" : undefined}
+                        className={cn(
+                          "flex items-center justify-between rounded-2xl px-5 py-3.5 text-base font-semibold transition-all",
+                          active
+                            ? "bg-ocean-950 text-white shadow-md"
+                            : "hover:bg-secondary hover:translate-x-1"
+                        )}
+                      >
+                        {item.label}
+                        <ArrowUpRight
+                          className={cn(
+                            "size-4",
+                            active
+                              ? "text-lagoon-300"
+                              : "text-muted-foreground"
+                          )}
+                          aria-hidden
+                        />
+                      </Link>
+                    </motion.li>
+                  );
+                })}
               </ul>
             </nav>
+            <p className="text-muted-foreground mt-auto px-6 pb-8 text-xs">
+              Tim KKN Jelajah Kei Kecil 2026
+            </p>
           </SheetContent>
         </Sheet>
       </div>

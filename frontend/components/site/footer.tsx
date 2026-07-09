@@ -63,7 +63,15 @@ export function SiteFooter() {
             © {new Date().getFullYear()} {siteConfig.desa.nama},{" "}
             {siteConfig.desa.kabupaten}
           </p>
-          <p>KKN {siteConfig.desa.nama} 2026</p>
+          <div className="flex items-center gap-4">
+            <p>Tim KKN Jelajah Kei Kecil 2026</p>
+            <Link
+              href="/admin/login"
+              className="hover:text-white underline-offset-4 transition-colors hover:underline"
+            >
+              Masuk admin
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
