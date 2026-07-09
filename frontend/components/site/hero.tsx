@@ -33,11 +33,14 @@ export function Hero() {
     <section
       ref={ref}
       aria-label="Sambutan Kei Kecil"
-      className="relative flex min-h-svh items-end overflow-hidden"
+      className="relative flex min-h-svh items-center overflow-hidden"
     >
-      <motion.div style={{ y: imageY }} className="absolute inset-0">
+      <motion.div
+        style={{ y: imageY }}
+        className="absolute inset-0 will-change-transform"
+      >
         <Image
-          src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=2400&q=80"
+          src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1800&q=75"
           alt="Pantai pasir putih Kei Kecil dengan laguna biru jernih"
           fill
           priority
@@ -51,7 +54,7 @@ export function Hero() {
 
       <motion.div
         style={{ opacity: contentOpacity }}
-        className="container-page relative pt-32 pb-24 text-white sm:pb-32"
+        className="container-page relative w-full py-32 text-white"
       >
         <motion.p
           initial={{ opacity: 0, y: reduceMotion ? 0 : 20 }}

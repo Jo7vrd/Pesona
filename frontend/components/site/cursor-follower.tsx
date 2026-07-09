@@ -21,16 +21,18 @@ export function CursorFollower() {
 
   const x = useMotionValue(-100);
   const y = useMotionValue(-100);
-  const springX = useSpring(x, { stiffness: 350, damping: 30, mass: 0.5 });
-  const springY = useSpring(y, { stiffness: 350, damping: 30, mass: 0.5 });
+  // Pegas lembut: stiffness rendah + damping pas = ekor mengalir tanpa
+  // getar, mass kecil supaya tetap responsif
+  const springX = useSpring(x, { stiffness: 150, damping: 22, mass: 0.35 });
+  const springY = useSpring(y, { stiffness: 150, damping: 22, mass: 0.35 });
 
   useEffect(() => {
     if (!window.matchMedia("(pointer: fine)").matches) return;
     setEnabled(true);
 
     const onMove = (e: MouseEvent) => {
-      x.set(e.clientX + 16);
-      y.set(e.clientY + 18);
+      x.set(e.clientX + 12);
+      y.set(e.clientY + 14);
       setVisible(true);
     };
     const onLeave = () => setVisible(false);
@@ -49,17 +51,17 @@ export function CursorFollower() {
     <motion.div
       aria-hidden
       style={{ x: springX, y: springY }}
-      animate={{ opacity: visible ? 1 : 0, scale: visible ? 1 : 0.5 }}
+      animate={{ opacity: visible ? 0.9 : 0, scale: visible ? 1 : 0.5 }}
       transition={{ duration: 0.25 }}
-      className="pointer-events-none fixed top-0 left-0 z-[90]"
+      className="pointer-events-none fixed top-0 left-0 z-[90] will-change-transform"
     >
       <Image
         src="/logo/pesona-mark.png"
         alt=""
-        width={26}
-        height={26}
+        width={18}
+        height={18}
         priority={false}
-        className="size-[26px] drop-shadow-[0_1px_3px_rgba(8,29,41,0.35)]"
+        className="size-[18px]"
       />
     </motion.div>
   );

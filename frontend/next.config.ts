@@ -6,7 +6,9 @@ const nextConfig: NextConfig = {
       // Foto pengembangan — diganti domain R2 saat backend live (Fase 8)
       { protocol: "https", hostname: "images.unsplash.com" },
     ],
-    formats: ["image/avif", "image/webp"],
+    // AVIF dihilangkan: encoding-nya berat (terasa lag saat gambar
+    // pertama dimuat) dengan selisih ukuran kecil dibanding WebP
+    formats: ["image/webp"],
   },
 };
 
