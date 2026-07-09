@@ -1,10 +1,10 @@
 const words = [
-  "Nuhu Evav",
-  "Pasir Ngurbloat",
-  "Sasi Laut",
-  "Meti Kei",
-  "Larvul Ngabal",
-  "Ain ni ain",
+  "Pasir terhalus di Asia",
+  "Laguna sebening kristal",
+  "Ayo jelajahi Kei Kecil",
+  "Budaya yang menjaga laut",
+  "Senja terindah di timur Indonesia",
+  "Surga kecil menanti Anda",
 ];
 
 /**

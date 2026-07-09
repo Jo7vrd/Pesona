@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { BLUR_DATA_URL } from "@/lib/blur";
 import { Badge } from "@/components/ui/badge";
 import { TiltCard } from "@/components/motion/tilt-card";
 
@@ -30,6 +31,8 @@ export function ContentCard({
             alt={nama}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            placeholder="blur"
+            blurDataURL={BLUR_DATA_URL}
             className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
           />
           <Badge className="bg-background/85 text-foreground absolute top-3 left-3 rounded-full border-0 backdrop-blur-sm">

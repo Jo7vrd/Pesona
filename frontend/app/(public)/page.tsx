@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Languages, LifeBuoy, MapPin, Users } from "lucide-react";
 
 import { getFeaturedBudaya, getFeaturedMakanan } from "@/lib/api/server";
+import { BLUR_DATA_URL } from "@/lib/blur";
 import { siteConfig } from "@/lib/content/site";
 import { FadeIn } from "@/components/motion/fade-in";
 import { StaggerGrid, StaggerItem } from "@/components/motion/stagger-grid";
@@ -47,6 +48,8 @@ export default async function LandingPage() {
                 alt="Perairan jernih Kei Kecil dilihat dari atas"
                 fill
                 sizes="(max-width: 1024px) 100vw, 58vw"
+                placeholder="blur"
+                blurDataURL={BLUR_DATA_URL}
                 className="object-cover"
               />
             </div>

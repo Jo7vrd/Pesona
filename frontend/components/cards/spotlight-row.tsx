@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
+import { BLUR_DATA_URL } from "@/lib/blur";
 import type { Budaya } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { FadeIn } from "@/components/motion/fade-in";
@@ -21,6 +22,8 @@ export function SpotlightRow({ item, flip }: { item: Budaya; flip?: boolean }) {
             alt={item.nama}
             fill
             sizes="(max-width: 768px) 100vw, 58vw"
+            placeholder="blur"
+            blurDataURL={BLUR_DATA_URL}
             className="object-cover"
           />
         </div>
