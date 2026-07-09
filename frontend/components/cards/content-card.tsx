@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
+import { TiltCard } from "@/components/motion/tilt-card";
 
 export function ContentCard({
   href,
@@ -21,7 +22,8 @@ export function ContentCard({
       href={href}
       className="group focus-visible:ring-ring block rounded-(--radius-card) focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
     >
-      <article className="bg-card shadow-(--shadow-card) hover:shadow-(--shadow-card-hover) overflow-hidden rounded-(--radius-card) transition-all duration-300 group-hover:-translate-y-1">
+      <TiltCard>
+        <article className="bg-card shadow-(--shadow-card) hover:shadow-(--shadow-card-hover) overflow-hidden rounded-(--radius-card) transition-shadow duration-300">
         <div className="relative aspect-[4/5] overflow-hidden">
           <Image
             src={fotoUrl}
@@ -40,7 +42,8 @@ export function ContentCard({
             {deskripsi}
           </p>
         </div>
-      </article>
+        </article>
+      </TiltCard>
     </Link>
   );
 }

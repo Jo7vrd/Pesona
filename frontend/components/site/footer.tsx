@@ -6,7 +6,7 @@ import { navItems, siteConfig } from "@/lib/content/site";
 
 export function SiteFooter() {
   return (
-    <footer className="bg-ocean-950 text-sand-100">
+    <footer className="bg-brand-gradient text-white">
       <div className="container-page grid gap-12 py-16 md:grid-cols-[2fr_1fr_1fr] md:py-20">
         <div>
           <Image
@@ -16,19 +16,19 @@ export function SiteFooter() {
             height={60}
             className="h-12 w-auto"
           />
-          <p className="text-sand-100/70 mt-5 max-w-sm text-sm leading-relaxed">
+          <p className="mt-5 max-w-sm text-sm leading-relaxed text-white/85">
             {siteConfig.description}
           </p>
         </div>
 
         <nav aria-label="Navigasi footer">
-          <p className="eyebrow text-lagoon-400 mb-4">Jelajahi</p>
+          <p className="eyebrow mb-4 text-white/90">Jelajahi</p>
           <ul className="space-y-2.5">
             {navItems.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="text-sand-100/80 text-sm transition-colors hover:text-white"
+                  className="text-sm text-white/85 transition-colors hover:text-white"
                 >
                   {item.label}
                 </Link>
@@ -38,18 +38,18 @@ export function SiteFooter() {
         </nav>
 
         <div>
-          <p className="eyebrow text-lagoon-400 mb-4">Kontak</p>
+          <p className="eyebrow mb-4 text-white/90">Kontak</p>
           <ul className="space-y-3 text-sm">
-            <li className="text-sand-100/80 flex items-start gap-2.5">
-              <MapPin className="text-lagoon-400 mt-0.5 size-4 shrink-0" />
+            <li className="flex items-start gap-2.5 text-white/85">
+              <MapPin className="mt-0.5 size-4 shrink-0 text-white" />
               <span>{siteConfig.desa.alamat}</span>
             </li>
             <li>
               <a
                 href={`mailto:${siteConfig.desa.email}`}
-                className="text-sand-100/80 flex items-center gap-2.5 transition-colors hover:text-white"
+                className="flex items-center gap-2.5 text-white/85 transition-colors hover:text-white"
               >
-                <Mail className="text-lagoon-400 size-4 shrink-0" />
+                <Mail className="size-4 shrink-0 text-white" />
                 <span>{siteConfig.desa.email}</span>
               </a>
             </li>
@@ -57,17 +57,26 @@ export function SiteFooter() {
         </div>
       </div>
 
-      <div className="border-t border-white/10">
-        <div className="container-page text-sand-100/50 flex flex-col items-center justify-between gap-2 py-6 text-xs sm:flex-row">
+      <div className="border-t border-white/15">
+        <div className="container-page flex flex-col items-center justify-between gap-3 py-6 text-xs text-white/75 sm:flex-row">
           <p>
             © {new Date().getFullYear()} {siteConfig.desa.nama},{" "}
             {siteConfig.desa.kabupaten}
           </p>
           <div className="flex items-center gap-4">
-            <p>Tim KKN Jelajah Kei Kecil 2026</p>
+            <span className="flex items-center gap-2.5">
+              <Image
+                src="/logo/kkn-putih.png"
+                alt="Logo KKN"
+                width={28}
+                height={32}
+                className="h-8 w-auto"
+              />
+              <span>Tim KKN Jelajah Kei Kecil 2026</span>
+            </span>
             <Link
               href="/admin/login"
-              className="hover:text-white underline-offset-4 transition-colors hover:underline"
+              className="underline-offset-4 transition-colors hover:text-white hover:underline"
             >
               Masuk admin
             </Link>

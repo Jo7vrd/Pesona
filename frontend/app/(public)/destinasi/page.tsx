@@ -7,6 +7,7 @@ import { spots } from "@/lib/content/spots";
 import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "@/components/motion/fade-in";
 import { StaggerGrid, StaggerItem } from "@/components/motion/stagger-grid";
+import { TiltCard } from "@/components/motion/tilt-card";
 import { CopyButton } from "@/components/site/copy-button";
 import { PageHeader } from "@/components/site/page-header";
 
@@ -31,7 +32,8 @@ export default function DestinasiPage() {
         <StaggerGrid className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {spots.map((spot) => (
             <StaggerItem key={spot.id}>
-              <article className="group bg-card shadow-(--shadow-card) hover:shadow-(--shadow-card-hover) flex h-full flex-col overflow-hidden rounded-(--radius-card) transition-all duration-300 hover:-translate-y-1">
+              <TiltCard className="h-full">
+                <article className="group bg-card shadow-(--shadow-card) hover:shadow-(--shadow-card-hover) flex h-full flex-col overflow-hidden rounded-(--radius-card) transition-shadow duration-300">
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image
                     src={spot.fotoUrl}
@@ -65,7 +67,8 @@ export default function DestinasiPage() {
                     />
                   </div>
                 </div>
-              </article>
+                </article>
+              </TiltCard>
             </StaggerItem>
           ))}
         </StaggerGrid>

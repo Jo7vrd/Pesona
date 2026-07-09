@@ -226,3 +226,22 @@
   font-weight: 600;
   color: var(--color-lagoon-700);
 }
+
+/* Gradien identitas brand (biru logo Pesona Kei) untuk permukaan yang
+   sebelumnya solid: footer, pita marquee, pill aktif */
+@utility bg-brand-gradient {
+  background-image: linear-gradient(135deg, #0191d2 0%, #0059a0 100%);
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@utility animate-marquee {
+  animation: marquee 28s linear infinite;
+}

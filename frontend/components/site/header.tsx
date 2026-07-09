@@ -9,6 +9,7 @@ import { ArrowUpRight, Menu } from "lucide-react";
 
 import { navItems, siteConfig } from "@/lib/content/site";
 import { cn } from "@/lib/utils";
+import { GlowNavLink } from "@/components/site/glow-nav-link";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -64,22 +65,17 @@ export function SiteHeader() {
                   : pathname.startsWith(item.href);
               return (
                 <li key={item.href}>
-                  <Link
+                  <GlowNavLink
                     href={item.href}
-                    aria-current={active ? "page" : undefined}
+                    active={active}
+                    overHero={overHero}
                     className={cn(
-                      "rounded-full px-2.5 py-2 text-sm font-semibold transition-colors lg:px-4 xl:text-[15px]",
-                      active
-                        ? overHero
-                          ? "bg-white/15"
-                          : "bg-secondary"
-                        : overHero
-                          ? "hover:bg-white/10"
-                          : "hover:bg-secondary"
+                      "block px-2.5 py-2 text-sm font-semibold lg:px-4 xl:text-[15px]",
+                      active && (overHero ? "bg-white/15" : "bg-secondary")
                     )}
                   >
                     {item.label}
-                  </Link>
+                  </GlowNavLink>
                 </li>
               );
             })}

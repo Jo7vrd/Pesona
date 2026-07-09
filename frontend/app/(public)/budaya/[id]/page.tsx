@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
 import { getAllBudaya, getBudayaById } from "@/lib/api/server";
+import { getBudayaExtra } from "@/lib/content/budaya-extra";
 import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "@/components/motion/fade-in";
 import { ContentCard } from "@/components/cards/content-card";
@@ -34,6 +35,7 @@ export default async function BudayaDetailPage({ params }: Props) {
   const related = (await getAllBudaya())
     .filter((b) => b.id !== item.id)
     .slice(0, 3);
+  const extra = getBudayaExtra(item.nama);
 
   return (
     <article className="container-page pt-28 pb-16 md:pt-32 md:pb-24">
@@ -69,6 +71,50 @@ export default async function BudayaDetailPage({ params }: Props) {
           </p>
         </div>
       </FadeIn>
+
+      {extra ? (
+        <section
+          aria-labelledby="pasal-judul"
+          className="mx-auto mt-16 max-w-2xl md:mt-20"
+        >
+          <FadeIn>
+            <h2 id="pasal-judul" className="font-display text-display font-bold">
+              {extra.judul}
+            </h2>
+            <p className="text-muted-foreground mt-3 leading-relaxed">
+              {extra.pengantar}
+            </p>
+            <ol className="mt-8 space-y-4">
+              {extra.pasal.map((p) => (
+                <li
+                  key={p.nomor}
+                  className="bg-card shadow-(--shadow-card) rounded-2xl border p-6"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <span className="bg-brand-gradient flex size-9 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white">
+                      {p.nomor}
+                    </span>
+                    <Badge variant="secondary" className="rounded-full">
+                      {p.kelompok}
+                    </Badge>
+                  </div>
+                  <p className="font-display mt-4 text-lg font-semibold italic">
+                    &ldquo;{p.kei}&rdquo;
+                  </p>
+                  <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
+                    {p.arti}
+                  </p>
+                </li>
+              ))}
+            </ol>
+            {extra.catatan ? (
+              <p className="text-muted-foreground mt-6 text-xs leading-relaxed">
+                {extra.catatan}
+              </p>
+            ) : null}
+          </FadeIn>
+        </section>
+      ) : null}
 
       {related.length > 0 ? (
         <section aria-labelledby="terkait-judul" className="mt-20 md:mt-28">

@@ -67,14 +67,24 @@ export function Hero() {
             Maluku Tenggara · Indonesia
           </span>
         </motion.p>
-        <motion.h1
-          initial={{ opacity: 0, y: reduceMotion ? 0 : 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: EASE_OUT_EXPO }}
-          className="font-display text-display-xl max-w-4xl font-bold text-balance"
-        >
-          Surga kecil di timur Indonesia
-        </motion.h1>
+        <h1 className="font-display text-display-xl max-w-4xl font-bold text-balance">
+          {"Surga kecil di timur Indonesia".split(" ").map((kata, i) => (
+            <motion.span
+              key={i}
+              className="inline-block will-change-transform"
+              initial={{ opacity: 0, y: reduceMotion ? 0 : 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.7,
+                delay: 0.2 + i * 0.08,
+                ease: EASE_OUT_EXPO,
+              }}
+            >
+              {kata}
+              {" "}
+            </motion.span>
+          ))}
+        </h1>
         <motion.p
           initial={{ opacity: 0, y: reduceMotion ? 0 : 24 }}
           animate={{ opacity: 1, y: 0 }}

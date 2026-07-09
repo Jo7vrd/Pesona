@@ -10,6 +10,7 @@ import { FoodCard } from "@/components/cards/food-card";
 import { ShortcutCard } from "@/components/cards/shortcut-card";
 import { SpotlightRow } from "@/components/cards/spotlight-row";
 import { Hero } from "@/components/site/hero";
+import { MarqueeStrip } from "@/components/site/marquee-strip";
 
 export default async function LandingPage() {
   const [makanan, budaya] = await Promise.all([
@@ -79,6 +80,8 @@ export default async function LandingPage() {
           </StaggerGrid>
         </div>
       </section>
+
+      <MarqueeStrip />
 
       <section className="section-y" aria-labelledby="budaya-judul">
         <div className="container-page">

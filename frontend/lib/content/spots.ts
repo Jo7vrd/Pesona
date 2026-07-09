@@ -57,6 +57,16 @@ export const spots: Spot[] = [
   },
   {
     id: 5,
+    nama: "Pantai Perwira",
+    fotoUrl: "/images/pantai-perwira.jpg",
+    jenis: "Pantai",
+    deskripsi:
+      "Pasir putih yang diapit karang dan hutan pantai yang rimbun. Debur ombaknya memecah di batu karang — spot favorit menikmati senja dalam ketenangan.",
+    lat: -5.62,
+    lng: 132.655,
+  },
+  {
+    id: 6,
     nama: "Pulau Bair",
     fotoUrl:
       "https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=1600&q=80",
