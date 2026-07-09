@@ -31,7 +31,7 @@ export function DictionarySearch({ entries }: { entries: BahasaLokal[] }) {
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Cari kata — misalnya laut, ikan, kampung…"
+          placeholder="Cari kata, misalnya laut, ikan, kampung…"
           aria-label="Cari kosakata bahasa Kei"
           className="bg-card h-14 rounded-full pl-12 text-base shadow-(--shadow-card)"
         />

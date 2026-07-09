@@ -1,7 +1,7 @@
 /**
  * Pengayaan statis halaman detail budaya, dikunci per nama entri.
  * Konten hukum adat WAJIB divalidasi tetua adat / penutur asli
- * sebelum produksi — transliterasi bahasa Kei bervariasi antarsumber.
+ * sebelum produksi, transliterasi bahasa Kei bervariasi antarsumber.
  */
 
 export interface PasalAdat {
@@ -27,43 +27,43 @@ export const budayaExtra: Record<string, BudayaExtra> = {
       {
         nomor: 1,
         kei: "Uud entauk na atvunad",
-        arti: "Kepala kami bertumpu pada tengkuk kami — hormat dan taat kepada pemimpin serta orang tua.",
+        arti: "Kepala kami bertumpu pada tengkuk kami, hormat dan taat kepada pemimpin serta orang tua.",
         kelompok: "Nevnev",
       },
       {
         nomor: 2,
         kei: "Lelad ain fo mahiling",
-        arti: "Leher kami dijunjung tinggi — kehidupan dan jiwa manusia itu mulia, tidak boleh direndahkan.",
+        arti: "Leher kami dijunjung tinggi, kehidupan dan jiwa manusia itu mulia, tidak boleh direndahkan.",
         kelompok: "Nevnev",
       },
       {
         nomor: 3,
         kei: "Ul nit envil atumud",
-        arti: "Kulit membungkus tubuh kami — martabat tubuh setiap orang wajib dijaga dari penganiayaan.",
+        arti: "Kulit membungkus tubuh kami, martabat tubuh setiap orang wajib dijaga dari penganiayaan.",
         kelompok: "Nevnev",
       },
       {
         nomor: 4,
         kei: "Lar nakmot na ivud",
-        arti: "Darah tersimpan dalam tubuh kami — dilarang menumpahkan darah sesama manusia.",
+        arti: "Darah tersimpan dalam tubuh kami, dilarang menumpahkan darah sesama manusia.",
         kelompok: "Nevnev",
       },
       {
         nomor: 5,
         kei: "Rek fo kelmutun",
-        arti: "Ambang pintu kamar harus dihormati — kesucian rumah tangga tidak boleh dilanggar.",
+        arti: "Ambang pintu kamar harus dihormati, kesucian rumah tangga tidak boleh dilanggar.",
         kelompok: "Hanilit",
       },
       {
         nomor: 6,
         kei: "Morjain fo mahiling",
-        arti: "Tempat tidur perempuan dimuliakan — kehormatan perempuan wajib dilindungi.",
+        arti: "Tempat tidur perempuan dimuliakan, kehormatan perempuan wajib dilindungi.",
         kelompok: "Hanilit",
       },
       {
         nomor: 7,
         kei: "Hira i ni fo i ni, it did fo it did",
-        arti: "Milik orang lain tetap miliknya, milik kita tetap milik kita — dilarang mengambil hak orang lain.",
+        arti: "Milik orang lain tetap miliknya, milik kita tetap milik kita, dilarang mengambil hak orang lain.",
         kelompok: "Hawear Balwirin",
       },
     ],

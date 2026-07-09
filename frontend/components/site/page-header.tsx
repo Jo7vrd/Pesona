@@ -32,7 +32,7 @@ export function PageHeader({
           <div className="from-ocean-950/95 via-ocean-950/70 to-ocean-950/30 absolute inset-0 bg-gradient-to-br" />
         </>
       ) : null}
-      <div className="container-page relative pt-40 pb-16 md:pt-48 md:pb-20">
+      <div className="container-page relative pt-32 pb-14 md:pt-36 md:pb-16">
         <FadeIn>
           <p className="eyebrow text-lagoon-300 mb-4">{eyebrow}</p>
           <h1 className="font-display text-display-lg max-w-3xl font-bold text-balance">

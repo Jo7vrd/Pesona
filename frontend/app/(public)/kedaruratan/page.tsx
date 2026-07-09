@@ -13,7 +13,7 @@ import { PageHeader } from "@/components/site/page-header";
 export const metadata: Metadata = {
   title: "Informasi Kedaruratan Pesisir",
   description:
-    "Kontak darurat dan panduan pertolongan pertama untuk kedaruratan pesisir di Kei Kecil — sengatan ubur-ubur, arus kuat, dan lainnya.",
+    "Kontak darurat dan panduan pertolongan pertama untuk kedaruratan pesisir di Kei Kecil, sengatan ubur-ubur, arus kuat, dan lainnya.",
   alternates: { canonical: "/kedaruratan" },
 };
 

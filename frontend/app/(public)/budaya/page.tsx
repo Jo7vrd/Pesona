@@ -19,7 +19,7 @@ export default async function BudayaPage() {
       <PageHeader
         eyebrow="Budaya & tradisi"
         title="Warisan yang menjaga laut tetap hidup"
-        description="Di Kei, adat bukan pajangan masa lalu — ia mengatur kapan laut boleh dipanen, bagaimana tamu dihormati, dan bagaimana sengketa diselesaikan."
+        description="Di Kei, adat bukan pajangan masa lalu, ia mengatur kapan laut boleh dipanen, bagaimana tamu dihormati, dan bagaimana sengketa diselesaikan."
         imageUrl="https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=2000&q=80"
       />
       <section className="container-page py-12 md:py-16">

@@ -109,7 +109,7 @@ export function LoginForm() {
 
       {isMockMode ? (
         <p className="text-muted-foreground text-center text-xs leading-relaxed">
-          Mode demo — masuk dengan{" "}
+          Mode demo, masuk dengan{" "}
           <code className="font-mono">admin@keikecil.id</code> /{" "}
           <code className="font-mono">KeiKecil#2026</code>
         </p>

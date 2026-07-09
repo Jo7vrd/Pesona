@@ -3,9 +3,8 @@
 import { motion, useReducedMotion } from "framer-motion";
 
 /**
- * Transisi antarhalaman: template di-remount Next.js pada tiap navigasi,
- * jadi konten baru masuk dengan fade + slide halus — tanpa loader layar
- * penuh. Header/footer di layout tidak ikut dianimasikan.
+ * Transisi antarhalaman: fade murni tanpa pergeseran vertikal supaya
+ * konten tidak terasa "terdorong dari bawah" saat berpindah rute.
  */
 export default function PublicTemplate({
   children,
@@ -16,9 +15,9 @@ export default function PublicTemplate({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: reduceMotion ? 0 : 14 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+      initial={{ opacity: reduceMotion ? 1 : 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.35, ease: "easeOut" }}
     >
       {children}
     </motion.div>

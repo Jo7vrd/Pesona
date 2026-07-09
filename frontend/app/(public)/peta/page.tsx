@@ -29,14 +29,14 @@ export default function PetaPage() {
         <FadeIn>
           <div className="overflow-hidden rounded-(--radius-card) border shadow-(--shadow-card)">
             <iframe
-              title="Peta Kei Kecil — OpenStreetMap"
+              title="Peta Kei Kecil, OpenStreetMap"
               src="https://www.openstreetmap.org/export/embed.html?bbox=132.35%2C-6.00%2C132.95%2C-5.30&layer=mapnik"
               className="h-[420px] w-full md:h-[520px]"
               loading="lazy"
             />
           </div>
           <p className="text-muted-foreground mt-3 text-xs">
-            Peta oleh OpenStreetMap. Koordinat di bawah adalah perkiraan —
+            Peta oleh OpenStreetMap. Koordinat di bawah adalah perkiraan,
             selalu konfirmasi rute dengan pemandu lokal.
           </p>
         </FadeIn>

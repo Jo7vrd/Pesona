@@ -68,9 +68,9 @@ export function SiteFooter() {
               <Image
                 src="/logo/kkn-putih.png"
                 alt="Logo KKN"
-                width={28}
-                height={32}
-                className="h-8 w-auto"
+                width={21}
+                height={24}
+                className="h-6 w-auto"
               />
               <span>Tim KKN Jelajah Kei Kecil 2026</span>
             </span>

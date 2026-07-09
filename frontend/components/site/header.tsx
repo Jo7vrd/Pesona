@@ -131,7 +131,7 @@ export function SiteHeader() {
                         className={cn(
                           "flex items-center justify-between rounded-2xl px-5 py-3.5 text-base font-semibold transition-all",
                           active
-                            ? "bg-ocean-950 text-white shadow-md"
+                            ? "bg-brand-gradient text-white shadow-md"
                             : "hover:bg-secondary hover:translate-x-1"
                         )}
                       >

@@ -34,7 +34,7 @@ export default async function LandingPage() {
               Kei Kecil adalah rumah bagi pantai berpasir paling halus di
               dunia, terumbu karang yang dijaga hukum adat Sasi, dan
               masyarakat yang hidup selaras dengan laut. Situs ini adalah
-              pintu masuk Anda — dari kuliner khas hingga kosakata bahasa Kei
+              pintu masuk Anda, dari kuliner khas hingga kosakata bahasa Kei
               untuk menyapa warga.
             </p>
             <p className="mt-4 text-sm font-medium">

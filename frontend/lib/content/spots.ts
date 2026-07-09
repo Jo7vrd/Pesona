@@ -3,10 +3,10 @@ export interface Spot {
   nama: string;
   jenis: "Pantai" | "Snorkeling" | "Gua" | "Pulau";
   deskripsi: string;
-  /** Koordinat perkiraan — verifikasi di lapangan sebelum produksi. */
+  /** Koordinat perkiraan, verifikasi di lapangan sebelum produksi. */
   lat: number;
   lng: number;
-  /** Foto placeholder Unsplash — diganti aset desa via admin. */
+  /** Foto placeholder Unsplash, diganti aset desa via admin. */
   fotoUrl: string;
 }
 
@@ -18,7 +18,7 @@ export const spots: Spot[] = [
       "https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?w=1600&q=80",
     jenis: "Pantai",
     deskripsi:
-      "Tiga kilometer pasir putih sehalus tepung — kerap disebut pasir terhalus di Asia. Landai dan aman untuk berenang keluarga.",
+      "Tiga kilometer pasir putih sehalus tepung, kerap disebut pasir terhalus di Asia. Landai dan aman untuk berenang keluarga.",
     lat: -5.66,
     lng: 132.641,
   },
@@ -61,7 +61,7 @@ export const spots: Spot[] = [
     fotoUrl: "/images/pantai-perwira.jpg",
     jenis: "Pantai",
     deskripsi:
-      "Pasir putih yang diapit karang dan hutan pantai yang rimbun. Debur ombaknya memecah di batu karang — spot favorit menikmati senja dalam ketenangan.",
+      "Pasir putih yang diapit karang dan hutan pantai yang rimbun. Debur ombaknya memecah di batu karang, spot favorit menikmati senja dalam ketenangan.",
     lat: -5.62,
     lng: 132.655,
   },
@@ -72,7 +72,7 @@ export const spots: Spot[] = [
       "https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=1600&q=80",
     jenis: "Pulau",
     deskripsi:
-      "Laguna tersembunyi di antara tebing karst — sering dijuluki Raja Ampat kecil. Perairan tenang dengan visibilitas snorkeling luar biasa.",
+      "Laguna tersembunyi di antara tebing karst, sering dijuluki Raja Ampat kecil. Perairan tenang dengan visibilitas snorkeling luar biasa.",
     lat: -5.405,
     lng: 132.686,
   },

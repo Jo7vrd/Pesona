@@ -1,19 +1,26 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, type MouseEvent } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import {
   motion,
+  useMotionValue,
   useReducedMotion,
   useScroll,
+  useSpring,
   useTransform,
 } from "framer-motion";
 import { ChevronDown, MapPin } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { GlowButton } from "@/components/site/glow-button";
 
 const EASE_OUT_EXPO = [0.16, 1, 0.3, 1] as const;
+
+declare global {
+  interface Window {
+    __lenis?: { scrollTo: (target: HTMLElement, opts?: object) => void };
+  }
+}
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -29,14 +36,52 @@ export function Hero() {
   );
   const contentOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
+  // Tilt 3D halus foto hero mengikuti posisi kursor (±3°); skala 1.06
+  // mencegah tepi foto terlihat saat miring
+  const rotateX = useMotionValue(0);
+  const rotateY = useMotionValue(0);
+  const tiltX = useSpring(rotateX, { stiffness: 55, damping: 14 });
+  const tiltY = useSpring(rotateY, { stiffness: 55, damping: 14 });
+
+  function handleMouseMove(e: MouseEvent<HTMLElement>) {
+    if (reduceMotion) return;
+    const px = e.clientX / window.innerWidth - 0.5;
+    const py = e.clientY / window.innerHeight - 0.5;
+    rotateY.set(px * 3);
+    rotateX.set(-py * 3);
+  }
+
+  function handleMouseLeave() {
+    rotateX.set(0);
+    rotateY.set(0);
+  }
+
+  function scrollToSambutan() {
+    const el = document.getElementById("sambutan");
+    if (!el) return;
+    if (window.__lenis) {
+      window.__lenis.scrollTo(el, { duration: 1.4 });
+    } else {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+
   return (
     <section
       ref={ref}
       aria-label="Sambutan Kei Kecil"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       className="relative flex min-h-svh items-center overflow-hidden"
     >
       <motion.div
-        style={{ y: imageY }}
+        style={{
+          y: imageY,
+          rotateX: tiltX,
+          rotateY: tiltY,
+          scale: 1.06,
+          transformPerspective: 1200,
+        }}
         className="absolute inset-0 will-change-transform"
       >
         <Image
@@ -71,7 +116,7 @@ export function Hero() {
           {"Surga kecil di timur Indonesia".split(" ").map((kata, i) => (
             <motion.span
               key={i}
-              className="inline-block will-change-transform"
+              className="inline-block whitespace-pre will-change-transform"
               initial={{ opacity: 0, y: reduceMotion ? 0 : 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
@@ -80,8 +125,7 @@ export function Hero() {
                 ease: EASE_OUT_EXPO,
               }}
             >
-              {kata}
-              {" "}
+              {`${kata} `}
             </motion.span>
           ))}
         </h1>
@@ -98,23 +142,9 @@ export function Hero() {
           initial={{ opacity: 0, y: reduceMotion ? 0 : 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5, ease: EASE_OUT_EXPO }}
-          className="mt-10 flex flex-wrap items-center gap-3"
+          className="mt-10"
         >
-          <Button
-            asChild
-            size="lg"
-            className="bg-coral-600 hover:bg-coral-700 rounded-full px-7 text-white"
-          >
-            <Link href="/makanan">Jelajahi kuliner</Link>
-          </Button>
-          <Button
-            asChild
-            size="lg"
-            variant="outline"
-            className="rounded-full border-white/40 bg-transparent px-7 text-white hover:bg-white/10 hover:text-white"
-          >
-            <Link href="/budaya">Kenali budaya</Link>
-          </Button>
+          <GlowButton onClick={scrollToSambutan}>Jelajahi Kei!</GlowButton>
         </motion.div>
       </motion.div>
 

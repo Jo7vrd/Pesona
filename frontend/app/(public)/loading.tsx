@@ -7,12 +7,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function PublicLoading() {
   return (
     <div aria-busy="true" aria-label="Memuat konten">
-      <div className="bg-brand-gradient">
-        <div className="container-page pt-40 pb-16 md:pt-48 md:pb-20">
-          <Skeleton className="h-4 w-40 bg-white/20" />
-          <Skeleton className="mt-5 h-12 w-full max-w-xl bg-white/25" />
-          <Skeleton className="mt-3 h-12 w-2/3 max-w-md bg-white/25" />
-          <Skeleton className="mt-6 h-5 w-full max-w-lg bg-white/20" />
+      <div className="bg-ocean-950">
+        <div className="container-page pt-32 pb-14 md:pt-36 md:pb-16">
+          <Skeleton className="h-4 w-40 bg-white/10" />
+          <Skeleton className="mt-5 h-12 w-full max-w-xl bg-white/15" />
+          <Skeleton className="mt-3 h-12 w-2/3 max-w-md bg-white/15" />
+          <Skeleton className="mt-6 h-5 w-full max-w-lg bg-white/10" />
         </div>
       </div>
       <div className="container-page py-12 md:py-16">
