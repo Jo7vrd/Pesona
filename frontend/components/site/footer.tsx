@@ -6,13 +6,15 @@ import { Mail, MapPin } from "lucide-react";
 
 import { navItems, siteConfig } from "@/lib/content/site";
 import { useLocale } from "@/lib/i18n";
+import { FooterParticles } from "@/components/site/footer-particles";
 
 export function SiteFooter() {
   const { t } = useLocale();
 
   return (
-    <footer className="bg-brand-gradient text-white">
-      <div className="container-page grid gap-12 py-16 md:grid-cols-[2fr_1fr_1fr] md:py-20">
+    <footer className="bg-brand-gradient relative overflow-hidden text-white">
+      <FooterParticles />
+      <div className="container-page relative z-10 grid gap-12 py-16 md:grid-cols-[2fr_1fr_1fr] md:py-20">
         <div>
           <Image
             src="/logo/pesona-kei-putih.png"
@@ -62,7 +64,7 @@ export function SiteFooter() {
         </div>
       </div>
 
-      <div className="border-t border-white/15">
+      <div className="relative z-10 border-t border-white/15">
         <div className="container-page flex flex-col items-center justify-between gap-3 py-6 text-xs text-white/75 sm:flex-row">
           <p>
             © {new Date().getFullYear()} {siteConfig.desa.nama},{" "}

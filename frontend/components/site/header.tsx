@@ -25,6 +25,14 @@ export function SiteHeader() {
   const { t } = useLocale();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [logoSpin, setLogoSpin] = useState(false);
+
+  // Klik logo: putaran bounce singkat, lalu muat ulang penuh ke beranda
+  function handleLogoClick() {
+    if (logoSpin) return;
+    setLogoSpin(true);
+    window.setTimeout(() => window.location.assign("/"), 520);
+  }
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -48,7 +56,19 @@ export function SiteHeader() {
       )}
     >
       <div className="container-page flex h-20 items-center justify-between md:h-24">
-        <Link href="/" aria-label={`${siteConfig.name} — beranda`}>
+        <motion.button
+          type="button"
+          onClick={handleLogoClick}
+          aria-label={`${siteConfig.name} — segarkan dan kembali ke beranda`}
+          whileTap={{ scale: 0.88 }}
+          animate={
+            logoSpin
+              ? { rotate: 360, scale: [1, 0.85, 1.08, 1] }
+              : { rotate: 0, scale: 1 }
+          }
+          transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
+          className="cursor-pointer"
+        >
           <Image
             src={overHero ? "/logo/pesona-kei-putih.png" : "/logo/pesona-kei.png"}
             alt="Pesona Kei"
@@ -57,7 +77,7 @@ export function SiteHeader() {
             priority
             className="h-10 w-auto lg:h-12 xl:h-14"
           />
-        </Link>
+        </motion.button>
 
         <div className="flex items-center gap-1 md:gap-2">
           <nav aria-label="Navigasi utama" className="hidden md:block">
