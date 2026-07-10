@@ -35,12 +35,12 @@ const REPULSION = 1.2;
 const rand = (min: number, max: number) => Math.random() * (max - min) + min;
 
 /**
- * Lapisan partikel interaktif untuk latar footer: titik-titik putih/cyan
+ * Lapisan partikel interaktif untuk latar seksi apa pun: titik-titik putih/cyan
  * yang menghindar dari kursor lalu memantul kembali ke tempatnya, di
- * atas debu yang berkelap-kelip. Animasi hanya berjalan saat footer
+ * atas debu yang berkelap-kelip. Animasi hanya berjalan saat seksi
  * terlihat, dan dilewati saat prefers-reduced-motion.
  */
-export function FooterParticles() {
+export function ParticleField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particles = useRef<Particle[]>([]);
   const dust = useRef<DustParticle[]>([]);
@@ -79,7 +79,7 @@ export function FooterParticles() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const canvas = canvasRef.current;
-    const wrapper = canvas?.parentElement?.parentElement; // <footer>
+    const wrapper = canvas?.parentElement?.parentElement; // elemen seksi pembungkus
     if (!canvas || !wrapper) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;

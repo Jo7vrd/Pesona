@@ -6,14 +6,14 @@ import { Mail, MapPin } from "lucide-react";
 
 import { navItems, siteConfig } from "@/lib/content/site";
 import { useLocale } from "@/lib/i18n";
-import { FooterParticles } from "@/components/site/footer-particles";
+import { ParticleField } from "@/components/site/particle-field";
 
 export function SiteFooter() {
   const { t } = useLocale();
 
   return (
     <footer className="bg-brand-gradient relative overflow-hidden text-white">
-      <FooterParticles />
+      <ParticleField />
       <div className="container-page relative z-10 grid gap-12 py-16 md:grid-cols-[2fr_1fr_1fr] md:py-20">
         <div>
           <Image

@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, type MouseEvent } from "react";
 import { Check, Globe, Moon, Sun } from "lucide-react";
 
 import { useLocale, type Locale } from "@/lib/i18n";
@@ -22,17 +23,43 @@ const languages: { value: Locale; label: string }[] = [
 
 export function SettingsMenu({ overHero }: { overHero?: boolean }) {
   const { locale, setLocale, dark, setDark, t } = useLocale();
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  // Glow radial mengikuti kursor, mekanisme yang sama dengan GlowNavLink
+  function handleMouseMove(e: MouseEvent<HTMLButtonElement>) {
+    const el = triggerRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    el.style.setProperty("--gx", `${e.clientX - rect.left}px`);
+    el.style.setProperty("--gy", `${e.clientY - rect.top}px`);
+  }
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
+          ref={triggerRef}
           variant="ghost"
           size="icon"
           aria-label={t.settings.label}
-          className={cn("rounded-full", overHero && "hover:bg-white/10")}
+          onMouseMove={handleMouseMove}
+          className={cn(
+            "group relative isolate overflow-hidden rounded-full",
+            overHero && "hover:bg-white/10"
+          )}
         >
-          <Globe className="size-5" />
+          <span
+            aria-hidden
+            className="pointer-events-none absolute size-24 -translate-x-1/2 -translate-y-1/2 scale-0 rounded-full opacity-0 transition-[scale,opacity] duration-400 ease-out group-hover:scale-100 group-hover:opacity-60"
+            style={{
+              left: "var(--gx, 50%)",
+              top: "var(--gy, 50%)",
+              background:
+                "radial-gradient(circle, #35c2e8 10%, transparent 70%)",
+              zIndex: -1,
+            }}
+          />
+          <Globe className="relative size-5" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-52">

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
+import { ParticleField } from "@/components/site/particle-field";
+
 const STORAGE_KEY = "kk_splash_shown";
 const MIN_VISIBLE_MS = 1100;
 const MAX_VISIBLE_MS = 2600;
@@ -78,6 +80,7 @@ export function SplashScreen() {
                 "radial-gradient(ellipse at 30% 20%, rgba(53,194,232,0.55), transparent 55%)",
             }}
           />
+          <ParticleField />
           <div className="relative flex flex-col items-center gap-6">
             <motion.div
               initial={{ opacity: 0, scale: 0.85, y: 12 }}
