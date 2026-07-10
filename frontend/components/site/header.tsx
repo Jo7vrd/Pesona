@@ -27,11 +27,11 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [logoSpin, setLogoSpin] = useState(false);
 
-  // Klik logo: putaran bounce singkat, lalu muat ulang penuh ke beranda
+  // Klik logo: bounce halus singkat, lalu muat ulang penuh ke beranda
   function handleLogoClick() {
     if (logoSpin) return;
     setLogoSpin(true);
-    window.setTimeout(() => window.location.assign("/"), 520);
+    window.setTimeout(() => window.location.assign("/"), 360);
   }
 
   useEffect(() => {
@@ -60,13 +60,9 @@ export function SiteHeader() {
           type="button"
           onClick={handleLogoClick}
           aria-label={`${siteConfig.name} — segarkan dan kembali ke beranda`}
-          whileTap={{ scale: 0.88 }}
-          animate={
-            logoSpin
-              ? { rotate: 360, scale: [1, 0.85, 1.08, 1] }
-              : { rotate: 0, scale: 1 }
-          }
-          transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
+          whileTap={{ scale: 0.95 }}
+          animate={logoSpin ? { scale: [1, 0.94, 1.02, 1] } : { scale: 1 }}
+          transition={{ duration: 0.32, ease: [0.34, 1.3, 0.64, 1] }}
           className="cursor-pointer"
         >
           <Image
