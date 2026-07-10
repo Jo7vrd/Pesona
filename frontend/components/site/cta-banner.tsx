@@ -27,7 +27,7 @@ export function CtaBanner() {
   const { t } = useLocale();
 
   return (
-    <div className="container-page pb-(--spacing-section)">
+    <div className="container-page pb-(--spacing-section) [contain-intrinsic-size:auto_500px] [content-visibility:auto]">
       <StaggerGrid className="grid gap-5 sm:grid-cols-2">
         {t.banners.map((banner) => (
           <StaggerItem key={banner.href}>

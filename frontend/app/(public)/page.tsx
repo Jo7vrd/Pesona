@@ -46,7 +46,7 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      <section className="section-y bg-sand-100 dark:bg-ocean-900/30" aria-labelledby="kuliner-judul">
+      <section className="section-y bg-sand-100 dark:bg-ocean-900/30 [contain-intrinsic-size:auto_900px] [content-visibility:auto]" aria-labelledby="kuliner-judul">
         <div className="container-page">
           <FadeIn className="mb-10 flex flex-wrap items-end justify-between gap-4">
             <KulinerHeading />
@@ -63,7 +63,7 @@ export default async function LandingPage() {
 
       <MarqueeStrip />
 
-      <section className="section-y" aria-labelledby="budaya-judul">
+      <section className="section-y [contain-intrinsic-size:auto_1200px] [content-visibility:auto]" aria-labelledby="budaya-judul">
         <div className="container-page">
           <FadeIn className="mb-14">
             <BudayaHeading />
