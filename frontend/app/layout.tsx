@@ -1,10 +1,17 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import { Caveat, Montserrat } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+// Aksen tulisan tangan/brush untuk label lokasi hero
+const caveat = Caveat({
+  variable: "--font-brush",
   subsets: ["latin"],
   display: "swap",
 });
@@ -35,7 +42,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className={montserrat.variable}>
+    <html lang="id" className={`${montserrat.variable} ${caveat.variable}`}>
       <body className="antialiased">
         {children}
         <Toaster position="top-center" richColors />

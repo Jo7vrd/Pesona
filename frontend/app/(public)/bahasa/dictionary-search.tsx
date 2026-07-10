@@ -3,11 +3,13 @@
 import { useMemo, useState } from "react";
 import { Search } from "lucide-react";
 
+import { fmt, useLocale } from "@/lib/i18n";
 import type { BahasaLokal } from "@/lib/types";
 import { Input } from "@/components/ui/input";
 import { CopyButton } from "@/components/site/copy-button";
 
 export function DictionarySearch({ entries }: { entries: BahasaLokal[] }) {
+  const { t } = useLocale();
   const [query, setQuery] = useState("");
 
   const visible = useMemo(() => {
@@ -31,14 +33,14 @@ export function DictionarySearch({ entries }: { entries: BahasaLokal[] }) {
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Cari kata, misalnya laut, ikan, kampung…"
+          placeholder={t.common.cariKosakata}
           aria-label="Cari kosakata bahasa Kei"
           className="bg-card h-14 rounded-full pl-12 text-base shadow-(--shadow-card)"
         />
       </div>
 
       <p className="text-muted-foreground mt-4 text-sm" aria-live="polite">
-        {visible.length} dari {entries.length} kosakata
+        {fmt(t.common.kosakataCount, { a: visible.length, b: entries.length })}
       </p>
 
       {visible.length > 0 ? (
@@ -68,9 +70,9 @@ export function DictionarySearch({ entries }: { entries: BahasaLokal[] }) {
         </ul>
       ) : (
         <div className="bg-card mt-6 rounded-card border border-dashed p-12 text-center">
-          <p className="font-medium">Kata &ldquo;{query}&rdquo; belum ada</p>
+          <p className="font-medium">{fmt(t.common.kataBelumAda, { q: query })}</p>
           <p className="text-muted-foreground mt-1 text-sm">
-            Kamus ini terus dilengkapi oleh warga desa. Coba kata lain.
+            {t.common.kamusCatatan}
           </p>
         </div>
       )}

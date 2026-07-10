@@ -1,20 +1,32 @@
+"use client";
+
 import Image from "next/image";
 
 import { BLUR_DATA_URL } from "@/lib/blur";
+import { useLocale } from "@/lib/i18n";
 import { FadeIn } from "@/components/motion/fade-in";
 
 export function PageHeader({
+  pageKey,
   eyebrow,
   title,
   description,
   imageUrl,
 }: {
-  eyebrow: string;
-  title: string;
+  /** Kunci kamus i18n (t.pages[pageKey]); menimpa teks props bila ada. */
+  pageKey?: string;
+  eyebrow?: string;
+  title?: string;
   description?: string;
-  /** Foto latar opsional — di-overlay gradien gelap agar teks tetap AA. */
+  /** Foto latar opsional, di-overlay gradien gelap agar teks tetap AA. */
   imageUrl?: string;
 }) {
+  const { t } = useLocale();
+  const copy = pageKey ? t.pages[pageKey] : undefined;
+  const teksEyebrow = copy?.eyebrow ?? eyebrow;
+  const teksTitle = copy?.title ?? title;
+  const teksDesc = copy?.desc ?? description;
+
   return (
     <header className="bg-ocean-950 relative overflow-hidden text-white">
       {imageUrl ? (
@@ -34,13 +46,13 @@ export function PageHeader({
       ) : null}
       <div className="container-page relative pt-32 pb-14 md:pt-36 md:pb-16">
         <FadeIn>
-          <p className="eyebrow text-lagoon-300 mb-4">{eyebrow}</p>
+          <p className="eyebrow text-lagoon-300 mb-4">{teksEyebrow}</p>
           <h1 className="font-display text-display-lg max-w-3xl font-bold text-balance">
-            {title}
+            {teksTitle}
           </h1>
-          {description ? (
+          {teksDesc ? (
             <p className="text-lede mt-5 max-w-2xl text-white/80">
-              {description}
+              {teksDesc}
             </p>
           ) : null}
         </FadeIn>

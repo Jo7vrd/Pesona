@@ -1,16 +1,22 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
+// eslint-config-next v16 mengekspor flat config langsung; FlatCompat
+// lama tidak lagi kompatibel
+import { defineConfig } from "eslint/config";
+import nextVitals from "eslint-config-next/core-web-vitals";
+import nextTs from "eslint-config-next/typescript";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+const eslintConfig = defineConfig([
+  ...nextVitals,
+  ...nextTs,
+  {
+    rules: {
+      // Init state dari localStorage/matchMedia setelah mount adalah pola
+      // hydration-safe yang disengaja (splash, tema, locale, kursor);
+      // demikian pula penulisan document.cookie di event handler mode
+      // mock. Aturan compiler baru ini diturunkan ke warning.
+      "react-hooks/set-state-in-effect": "warn",
+      "react-hooks/immutability": "warn",
+    },
+  },
   {
     ignores: [
       "node_modules/**",
@@ -20,6 +26,6 @@ const eslintConfig = [
       "next-env.d.ts",
     ],
   },
-];
+]);
 
 export default eslintConfig;

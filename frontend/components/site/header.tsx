@@ -8,8 +8,10 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, Menu } from "lucide-react";
 
 import { navItems, siteConfig } from "@/lib/content/site";
+import { useLocale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { GlowNavLink } from "@/components/site/glow-nav-link";
+import { SettingsMenu } from "@/components/site/settings-menu";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -20,6 +22,7 @@ import {
 
 export function SiteHeader() {
   const pathname = usePathname();
+  const { t } = useLocale();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -56,33 +59,36 @@ export function SiteHeader() {
           />
         </Link>
 
-        <nav aria-label="Navigasi utama" className="hidden md:block">
-          <ul className="flex items-center gap-0.5 xl:gap-1">
-            {navItems.map((item) => {
-              const active =
-                item.href === "/"
-                  ? pathname === "/"
-                  : pathname.startsWith(item.href);
-              return (
-                <li key={item.href}>
-                  <GlowNavLink
-                    href={item.href}
-                    active={active}
-                    overHero={overHero}
-                    className={cn(
-                      "block px-2.5 py-2 text-sm font-semibold lg:px-4 xl:text-[15px]",
-                      active && (overHero ? "bg-white/15" : "bg-secondary")
-                    )}
-                  >
-                    {item.label}
-                  </GlowNavLink>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
+        <div className="flex items-center gap-1 md:gap-2">
+          <nav aria-label="Navigasi utama" className="hidden md:block">
+            <ul className="flex items-center gap-0.5 xl:gap-1">
+              {navItems.map((item) => {
+                const active =
+                  item.href === "/"
+                    ? pathname === "/"
+                    : pathname.startsWith(item.href);
+                return (
+                  <li key={item.href}>
+                    <GlowNavLink
+                      href={item.href}
+                      active={active}
+                      overHero={overHero}
+                      className={cn(
+                        "block px-2.5 py-2 text-sm font-semibold lg:px-4 xl:text-[15px]",
+                        active && (overHero ? "bg-white/15" : "bg-secondary")
+                      )}
+                    >
+                      {t.nav[item.href] ?? item.label}
+                    </GlowNavLink>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
 
-        <Sheet open={open} onOpenChange={setOpen}>
+          <SettingsMenu overHero={overHero} />
+
+          <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild className="md:hidden">
             <Button
               variant="ghost"
@@ -135,7 +141,7 @@ export function SiteHeader() {
                             : "hover:bg-secondary hover:translate-x-1"
                         )}
                       >
-                        {item.label}
+                        {t.nav[item.href] ?? item.label}
                         <ArrowUpRight
                           className={cn(
                             "size-4",
@@ -155,7 +161,8 @@ export function SiteHeader() {
               Tim KKN Jelajah Kei Kecil 2026
             </p>
           </SheetContent>
-        </Sheet>
+          </Sheet>
+        </div>
       </div>
     </header>
   );

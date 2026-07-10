@@ -8,7 +8,7 @@ export const siteConfig = {
     kabupaten: "Kabupaten Maluku Tenggara",
     provinsi: "Maluku",
     alamat: "Kepulauan Kei Kecil, Maluku Tenggara, Maluku, Indonesia",
-    email: "kknkeikecil2026@gmail.com",
+    email: "kknkeikecil.ugm@gmail.com",
   },
 } as const;
 

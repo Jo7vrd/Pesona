@@ -6,16 +6,15 @@ const SESSION_COOKIE = "kk_admin_session";
  * Gerbang UX untuk /admin/** (FR-009): tanpa cookie sesi, pengguna
  * diarahkan ke halaman login. Otorisasi sesungguhnya tetap divalidasi
  * backend lewat JWT pada setiap permintaan API.
+ * (Next 16: proxy.ts menggantikan middleware.ts)
  */
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const hasSession = request.cookies.has(SESSION_COOKIE);
 
   if (pathname === "/admin/login") {
     if (hasSession) {
-      return NextResponse.redirect(
-        new URL("/admin/dashboard", request.url)
-      );
+      return NextResponse.redirect(new URL("/admin/dashboard", request.url));
     }
     return NextResponse.next();
   }

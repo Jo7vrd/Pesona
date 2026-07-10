@@ -245,3 +245,9 @@
 @utility animate-marquee {
   animation: marquee 28s linear infinite;
 }
+
+/* Bayangan teks tipis untuk judul seksi: memberi kedalaman halus,
+   menyesuaikan mode lewat currentColor-independent rgba */
+@utility text-shadow-soft {
+  text-shadow: 0 2px 14px rgba(8, 29, 41, 0.22);
+}

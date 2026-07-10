@@ -19,6 +19,7 @@ export default function PetaPage() {
   return (
     <>
       <PageHeader
+        pageKey="peta"
         eyebrow="Peta karang"
         title="Temukan titik terbaik di perairan Kei"
         description="Pantai, laguna, dan taman karang pilihan beserta koordinatnya. Hormati aturan sasi: bila ada tanda larangan, jangan memanen apa pun."

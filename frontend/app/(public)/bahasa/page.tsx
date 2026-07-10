@@ -17,6 +17,7 @@ export default async function BahasaPage() {
   return (
     <>
       <PageHeader
+        pageKey="bahasa"
         eyebrow="Bahasa Kei"
         title="Sapa warga dengan bahasanya sendiri"
         description="Beberapa kata Kei yang Anda ucapkan akan membuka lebih banyak senyum daripada seribu foto. Mulai dari sini."

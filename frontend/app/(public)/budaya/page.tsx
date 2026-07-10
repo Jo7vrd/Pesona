@@ -17,6 +17,7 @@ export default async function BudayaPage() {
   return (
     <>
       <PageHeader
+        pageKey="budaya"
         eyebrow="Budaya & tradisi"
         title="Warisan yang menjaga laut tetap hidup"
         description="Di Kei, adat bukan pajangan masa lalu, ia mengatur kapan laut boleh dipanen, bagaimana tamu dihormati, dan bagaimana sengketa diselesaikan."

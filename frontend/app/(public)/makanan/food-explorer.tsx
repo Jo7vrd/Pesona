@@ -2,19 +2,20 @@
 
 import { useMemo, useState } from "react";
 
+import { fmt, useLocale } from "@/lib/i18n";
 import type { KategoriMakanan, Makanan } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { StaggerGrid, StaggerItem } from "@/components/motion/stagger-grid";
 import { FoodCard } from "@/components/cards/food-card";
 
-const filters: { value: KategoriMakanan | "semua"; label: string }[] = [
-  { value: "semua", label: "Semua" },
-  { value: "makanan", label: "Makanan" },
-  { value: "minuman", label: "Minuman" },
-  { value: "kudapan", label: "Kudapan" },
-];
-
 export function FoodExplorer({ items }: { items: Makanan[] }) {
+  const { t } = useLocale();
+  const filters: { value: KategoriMakanan | "semua"; label: string }[] = [
+    { value: "semua", label: t.common.semua },
+    { value: "makanan", label: t.common.makanan },
+    { value: "minuman", label: t.common.minuman },
+    { value: "kudapan", label: t.common.kudapan },
+  ];
   const [kategori, setKategori] = useState<KategoriMakanan | "semua">("semua");
 
   const visible = useMemo(
@@ -51,7 +52,7 @@ export function FoodExplorer({ items }: { items: Makanan[] }) {
       </div>
 
       <p className="text-muted-foreground mt-4 text-sm" aria-live="polite">
-        {visible.length} sajian ditampilkan
+        {fmt(t.common.sajianDitampilkan, { n: visible.length })}
       </p>
 
       {visible.length > 0 ? (

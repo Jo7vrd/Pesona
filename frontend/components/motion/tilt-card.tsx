@@ -8,6 +8,8 @@ import {
   useSpring,
 } from "framer-motion";
 
+import { cn } from "@/lib/utils";
+
 /**
  * Pembungkus kartu dengan kemiringan 3D halus mengikuti posisi kursor.
  * Maksimal ±6° supaya terasa premium, bukan mainan; nonaktif saat
@@ -52,8 +54,18 @@ export function TiltCard({
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ rotateX: springX, rotateY: springY, transformPerspective: 900 }}
-      className={className}
+      style={{
+        rotateX: springX,
+        rotateY: springY,
+        // translateZ 0 memaksa layer GPU permanen: mencegah sudut kartu
+        // berkedip antara tajam/membulat saat transform berubah
+        translateZ: 0,
+        transformPerspective: 900,
+      }}
+      className={cn(
+        "overflow-hidden rounded-(--radius-card) will-change-transform",
+        className
+      )}
     >
       {children}
     </motion.div>

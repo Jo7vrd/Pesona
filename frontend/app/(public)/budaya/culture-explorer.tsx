@@ -2,12 +2,14 @@
 
 import { useMemo, useState } from "react";
 
+import { fmt, useLocale } from "@/lib/i18n";
 import type { Budaya } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { StaggerGrid, StaggerItem } from "@/components/motion/stagger-grid";
 import { ContentCard } from "@/components/cards/content-card";
 
 export function CultureExplorer({ items }: { items: Budaya[] }) {
+  const { t } = useLocale();
   const kategoriList = useMemo(
     () => ["Semua", ...Array.from(new Set(items.map((b) => b.kategori)))],
     [items]
@@ -42,13 +44,13 @@ export function CultureExplorer({ items }: { items: Budaya[] }) {
                 : "bg-card hover:bg-secondary border"
             )}
           >
-            {k}
+            {k === "Semua" ? t.common.semua : k}
           </button>
         ))}
       </div>
 
       <p className="text-muted-foreground mt-4 text-sm" aria-live="polite">
-        {visible.length} warisan budaya ditampilkan
+        {fmt(t.common.warisanDitampilkan, { n: visible.length })}
       </p>
 
       <StaggerGrid

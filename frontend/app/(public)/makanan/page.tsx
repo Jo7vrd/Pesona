@@ -17,6 +17,7 @@ export default async function MakananPage() {
   return (
     <>
       <PageHeader
+        pageKey="makanan"
         eyebrow="Kuliner"
         title="Cita rasa dari tanah dan laut Kei"
         description="Makanan pokok dari singkong, hasil laut yang diambil secukupnya, dan rempah yang tumbuh di pekarangan, inilah meja makan masyarakat Kei."

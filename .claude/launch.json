@@ -4,8 +4,8 @@
     {
       "name": "web",
       "cwd": "frontend",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-lc", "ulimit -n 65536; npm run dev"],
       "port": 3000,
       "autoPort": true
     }

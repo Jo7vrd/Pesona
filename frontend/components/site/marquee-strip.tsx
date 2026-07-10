@@ -1,18 +1,14 @@
-const words = [
-  "Pasir terhalus di Asia",
-  "Laguna sebening kristal",
-  "Ayo jelajahi Kei Kecil",
-  "Budaya yang menjaga laut",
-  "Senja terindah di timur Indonesia",
-  "Surga kecil menanti Anda",
-];
+"use client";
+
+import { useLocale } from "@/lib/i18n";
 
 /**
- * Pita teks berjalan (marquee) dengan gradien brand — aksen playful
- * di antara seksi landing. Konten duplikat kedua murni dekoratif;
- * animasi berhenti otomatis saat prefers-reduced-motion.
+ * Pita teks berjalan (marquee) dengan gradien brand. Konten duplikat
+ * kedua murni dekoratif; animasi berhenti saat prefers-reduced-motion.
  */
 export function MarqueeStrip() {
+  const { t } = useLocale();
+
   return (
     <div
       aria-hidden
@@ -21,7 +17,7 @@ export function MarqueeStrip() {
       <div className="animate-marquee motion-reduce:animate-none flex w-max">
         {[0, 1].map((dup) => (
           <div key={dup} className="flex shrink-0 items-center">
-            {words.map((word) => (
+            {t.marquee.map((word) => (
               <span
                 key={`${word}-${dup}`}
                 className="flex items-center text-sm font-bold tracking-[0.22em] whitespace-nowrap text-white/95 uppercase"

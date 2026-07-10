@@ -1,10 +1,15 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Mail, MapPin } from "lucide-react";
 
 import { navItems, siteConfig } from "@/lib/content/site";
+import { useLocale } from "@/lib/i18n";
 
 export function SiteFooter() {
+  const { t } = useLocale();
+
   return (
     <footer className="bg-brand-gradient text-white">
       <div className="container-page grid gap-12 py-16 md:grid-cols-[2fr_1fr_1fr] md:py-20">
@@ -17,12 +22,12 @@ export function SiteFooter() {
             className="h-12 w-auto"
           />
           <p className="mt-5 max-w-sm text-sm leading-relaxed text-white/85">
-            {siteConfig.description}
+            {t.footer.desc}
           </p>
         </div>
 
         <nav aria-label="Navigasi footer">
-          <p className="eyebrow mb-4 text-white/90">Jelajahi</p>
+          <p className="eyebrow mb-4 text-white/90">{t.footer.jelajahi}</p>
           <ul className="space-y-2.5">
             {navItems.map((item) => (
               <li key={item.href}>
@@ -30,7 +35,7 @@ export function SiteFooter() {
                   href={item.href}
                   className="text-sm text-white/85 transition-colors hover:text-white"
                 >
-                  {item.label}
+                  {t.nav[item.href] ?? item.label}
                 </Link>
               </li>
             ))}
@@ -38,7 +43,7 @@ export function SiteFooter() {
         </nav>
 
         <div>
-          <p className="eyebrow mb-4 text-white/90">Kontak</p>
+          <p className="eyebrow mb-4 text-white/90">{t.footer.kontak}</p>
           <ul className="space-y-3 text-sm">
             <li className="flex items-start gap-2.5 text-white/85">
               <MapPin className="mt-0.5 size-4 shrink-0 text-white" />
@@ -68,9 +73,9 @@ export function SiteFooter() {
               <Image
                 src="/logo/kkn-putih.png"
                 alt="Logo KKN"
-                width={21}
-                height={24}
-                className="h-6 w-auto"
+                width={17}
+                height={20}
+                className="h-5 w-auto"
               />
               <span>Tim KKN Jelajah Kei Kecil 2026</span>
             </span>
@@ -78,7 +83,7 @@ export function SiteFooter() {
               href="/admin/login"
               className="underline-offset-4 transition-colors hover:text-white hover:underline"
             >
-              Masuk admin
+              {t.footer.admin}
             </Link>
           </div>
         </div>

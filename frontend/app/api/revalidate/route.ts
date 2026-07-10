@@ -24,6 +24,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: "Tag tidak dikenal." }, { status: 400 });
   }
 
-  revalidateTag(tag);
+  // Next 16: argumen kedua adalah profil kedaluwarsa; "max" = perilaku
+  // lama (basmi cache tag sepenuhnya)
+  revalidateTag(tag, "max");
   return NextResponse.json({ revalidated: tag, at: Date.now() });
 }

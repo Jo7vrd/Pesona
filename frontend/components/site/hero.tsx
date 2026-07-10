@@ -10,8 +10,9 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
-import { ChevronDown, MapPin } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
+import { useLocale } from "@/lib/i18n";
 import { GlowButton } from "@/components/site/glow-button";
 
 const EASE_OUT_EXPO = [0.16, 1, 0.3, 1] as const;
@@ -24,6 +25,7 @@ declare global {
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
+  const { t } = useLocale();
   const reduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -36,24 +38,29 @@ export function Hero() {
   );
   const contentOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
-  // Tilt 3D halus foto hero mengikuti posisi kursor (±3°); skala 1.06
-  // mencegah tepi foto terlihat saat miring
+  // Tilt 3D foto hero mengikuti kursor (±6°) plus pergeseran paralaks
+  // ±14px agar kedalamannya terasa; skala 1.1 mencegah tepi terlihat
   const rotateX = useMotionValue(0);
   const rotateY = useMotionValue(0);
-  const tiltX = useSpring(rotateX, { stiffness: 55, damping: 14 });
-  const tiltY = useSpring(rotateY, { stiffness: 55, damping: 14 });
+  const shiftX = useMotionValue(0);
+  const springTilt = { stiffness: 110, damping: 16, mass: 0.6 };
+  const tiltX = useSpring(rotateX, springTilt);
+  const tiltY = useSpring(rotateY, springTilt);
+  const panX = useSpring(shiftX, springTilt);
 
   function handleMouseMove(e: MouseEvent<HTMLElement>) {
     if (reduceMotion) return;
     const px = e.clientX / window.innerWidth - 0.5;
     const py = e.clientY / window.innerHeight - 0.5;
-    rotateY.set(px * 3);
-    rotateX.set(-py * 3);
+    rotateY.set(px * 6);
+    rotateX.set(-py * 6);
+    shiftX.set(px * -14);
   }
 
   function handleMouseLeave() {
     rotateX.set(0);
     rotateY.set(0);
+    shiftX.set(0);
   }
 
   function scrollToSambutan() {
@@ -77,10 +84,11 @@ export function Hero() {
       <motion.div
         style={{
           y: imageY,
+          x: panX,
           rotateX: tiltX,
           rotateY: tiltY,
-          scale: 1.06,
-          transformPerspective: 1200,
+          scale: 1.1,
+          transformPerspective: 1100,
         }}
         className="absolute inset-0 will-change-transform"
       >
@@ -105,15 +113,13 @@ export function Hero() {
           initial={{ opacity: 0, y: reduceMotion ? 0 : 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1, ease: EASE_OUT_EXPO }}
-          className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-white/25 bg-white/10 py-2.5 pr-5 pl-4 backdrop-blur-md"
+          className="mb-4 text-3xl text-white md:text-4xl"
+          style={{ fontFamily: "var(--font-brush)" }}
         >
-          <MapPin className="text-lagoon-300 size-4" aria-hidden />
-          <span className="text-xs font-semibold tracking-[0.22em] text-white/90 uppercase">
-            Maluku Tenggara · Indonesia
-          </span>
+          Maluku Tenggara, Indonesia
         </motion.p>
         <h1 className="font-display text-display-xl max-w-4xl font-bold text-balance">
-          {"Surga kecil di timur Indonesia".split(" ").map((kata, i) => (
+          {t.hero.title.split(" ").map((kata, i) => (
             <motion.span
               key={i}
               className="inline-block whitespace-pre will-change-transform"
@@ -135,8 +141,7 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.35, ease: EASE_OUT_EXPO }}
           className="text-lede mt-6 max-w-xl text-white/85"
         >
-          Pasir sehalus tepung di Ngurbloat, laguna sebening kaca, dan budaya
-          yang dijaga turun-temurun. Selamat datang di Kei Kecil.
+          {t.hero.lede}
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: reduceMotion ? 0 : 20 }}
@@ -144,7 +149,7 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.5, ease: EASE_OUT_EXPO }}
           className="mt-10"
         >
-          <GlowButton onClick={scrollToSambutan}>Jelajahi Kei!</GlowButton>
+          <GlowButton onClick={scrollToSambutan}>{t.hero.cta}</GlowButton>
         </motion.div>
       </motion.div>
 

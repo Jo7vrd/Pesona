@@ -23,6 +23,7 @@ export default function DestinasiPage() {
   return (
     <>
       <PageHeader
+        pageKey="destinasi"
         eyebrow="Destinasi"
         title="Tempat-tempat yang membuat Kei dikenang"
         description="Dari pasir sehalus tepung hingga laguna tersembunyi di balik karst, inilah alasan orang datang jauh-jauh ke ujung timur Indonesia."

@@ -21,6 +21,7 @@ export default function KedaruratanPage() {
   return (
     <>
       <PageHeader
+        pageKey="kedaruratan"
         eyebrow="Kedaruratan pesisir"
         title="Tenang, dan ikuti langkahnya"
         description="Simpan halaman ini sebelum ke pantai. Kontak penting bisa langsung dihubungi dari ponsel Anda."
