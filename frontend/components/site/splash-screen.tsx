@@ -8,7 +8,7 @@ const STORAGE_KEY = "kk_splash_shown";
 const MIN_VISIBLE_MS = 1100;
 const MAX_VISIBLE_MS = 2600;
 const HERO_IMAGE =
-  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1800&q=75";
+  "/images/u/1507525428034-b723cf961d3e.jpg";
 
 /**
  * Splash kunjungan pertama (sekali per sesi tab): layar gradien brand

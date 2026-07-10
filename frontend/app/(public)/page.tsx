@@ -33,7 +33,7 @@ export default async function LandingPage() {
           <FadeIn delay={0.15} className="lg:col-span-7">
             <div className="relative aspect-[16/11] overflow-hidden rounded-(--radius-card)">
               <Image
-                src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1800&q=80"
+                src="/images/u/1544551763-46a013bb70d5.jpg"
                 alt="Perairan jernih Kei Kecil dilihat dari atas"
                 fill
                 sizes="(max-width: 1024px) 100vw, 58vw"

@@ -25,7 +25,7 @@ export default function KedaruratanPage() {
         eyebrow="Kedaruratan pesisir"
         title="Tenang, dan ikuti langkahnya"
         description="Simpan halaman ini sebelum ke pantai. Kontak penting bisa langsung dihubungi dari ponsel Anda."
-        imageUrl="https://images.unsplash.com/photo-1476673160081-cf065607f449?w=2000&q=80"
+        imageUrl="/images/u/1476673160081-cf065607f449.jpg"
       />
 
       <section className="container-page py-12 md:py-16">

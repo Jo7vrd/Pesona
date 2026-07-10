@@ -10,12 +10,12 @@ import { StaggerGrid, StaggerItem } from "@/components/motion/stagger-grid";
 
 const fotoBanner: Record<string, string> = {
   "/destinasi":
-    "https://images.unsplash.com/photo-1546484475-7f7bd55792da?w=1200&q=75",
+    "/images/u/1546484475-7f7bd55792da.jpg",
   "/makanan": "/images/kuliner-kei.jpg",
   "/budaya":
-    "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=1200&q=75",
+    "/images/u/1533900298318-6b8da08a523e.jpg",
   "/bahasa":
-    "https://images.unsplash.com/photo-1541417904950-b855846fe074?w=1200&q=75",
+    "/images/u/1541417904950-b855846fe074.jpg",
 };
 
 /**

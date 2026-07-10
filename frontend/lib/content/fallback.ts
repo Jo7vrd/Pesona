@@ -17,7 +17,7 @@ export const fallbackMakanan: Makanan[] = [
     deskripsi:
       "Olahan singkong khas Kepulauan Kei yang dikeringkan lalu digoreng, renyah di luar, gurih di dalam, teman minum kopi sore. Embal adalah makanan pokok masyarakat Kei yang tahan disimpan berbulan-bulan.",
     fotoUrl:
-      "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=1200&q=80",
+      "/images/u/1512058564366-18510be2db19.jpg",
     isUnggulan: true,
   },
   {
@@ -27,7 +27,7 @@ export const fallbackMakanan: Makanan[] = [
     deskripsi:
       "Ikan karang segar hasil tangkapan hari itu, dibakar dengan bumbu rica khas Maluku dan disajikan bersama embal. Nelayan Kei hanya mengambil secukupnya, kesegaran adalah bumbu utamanya.",
     fotoUrl:
-      "https://images.unsplash.com/photo-1559847844-5315695dadae?w=1200&q=80",
+      "/images/u/1559847844-5315695dadae.jpg",
     isUnggulan: true,
   },
   {
@@ -37,7 +37,7 @@ export const fallbackMakanan: Makanan[] = [
     deskripsi:
       "Salad khas Maluku dari kelapa parut, ikan teri, dan sayuran segar dengan perasan jeruk, segar dan kaya rempah. Biasa disantap bersama embal atau kasbi rebus.",
     fotoUrl:
-      "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&q=80",
+      "/images/u/1504674900247-0877df9cc836.jpg",
     isUnggulan: true,
   },
   {
@@ -47,7 +47,7 @@ export const fallbackMakanan: Makanan[] = [
     deskripsi:
       "Salad rumput laut segar dari perairan Kei, dibumbui kelapa parut dan cabai, hidangan pesisir yang hanya ada di sini. Rumput laut dipanen dari perairan dangkal saat meti.",
     fotoUrl:
-      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=80",
+      "/images/u/1414235077428-338989a2e8c0.jpg",
     isUnggulan: true,
   },
   {
@@ -57,7 +57,7 @@ export const fallbackMakanan: Makanan[] = [
     deskripsi:
       "Sup ikan berkuah bening asam segar dengan belimbing wuluh dan kemangi. Hidangan rumahan Kei yang menghangatkan setelah seharian di laut.",
     fotoUrl:
-      "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=1200&q=80",
+      "/images/u/1547592166-23ac45744acd.jpg",
     isUnggulan: false,
   },
   {
@@ -67,7 +67,7 @@ export const fallbackMakanan: Makanan[] = [
     deskripsi:
       "Embal yang dicetak berbentuk bunga lalu dipanggang, sering disebut embal love. Kudapan manis-gurih yang jadi oleh-oleh khas dari Kei.",
     fotoUrl:
-      "https://images.unsplash.com/photo-1587314168485-3236d6710814?w=1200&q=80",
+      "/images/u/1587314168485-3236d6710814.jpg",
     isUnggulan: false,
   },
   {
@@ -77,7 +77,7 @@ export const fallbackMakanan: Makanan[] = [
     deskripsi:
       "Minuman jahe hangat dengan gula aren dan taburan kenari, diwariskan lintas generasi di Maluku. Teman terbaik menikmati angin laut sore hari.",
     fotoUrl:
-      "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=1200&q=80",
+      "/images/u/1544787219-7f47ccb76574.jpg",
     isUnggulan: false,
   },
   {
@@ -87,7 +87,7 @@ export const fallbackMakanan: Makanan[] = [
     deskripsi:
       "Jus segar dari daging buah pala, kekayaan rempah Maluku dalam segelas minuman. Manis, sedikit sepat, dan sangat menyegarkan di siang hari.",
     fotoUrl:
-      "https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=1200&q=80",
+      "/images/u/1553530666-ba11a7da3888.jpg",
     isUnggulan: false,
   },
 ];
@@ -100,7 +100,7 @@ export const fallbackBudaya: Budaya[] = [
     deskripsi:
       "Larangan adat memanen hasil laut pada waktu dan wilayah tertentu. Sasi menjaga terumbu karang dan populasi ikan Kei tetap lestari selama ratusan tahun, kearifan lokal yang kini diakui sebagai praktik konservasi modern. Pelanggaran sasi diselesaikan lewat musyawarah adat.",
     fotoUrl:
-      "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1600&q=80",
+      "/images/u/1544551763-46a013bb70d5.jpg",
     isUnggulan: true,
   },
   {
@@ -110,7 +110,7 @@ export const fallbackBudaya: Budaya[] = [
     deskripsi:
       "Hukum adat tertua Kepulauan Kei, 'darah merah dan tombak dari Bali', yang mengatur harmoni sosial, penghormatan pada sesama, dan hak atas tanah. Masih menjadi pegangan hidup masyarakat Kei hingga hari ini.",
     fotoUrl:
-      "https://images.unsplash.com/photo-1541417904950-b855846fe074?w=1600&q=80",
+      "/images/u/1541417904950-b855846fe074.jpg",
     isUnggulan: true,
   },
   {
@@ -120,7 +120,7 @@ export const fallbackBudaya: Budaya[] = [
     deskripsi:
       "Pesta rakyat tahunan menyambut meti, surutnya air laut ekstrem yang membuka hamparan pasir luas. Warga menangkap ikan bersama, menggelar bazar kuliner, dan menampilkan seni tradisi di atas laut yang surut.",
     fotoUrl:
-      "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=1600&q=80",
+      "/images/u/1533900298318-6b8da08a523e.jpg",
     isUnggulan: false,
   },
   {
@@ -130,7 +130,7 @@ export const fallbackBudaya: Budaya[] = [
     deskripsi:
       "Kampung adat Kei dengan struktur pemerintahan tradisionalnya sendiri. Setiap ohoi memiliki hak ulayat, kepala adat, dan aturan yang hidup berdampingan dengan pemerintahan desa modern.",
     fotoUrl:
-      "https://images.unsplash.com/photo-1537956965359-7573183d1f57?w=1600&q=80",
+      "/images/u/1537956965359-7573183d1f57.jpg",
     isUnggulan: false,
   },
   {
@@ -140,7 +140,7 @@ export const fallbackBudaya: Budaya[] = [
     deskripsi:
       "Keterampilan menganyam daun kelapa menjadi tikar, bakul, dan atap, pengetahuan sehari-hari yang diwariskan dari nenek ke cucu di setiap ohoi pesisir.",
     fotoUrl:
-      "https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?w=1600&q=80",
+      "/images/u/1590523741831-ab7e8b8f9c7f.jpg",
     isUnggulan: false,
   },
 ];

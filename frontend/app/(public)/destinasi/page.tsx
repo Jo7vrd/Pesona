@@ -29,7 +29,7 @@ export default function DestinasiPage() {
         eyebrow="Destinasi"
         title="Tempat-tempat yang membuat Kei dikenang"
         description="Dari pasir sehalus tepung hingga laguna tersembunyi di balik karst, inilah alasan orang datang jauh-jauh ke ujung timur Indonesia."
-        imageUrl="https://images.unsplash.com/photo-1546484475-7f7bd55792da?w=2000&q=80"
+        imageUrl="/images/u/1546484475-7f7bd55792da.jpg"
       />
 
       <section className="container-page py-12 md:py-16">

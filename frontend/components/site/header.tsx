@@ -44,7 +44,7 @@ export function SiteHeader() {
         "fixed inset-x-0 top-0 z-50 transition-colors duration-300",
         overHero
           ? "bg-transparent text-white"
-          : "bg-background/80 text-foreground border-b backdrop-blur-md"
+          : "bg-background/90 text-foreground border-b backdrop-blur-sm"
       )}
     >
       <div className="container-page flex h-20 items-center justify-between md:h-24">

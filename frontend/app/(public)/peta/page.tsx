@@ -25,7 +25,7 @@ export default function PetaPage() {
         eyebrow="Peta karang"
         title="Temukan titik terbaik di perairan Kei"
         description="Pantai, laguna, dan taman karang pilihan beserta koordinatnya. Hormati aturan sasi: bila ada tanda larangan, jangan memanen apa pun."
-        imageUrl="https://images.unsplash.com/photo-1537956965359-7573183d1f57?w=2000&q=80"
+        imageUrl="/images/u/1537956965359-7573183d1f57.jpg"
       />
 
       <section className="container-page py-12 md:py-16">

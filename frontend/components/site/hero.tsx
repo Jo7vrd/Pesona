@@ -93,7 +93,7 @@ export function Hero() {
         className="absolute inset-0 will-change-transform"
       >
         <Image
-          src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1800&q=75"
+          src="/images/u/1507525428034-b723cf961d3e.jpg"
           alt="Pantai pasir putih Kei Kecil dengan laguna biru jernih"
           fill
           priority
