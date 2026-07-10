@@ -6,9 +6,14 @@ import { ArrowLeft } from "lucide-react";
 
 import { getAllBudaya, getBudayaById } from "@/lib/api/server";
 import { getBudayaExtra } from "@/lib/content/budaya-extra";
+import {
+  budayaDescTr,
+  kategoriBudayaTr,
+} from "@/lib/content/i18n-content";
 import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "@/components/motion/fade-in";
 import { ContentCard } from "@/components/cards/content-card";
+import { Tr } from "@/components/site/tr";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -45,7 +50,7 @@ export default async function BudayaDetailPage({ params }: Props) {
           className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5 text-sm font-medium transition-colors"
         >
           <ArrowLeft className="size-4" aria-hidden />
-          Semua budaya
+          <Tr id="Semua budaya" en="All culture" zh="全部文化" />
         </Link>
 
         <div className="relative mt-8 aspect-[21/9] overflow-hidden rounded-(--radius-card)">
@@ -61,13 +66,21 @@ export default async function BudayaDetailPage({ params }: Props) {
 
         <div className="mx-auto mt-10 max-w-2xl">
           <Badge variant="secondary" className="rounded-full">
-            {item.kategori}
+            <Tr
+              id={item.kategori}
+              en={kategoriBudayaTr[item.kategori]?.en}
+              zh={kategoriBudayaTr[item.kategori]?.zh}
+            />
           </Badge>
           <h1 className="font-display text-display-lg mt-4 text-balance">
             {item.nama}
           </h1>
           <p className="text-muted-foreground mt-6 leading-relaxed">
-            {item.deskripsi}
+            <Tr
+              id={item.deskripsi}
+              en={budayaDescTr[item.id]?.en}
+              zh={budayaDescTr[item.id]?.zh}
+            />
           </p>
         </div>
       </FadeIn>
@@ -120,7 +133,7 @@ export default async function BudayaDetailPage({ params }: Props) {
         <section aria-labelledby="terkait-judul" className="mt-20 md:mt-28">
           <FadeIn>
             <h2 id="terkait-judul" className="font-display text-display">
-              Warisan lainnya
+              <Tr id="Warisan lainnya" en="More heritage" zh="更多文化遗产" />
             </h2>
             <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((b) => (
@@ -129,8 +142,20 @@ export default async function BudayaDetailPage({ params }: Props) {
                   href={`/budaya/${b.id}`}
                   fotoUrl={b.fotoUrl}
                   nama={b.nama}
-                  kategori={b.kategori}
-                  deskripsi={b.deskripsi}
+                  kategori={
+                    <Tr
+                      id={b.kategori}
+                      en={kategoriBudayaTr[b.kategori]?.en}
+                      zh={kategoriBudayaTr[b.kategori]?.zh}
+                    />
+                  }
+                  deskripsi={
+                    <Tr
+                      id={b.deskripsi}
+                      en={budayaDescTr[b.id]?.en}
+                      zh={budayaDescTr[b.id]?.zh}
+                    />
+                  }
                 />
               ))}
             </div>

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight, MapPin } from "lucide-react";
 
 import { BLUR_DATA_URL } from "@/lib/blur";
+import { jenisSpotTr, spotDescTr } from "@/lib/content/i18n-content";
 import { spots } from "@/lib/content/spots";
 import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "@/components/motion/fade-in";
@@ -11,6 +12,7 @@ import { StaggerGrid, StaggerItem } from "@/components/motion/stagger-grid";
 import { TiltCard } from "@/components/motion/tilt-card";
 import { CopyButton } from "@/components/site/copy-button";
 import { PageHeader } from "@/components/site/page-header";
+import { Tr } from "@/components/site/tr";
 
 export const metadata: Metadata = {
   title: "Destinasi Wisata Kei Kecil",
@@ -47,7 +49,11 @@ export default function DestinasiPage() {
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />
                   <Badge className="bg-background/85 text-foreground absolute top-3 left-3 rounded-full border-0 backdrop-blur-sm">
-                    {spot.jenis}
+                    <Tr
+                      id={spot.jenis}
+                      en={jenisSpotTr[spot.jenis]?.en}
+                      zh={jenisSpotTr[spot.jenis]?.zh}
+                    />
                   </Badge>
                 </div>
                 <div className="flex flex-1 flex-col p-5">
@@ -55,7 +61,11 @@ export default function DestinasiPage() {
                     {spot.nama}
                   </h2>
                   <p className="text-muted-foreground mt-2 flex-1 text-sm leading-relaxed">
-                    {spot.deskripsi}
+                    <Tr
+                      id={spot.deskripsi}
+                      en={spotDescTr[spot.id]?.en}
+                      zh={spotDescTr[spot.id]?.zh}
+                    />
                   </p>
                   <div className="mt-4 flex items-center justify-between border-t pt-4">
                     <span className="text-muted-foreground inline-flex items-center gap-1.5 font-mono text-xs">
@@ -82,7 +92,11 @@ export default function DestinasiPage() {
             href="/peta"
             className="text-lagoon-700 hover:text-lagoon-600 inline-flex items-center gap-1.5 font-semibold transition-colors"
           >
-            Lihat semua titik di peta interaktif
+            <Tr
+              id="Lihat semua titik di peta interaktif"
+              en="See every spot on the interactive map"
+              zh="在互动地图上查看所有地点"
+            />
             <ArrowRight className="size-4" aria-hidden />
           </Link>
         </FadeIn>

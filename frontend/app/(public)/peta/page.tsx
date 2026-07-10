@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { MapPin } from "lucide-react";
 
+import { jenisSpotTr, spotDescTr } from "@/lib/content/i18n-content";
 import { spots } from "@/lib/content/spots";
 import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "@/components/motion/fade-in";
 import { StaggerGrid, StaggerItem } from "@/components/motion/stagger-grid";
 import { CopyButton } from "@/components/site/copy-button";
 import { PageHeader } from "@/components/site/page-header";
+import { Tr } from "@/components/site/tr";
 
 export const metadata: Metadata = {
   title: "Peta Terumbu Karang & Titik Snorkeling",
@@ -37,8 +39,11 @@ export default function PetaPage() {
             />
           </div>
           <p className="text-muted-foreground mt-3 text-xs">
-            Peta oleh OpenStreetMap. Koordinat di bawah adalah perkiraan,
-            selalu konfirmasi rute dengan pemandu lokal.
+            <Tr
+              id="Peta oleh OpenStreetMap. Koordinat di bawah adalah perkiraan, selalu konfirmasi rute dengan pemandu lokal."
+              en="Map by OpenStreetMap. Coordinates below are approximate; always confirm routes with a local guide."
+              zh="地图来自OpenStreetMap。以下坐标为大致位置，请务必与当地向导确认路线。"
+            />
           </p>
         </FadeIn>
 
@@ -48,7 +53,11 @@ export default function PetaPage() {
               <article className="bg-card flex h-full flex-col rounded-(--radius-card) border p-6 shadow-(--shadow-card)">
                 <div className="flex items-start justify-between gap-3">
                   <Badge variant="secondary" className="rounded-full">
-                    {spot.jenis}
+                    <Tr
+                      id={spot.jenis}
+                      en={jenisSpotTr[spot.jenis]?.en}
+                      zh={jenisSpotTr[spot.jenis]?.zh}
+                    />
                   </Badge>
                   <CopyButton
                     value={`${spot.lat}, ${spot.lng}`}
@@ -57,7 +66,11 @@ export default function PetaPage() {
                 </div>
                 <h2 className="font-display mt-4 text-xl">{spot.nama}</h2>
                 <p className="text-muted-foreground mt-2 flex-1 text-sm leading-relaxed">
-                  {spot.deskripsi}
+                  <Tr
+                    id={spot.deskripsi}
+                    en={spotDescTr[spot.id]?.en}
+                    zh={spotDescTr[spot.id]?.zh}
+                  />
                 </p>
                 <p className="text-muted-foreground mt-4 inline-flex items-center gap-1.5 font-mono text-xs">
                   <MapPin className="text-lagoon-600 size-3.5" aria-hidden />

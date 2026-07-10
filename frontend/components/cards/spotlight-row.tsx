@@ -3,9 +3,14 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import { BLUR_DATA_URL } from "@/lib/blur";
+import {
+  budayaDescTr,
+  kategoriBudayaTr,
+} from "@/lib/content/i18n-content";
 import type { Budaya } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { FadeIn } from "@/components/motion/fade-in";
+import { Tr } from "@/components/site/tr";
 
 export function SpotlightRow({ item, flip }: { item: Budaya; flip?: boolean }) {
   return (
@@ -28,18 +33,28 @@ export function SpotlightRow({ item, flip }: { item: Budaya; flip?: boolean }) {
           />
         </div>
         <div className={cn("md:col-span-5", flip && "md:order-1")}>
-          <p className="eyebrow mb-3">{item.kategori}</p>
+          <p className="eyebrow mb-3">
+            <Tr
+              id={item.kategori}
+              en={kategoriBudayaTr[item.kategori]?.en}
+              zh={kategoriBudayaTr[item.kategori]?.zh}
+            />
+          </p>
           <h3 className="font-display text-display text-balance">
             {item.nama}
           </h3>
           <p className="text-muted-foreground mt-4 leading-relaxed">
-            {item.deskripsi}
+            <Tr
+              id={item.deskripsi}
+              en={budayaDescTr[item.id]?.en}
+              zh={budayaDescTr[item.id]?.zh}
+            />
           </p>
           <Link
             href={`/budaya/${item.id}`}
             className="text-lagoon-700 hover:text-lagoon-600 mt-6 inline-flex items-center gap-1.5 text-sm font-semibold transition-colors"
           >
-            Pelajari lebih lanjut
+            <Tr id="Pelajari lebih lanjut" en="Learn more" zh="了解更多" />
             <ArrowRight className="size-4" aria-hidden />
           </Link>
         </div>

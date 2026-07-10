@@ -15,8 +15,8 @@ export function ContentCard({
   href: string;
   fotoUrl: string;
   nama: string;
-  kategori: string;
-  deskripsi: string;
+  kategori: React.ReactNode;
+  deskripsi: React.ReactNode;
 }) {
   return (
     <Link

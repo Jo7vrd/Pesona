@@ -5,9 +5,14 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
 import { getAllMakanan, getMakananById } from "@/lib/api/server";
+import {
+  kategoriMakananTr,
+  makananDescTr,
+} from "@/lib/content/i18n-content";
 import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "@/components/motion/fade-in";
 import { FoodCard, kategoriMakananLabel } from "@/components/cards/food-card";
+import { Tr } from "@/components/site/tr";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -43,7 +48,7 @@ export default async function MakananDetailPage({ params }: Props) {
           className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5 text-sm font-medium transition-colors"
         >
           <ArrowLeft className="size-4" aria-hidden />
-          Semua kuliner
+          <Tr id="Semua kuliner" en="All cuisine" zh="全部美食" />
         </Link>
 
         <div className="mt-8 grid items-start gap-10 lg:grid-cols-12 lg:gap-14">
@@ -59,13 +64,21 @@ export default async function MakananDetailPage({ params }: Props) {
           </div>
           <div className="lg:col-span-5">
             <Badge variant="secondary" className="rounded-full">
-              {kategoriMakananLabel[item.kategori]}
+              <Tr
+                id={kategoriMakananLabel[item.kategori]}
+                en={kategoriMakananTr[item.kategori]?.en}
+                zh={kategoriMakananTr[item.kategori]?.zh}
+              />
             </Badge>
             <h1 className="font-display text-display-lg mt-4 text-balance">
               {item.nama}
             </h1>
             <p className="text-muted-foreground mt-6 leading-relaxed">
-              {item.deskripsi}
+              <Tr
+                id={item.deskripsi}
+                en={makananDescTr[item.id]?.en}
+                zh={makananDescTr[item.id]?.zh}
+              />
             </p>
           </div>
         </div>
@@ -75,7 +88,7 @@ export default async function MakananDetailPage({ params }: Props) {
         <section aria-labelledby="terkait-judul" className="mt-20 md:mt-28">
           <FadeIn>
             <h2 id="terkait-judul" className="font-display text-display">
-              Sajian serupa
+              <Tr id="Sajian serupa" en="Similar dishes" zh="类似菜品" />
             </h2>
             <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((m) => (

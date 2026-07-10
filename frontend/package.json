@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "ulimit -n 10240 2>/dev/null; next dev",
+    "build": "ulimit -n 10240 2>/dev/null; next build",
     "start": "next start",
     "lint": "eslint"
   },

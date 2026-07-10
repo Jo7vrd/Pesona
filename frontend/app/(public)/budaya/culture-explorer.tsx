@@ -2,6 +2,10 @@
 
 import { useMemo, useState } from "react";
 
+import {
+  budayaDescTr,
+  kategoriBudayaTr,
+} from "@/lib/content/i18n-content";
 import { fmt, useLocale } from "@/lib/i18n";
 import type { Budaya } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -9,7 +13,9 @@ import { StaggerGrid, StaggerItem } from "@/components/motion/stagger-grid";
 import { ContentCard } from "@/components/cards/content-card";
 
 export function CultureExplorer({ items }: { items: Budaya[] }) {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
+  const pilih = (id: string, tr?: { en: string; zh: string }) =>
+    locale === "en" ? (tr?.en ?? id) : locale === "zh" ? (tr?.zh ?? id) : id;
   const kategoriList = useMemo(
     () => ["Semua", ...Array.from(new Set(items.map((b) => b.kategori)))],
     [items]
@@ -44,7 +50,7 @@ export function CultureExplorer({ items }: { items: Budaya[] }) {
                 : "bg-card hover:bg-secondary border"
             )}
           >
-            {k === "Semua" ? t.common.semua : k}
+            {k === "Semua" ? t.common.semua : pilih(k, kategoriBudayaTr[k])}
           </button>
         ))}
       </div>
@@ -63,8 +69,8 @@ export function CultureExplorer({ items }: { items: Budaya[] }) {
               href={`/budaya/${item.id}`}
               fotoUrl={item.fotoUrl}
               nama={item.nama}
-              kategori={item.kategori}
-              deskripsi={item.deskripsi}
+              kategori={pilih(item.kategori, kategoriBudayaTr[item.kategori])}
+              deskripsi={pilih(item.deskripsi, budayaDescTr[item.id])}
             />
           </StaggerItem>
         ))}
