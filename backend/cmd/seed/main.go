@@ -145,6 +145,36 @@ func seedContent(db *gorm.DB, logger *slog.Logger) error {
 		{BahasaIndonesia: "Satu untuk semua, semua untuk satu", BahasaKei: "Ain ni ain", Catatan: &catatanAin},
 	}
 
+	// video: contoh tautan YouTube pada Ngurbloat — ganti dengan video
+	// resmi desa lewat admin. Koordinat perkiraan, verifikasi lapangan.
+	videoNgurbloat := "https://www.youtube.com/watch?v=C6RADZ_om4k"
+	destinasi := []entity.Destinasi{
+		{Nama: "Pantai Ngurbloat (Pasir Panjang)", Jenis: "Pantai",
+			Lat: -5.66, Lng: 132.641, VideoYoutube: &videoNgurbloat,
+			Deskripsi: "Tiga kilometer pasir putih sehalus tepung, kerap disebut pasir terhalus di Asia. Landai dan aman untuk berenang keluarga.",
+			FotoURL:   "https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?w=1600&q=80"},
+		{Nama: "Pantai Ohoidertawun", Jenis: "Pantai",
+			Lat: -5.624, Lng: 132.712,
+			Deskripsi: "Saat meti, air surut hingga ratusan meter dan membuka hamparan pasir luas. Tempat terbaik menikmati matahari terbenam.",
+			FotoURL:   "https://images.unsplash.com/photo-1476673160081-cf065607f449?w=1600&q=80"},
+		{Nama: "Goa Hawang", Jenis: "Gua",
+			Lat: -5.741, Lng: 132.67,
+			Deskripsi: "Gua dengan kolam air payau sebening kristal berwarna biru kehijauan. Berenang di sini terasa seperti di akuarium alami.",
+			FotoURL:   "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1600&q=80"},
+		{Nama: "Ngurtavur", Jenis: "Snorkeling",
+			Lat: -5.834, Lng: 132.51,
+			Deskripsi: "Pasir timbul sepanjang dua kilometer yang muncul saat surut, tempat singgah burung pelikan. Terumbu karang di sekitarnya masih perawan.",
+			FotoURL:   "https://images.unsplash.com/photo-1541417904950-b855846fe074?w=1600&q=80"},
+		{Nama: "Pantai Perwira", Jenis: "Pantai",
+			Lat: -5.62, Lng: 132.655,
+			Deskripsi: "Pasir putih yang diapit karang dan hutan pantai yang rimbun. Debur ombaknya memecah di batu karang, spot favorit menikmati senja dalam ketenangan.",
+			FotoURL:   "https://images.unsplash.com/photo-1546484475-7f7bd55792da?w=1600&q=80"},
+		{Nama: "Pulau Bair", Jenis: "Pulau",
+			Lat: -5.405, Lng: 132.686,
+			Deskripsi: "Laguna tersembunyi di antara tebing karst, sering dijuluki Raja Ampat kecil. Perairan tenang dengan visibilitas snorkeling luar biasa.",
+			FotoURL:   "https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=1600&q=80"},
+	}
+
 	// ON CONFLICT DO NOTHING pada indeks unik LOWER() tidak didukung
 	// clause GORM secara langsung, jadi cek eksistensi per baris.
 	for _, m := range makanan {
@@ -163,8 +193,15 @@ func seedContent(db *gorm.DB, logger *slog.Logger) error {
 		}
 	}
 
+	for _, d := range destinasi {
+		if err := insertIfMissing(db, "destinasi", "nama", d.Nama, &d); err != nil {
+			return err
+		}
+	}
+
 	logger.Info("konten awal terpasang",
-		"makanan", len(makanan), "budaya", len(budaya), "bahasa", len(bahasa))
+		"makanan", len(makanan), "budaya", len(budaya),
+		"bahasa", len(bahasa), "destinasi", len(destinasi))
 	return nil
 }
 

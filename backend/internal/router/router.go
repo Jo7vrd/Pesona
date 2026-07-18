@@ -16,10 +16,11 @@ type Deps struct {
 	Config  *config.Config
 	Logger  *slog.Logger
 	Auth    *service.AuthService
-	Makanan *service.ContentService[entity.Makanan]
-	Budaya  *service.ContentService[entity.Budaya]
-	Bahasa  *service.ContentService[entity.BahasaLokal]
-	Upload  *service.UploadService
+	Makanan   *service.ContentService[entity.Makanan]
+	Budaya    *service.ContentService[entity.Budaya]
+	Bahasa    *service.ContentService[entity.BahasaLokal]
+	Destinasi *service.ContentService[entity.Destinasi]
+	Upload    *service.UploadService
 }
 
 func New(d Deps) *gin.Engine {
@@ -39,7 +40,8 @@ func New(d Deps) *gin.Engine {
 	makananH := handler.NewMakanan(d.Makanan, d.Logger)
 	budayaH := handler.NewBudaya(d.Budaya, d.Logger)
 	bahasaH := handler.NewBahasa(d.Bahasa, d.Logger)
-	statsH := handler.NewStats(d.Makanan, d.Budaya, d.Bahasa, d.Logger)
+	destinasiH := handler.NewDestinasi(d.Destinasi, d.Logger)
+	statsH := handler.NewStats(d.Makanan, d.Budaya, d.Bahasa, d.Destinasi, d.Logger)
 	uploadH := handler.NewUploadHandler(d.Upload, d.Logger)
 
 	r.GET("/healthz", handler.Health)
@@ -59,6 +61,8 @@ func New(d Deps) *gin.Engine {
 	v1.GET("/budaya/unggulan", budayaH.Unggulan)
 	v1.GET("/budaya/:id", budayaH.ByID)
 	v1.GET("/bahasa", bahasaH.List)
+	v1.GET("/destinasi", destinasiH.List)
+	v1.GET("/destinasi/:id", destinasiH.ByID)
 
 	// ---- Autentikasi ----
 	auth := v1.Group("/auth")
@@ -90,6 +94,11 @@ func New(d Deps) *gin.Engine {
 	admin.POST("/bahasa", bahasaH.Create)
 	admin.PUT("/bahasa/:id", bahasaH.Update)
 	admin.DELETE("/bahasa/:id", bahasaH.Delete)
+
+	admin.GET("/destinasi", destinasiH.List)
+	admin.POST("/destinasi", destinasiH.Create)
+	admin.PUT("/destinasi/:id", destinasiH.Update)
+	admin.DELETE("/destinasi/:id", destinasiH.Delete)
 
 	return r
 }

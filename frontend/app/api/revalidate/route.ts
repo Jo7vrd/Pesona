@@ -1,7 +1,7 @@
 import { revalidateTag } from "next/cache";
 import { NextResponse, type NextRequest } from "next/server";
 
-const VALID_TAGS = new Set(["makanan", "budaya", "bahasa"]);
+const VALID_TAGS = new Set(["makanan", "budaya", "bahasa", "destinasi"]);
 
 /**
  * Webhook dari backend Go: dipanggil setelah admin mengubah konten agar

@@ -10,6 +10,7 @@ import {
   Landmark,
   LayoutDashboard,
   LogOut,
+  MapPin,
   Menu,
   Moon,
   Sun,
@@ -38,6 +39,7 @@ import {
 
 const menu = [
   { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
+  { label: "Destinasi", href: "/admin/destinasi", icon: MapPin },
   { label: "Kuliner", href: "/admin/makanan", icon: UtensilsCrossed },
   { label: "Budaya", href: "/admin/budaya", icon: Landmark },
   { label: "Bahasa Kei", href: "/admin/bahasa", icon: BookA },

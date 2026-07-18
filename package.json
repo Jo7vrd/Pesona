@@ -1,0 +1,24 @@
+{
+  "name": "pesona",
+  "version": "1.0.0",
+  "description": "Website pariwisata Desa Kei Kecil, Maluku Tenggara — portal informasi kuliner, budaya, terumbu karang, bahasa lokal Kei, dan kedaruratan pesisir.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jo7vrd/Pesona.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Jo7vrd/Pesona/issues"
+  },
+  "homepage": "https://github.com/Jo7vrd/Pesona#readme"
+}

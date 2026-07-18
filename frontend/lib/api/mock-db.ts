@@ -3,11 +3,13 @@ import {
   fallbackBudaya,
   fallbackMakanan,
 } from "@/lib/content/fallback";
+import { fallbackDestinasi } from "@/lib/content/spots";
 import type {
   AdminSession,
   BahasaLokal,
   Budaya,
   DashboardStats,
+  Destinasi,
   Makanan,
 } from "@/lib/types";
 
@@ -22,6 +24,7 @@ const KEYS = {
   makanan: "kk_mock_makanan",
   budaya: "kk_mock_budaya",
   bahasa: "kk_mock_bahasa",
+  destinasi: "kk_mock_destinasi",
   session: "kk_mock_session",
 } as const;
 
@@ -136,6 +139,11 @@ export const mockDb = {
     fallbackBahasa,
     "bahasaIndonesia"
   ),
+  destinasi: makeCollection<Destinasi, Omit<Destinasi, "id">>(
+    KEYS.destinasi,
+    fallbackDestinasi,
+    "nama"
+  ),
 
   async login(email: string, password: string): Promise<AdminSession> {
     await delay(500);
@@ -172,6 +180,7 @@ export const mockDb = {
       makanan: this.makanan.stats(),
       budaya: this.budaya.stats(),
       bahasa: this.bahasa.stats(),
+      destinasi: this.destinasi.stats(),
     };
   },
 };

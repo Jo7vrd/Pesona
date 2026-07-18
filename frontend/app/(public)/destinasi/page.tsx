@@ -3,9 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, MapPin } from "lucide-react";
 
+import { getAllDestinasi } from "@/lib/api/server";
 import { BLUR_DATA_URL } from "@/lib/blur";
 import { jenisSpotTr, spotDescTr } from "@/lib/content/i18n-content";
-import { spots } from "@/lib/content/spots";
 import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "@/components/motion/fade-in";
 import { StaggerGrid, StaggerItem } from "@/components/motion/stagger-grid";
@@ -13,6 +13,7 @@ import { TiltCard } from "@/components/motion/tilt-card";
 import { CopyButton } from "@/components/site/copy-button";
 import { PageHeader } from "@/components/site/page-header";
 import { Tr } from "@/components/site/tr";
+import { YouTubeEmbed } from "@/components/site/youtube-embed";
 
 export const metadata: Metadata = {
   title: "Destinasi Wisata Kei Kecil",
@@ -21,7 +22,10 @@ export const metadata: Metadata = {
   alternates: { canonical: "/destinasi" },
 };
 
-export default function DestinasiPage() {
+export default async function DestinasiPage() {
+  const spots = await getAllDestinasi();
+  const denganVideo = spots.filter((s) => s.videoYoutube);
+
   return (
     <>
       <PageHeader
@@ -86,6 +90,31 @@ export default function DestinasiPage() {
             </StaggerItem>
           ))}
         </StaggerGrid>
+
+        {denganVideo.length > 0 ? (
+          <FadeIn className="mt-16 md:mt-24">
+            <p className="eyebrow mb-4">
+              <Tr id="Video" en="Video" zh="视频" />
+            </p>
+            <h2 className="font-display text-display-lg text-shadow-soft max-w-2xl font-semibold text-balance">
+              <Tr
+                id="Lihat langsung suasananya"
+                en="See it for yourself"
+                zh="亲眼看看这里"
+              />
+            </h2>
+            <div className="mt-8 grid gap-8 lg:grid-cols-2">
+              {denganVideo.map((spot) => (
+                <figure key={spot.id}>
+                  <YouTubeEmbed url={spot.videoYoutube!} title={spot.nama} />
+                  <figcaption className="text-muted-foreground mt-3 text-sm font-medium">
+                    {spot.nama}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </FadeIn>
+        ) : null}
 
         <FadeIn className="mt-12 text-center">
           <Link

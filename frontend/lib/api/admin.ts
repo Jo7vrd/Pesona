@@ -3,12 +3,14 @@ import axios from "axios";
 import { mockDb } from "@/lib/api/mock-db";
 import type { BahasaInput } from "@/lib/schemas/bahasa";
 import type { BudayaInput } from "@/lib/schemas/budaya";
+import type { DestinasiInput } from "@/lib/schemas/destinasi";
 import type { MakananInput } from "@/lib/schemas/makanan";
 import type {
   AdminSession,
   BahasaLokal,
   Budaya,
   DashboardStats,
+  Destinasi,
   Makanan,
 } from "@/lib/types";
 
@@ -38,6 +40,7 @@ export interface AdminApi {
   makanan: Collection<Makanan, MakananInput>;
   budaya: Collection<Budaya, BudayaInput>;
   bahasa: Collection<BahasaLokal, BahasaInput>;
+  destinasi: Collection<Destinasi, DestinasiInput>;
 }
 
 function httpApi(baseURL: string): AdminApi {
@@ -89,6 +92,7 @@ function httpApi(baseURL: string): AdminApi {
     makanan: collection("makanan"),
     budaya: collection("budaya"),
     bahasa: collection("bahasa"),
+    destinasi: collection("destinasi"),
   };
 }
 
@@ -100,6 +104,7 @@ const mockApi: AdminApi = {
   makanan: mockDb.makanan,
   budaya: mockDb.budaya,
   bahasa: mockDb.bahasa,
+  destinasi: mockDb.destinasi,
 };
 
 export const adminApi: AdminApi = API_URL ? httpApi(API_URL) : mockApi;

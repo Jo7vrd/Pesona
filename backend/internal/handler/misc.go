@@ -13,19 +13,24 @@ import (
 )
 
 type StatsHandler struct {
-	makanan *service.ContentService[entity.Makanan]
-	budaya  *service.ContentService[entity.Budaya]
-	bahasa  *service.ContentService[entity.BahasaLokal]
-	logger  *slog.Logger
+	makanan   *service.ContentService[entity.Makanan]
+	budaya    *service.ContentService[entity.Budaya]
+	bahasa    *service.ContentService[entity.BahasaLokal]
+	destinasi *service.ContentService[entity.Destinasi]
+	logger    *slog.Logger
 }
 
 func NewStats(
 	makanan *service.ContentService[entity.Makanan],
 	budaya *service.ContentService[entity.Budaya],
 	bahasa *service.ContentService[entity.BahasaLokal],
+	destinasi *service.ContentService[entity.Destinasi],
 	logger *slog.Logger,
 ) *StatsHandler {
-	return &StatsHandler{makanan: makanan, budaya: budaya, bahasa: bahasa, logger: logger}
+	return &StatsHandler{
+		makanan: makanan, budaya: budaya, bahasa: bahasa,
+		destinasi: destinasi, logger: logger,
+	}
 }
 
 // GET /api/v1/admin/stats — kartu statistik dashboard (§7.2)
@@ -57,6 +62,13 @@ func (h *StatsHandler) Dashboard(c *gin.Context) {
 		return
 	}
 	stats.Bahasa = collect(total, last)
+
+	total, last, err = h.destinasi.Stats(ctx)
+	if err != nil {
+		respondError(c, h.logger, err)
+		return
+	}
+	stats.Destinasi = collect(total, last)
 
 	respondData(c, http.StatusOK, stats)
 }

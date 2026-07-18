@@ -42,6 +42,21 @@ type BahasaLokal struct {
 
 func (BahasaLokal) TableName() string { return "bahasa_lokal" }
 
+type Destinasi struct {
+	ID           uint    `gorm:"primaryKey"`
+	Nama         string  `gorm:"size:100;not null"`
+	Jenis        string  `gorm:"size:20;not null"`
+	Deskripsi    string  `gorm:"type:text;not null"`
+	Lat          float64 `gorm:"not null"`
+	Lng          float64 `gorm:"not null"`
+	FotoURL      string  `gorm:"size:500;not null;column:foto_url"`
+	VideoYoutube *string `gorm:"size:500;column:video_youtube"`
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
+}
+
+func (Destinasi) TableName() string { return "destinasi" }
+
 const (
 	RoleSuperAdmin = "super_admin"
 	RoleAdmin      = "admin"

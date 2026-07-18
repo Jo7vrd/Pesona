@@ -1,6 +1,6 @@
 "use client";
 
-import { BookA, Landmark, UtensilsCrossed } from "lucide-react";
+import { BookA, Landmark, MapPin, UtensilsCrossed } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 
 import { adminApi } from "@/lib/api/admin";
@@ -29,6 +29,12 @@ export default function DashboardPage() {
 
   const modules = [
     {
+      title: "Destinasi",
+      icon: MapPin,
+      href: "/admin/destinasi",
+      stats: data?.destinasi,
+    },
+    {
       title: "Kuliner",
       icon: UtensilsCrossed,
       href: "/admin/makanan",
@@ -50,7 +56,7 @@ export default function DashboardPage() {
 
   return (
     <div className="mx-auto max-w-5xl">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {modules.map((m) => (
           <StatCard
             key={m.href}

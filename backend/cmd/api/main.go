@@ -89,6 +89,12 @@ func run(logger *slog.Logger) error {
 		nil,
 		"Kosakata", "bahasa", store, reval, logger,
 	)
+	destinasiSvc := service.NewContent(
+		repository.NewContentRepo[entity.Destinasi](db, "nama", false),
+		func(d *entity.Destinasi) string { return d.Nama },
+		func(d *entity.Destinasi) string { return d.FotoURL },
+		"Destinasi", "destinasi", store, reval, logger,
+	)
 	authSvc := service.NewAuth(repository.NewAdminRepo(db), cfg.JWTSecret, cfg.JWTTTL)
 	uploadSvc := service.NewUpload(store)
 
@@ -96,10 +102,11 @@ func run(logger *slog.Logger) error {
 		Config:  cfg,
 		Logger:  logger,
 		Auth:    authSvc,
-		Makanan: makananSvc,
-		Budaya:  budayaSvc,
-		Bahasa:  bahasaSvc,
-		Upload:  uploadSvc,
+		Makanan:   makananSvc,
+		Budaya:    budayaSvc,
+		Bahasa:    bahasaSvc,
+		Destinasi: destinasiSvc,
+		Upload:    uploadSvc,
 	})
 
 	srv := &http.Server{

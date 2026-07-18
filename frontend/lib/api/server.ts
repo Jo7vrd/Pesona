@@ -5,7 +5,8 @@ import {
   fallbackBudaya,
   fallbackMakanan,
 } from "@/lib/content/fallback";
-import type { BahasaLokal, Budaya, Makanan } from "@/lib/types";
+import { fallbackDestinasi } from "@/lib/content/spots";
+import type { BahasaLokal, Budaya, Destinasi, Makanan } from "@/lib/types";
 
 const API_URL = process.env.API_URL;
 
@@ -65,4 +66,9 @@ export async function getBudayaById(id: number): Promise<Budaya | null> {
 export async function getAllBahasa(): Promise<BahasaLokal[]> {
   const data = await fetchApi<BahasaLokal[]>("/api/v1/bahasa", "bahasa");
   return data && data.length > 0 ? data : fallbackBahasa;
+}
+
+export async function getAllDestinasi(): Promise<Destinasi[]> {
+  const data = await fetchApi<Destinasi[]>("/api/v1/destinasi", "destinasi");
+  return data && data.length > 0 ? data : fallbackDestinasi;
 }

@@ -25,6 +25,21 @@ export interface BahasaLokal {
   catatan?: string;
 }
 
+export type JenisDestinasi = "Pantai" | "Snorkeling" | "Gua" | "Pulau";
+
+export interface Destinasi {
+  id: number;
+  nama: string;
+  jenis: JenisDestinasi;
+  deskripsi: string;
+  /** Koordinat perkiraan, verifikasi di lapangan sebelum produksi. */
+  lat: number;
+  lng: number;
+  fotoUrl: string;
+  /** Opsional; hanya tautan YouTube yang diterima. */
+  videoYoutube?: string | null;
+}
+
 export type AdminRole = "super_admin" | "admin";
 
 export interface AdminUser {
@@ -48,4 +63,5 @@ export interface DashboardStats {
   makanan: ModuleStats;
   budaya: ModuleStats;
   bahasa: ModuleStats;
+  destinasi: ModuleStats;
 }
