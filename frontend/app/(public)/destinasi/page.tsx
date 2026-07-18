@@ -10,7 +10,6 @@ import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "@/components/motion/fade-in";
 import { StaggerGrid, StaggerItem } from "@/components/motion/stagger-grid";
 import { TiltCard } from "@/components/motion/tilt-card";
-import { CopyButton } from "@/components/site/copy-button";
 import { PageHeader } from "@/components/site/page-header";
 import { Tr } from "@/components/site/tr";
 import { YouTubeEmbed } from "@/components/site/youtube-embed";
@@ -71,18 +70,20 @@ export default async function DestinasiPage() {
                       zh={spotDescTr[spot.id]?.zh}
                     />
                   </p>
-                  <div className="mt-4 flex items-center justify-between border-t pt-4">
-                    <span className="text-muted-foreground inline-flex items-center gap-1.5 font-mono text-xs">
-                      <MapPin
-                        className="text-lagoon-600 size-3.5"
-                        aria-hidden
+                  <div className="mt-4 border-t pt-4">
+                    <a
+                      href={`https://www.google.com/maps?q=${spot.lat},${spot.lng}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-lagoon-700 hover:text-lagoon-600 inline-flex items-center gap-1.5 text-sm font-semibold transition-colors"
+                    >
+                      <MapPin className="size-4" aria-hidden />
+                      <Tr
+                        id="Buka di Google Maps"
+                        en="Open in Google Maps"
+                        zh="在谷歌地图中打开"
                       />
-                      {spot.lat}, {spot.lng}
-                    </span>
-                    <CopyButton
-                      value={`${spot.lat}, ${spot.lng}`}
-                      label={`Salin koordinat ${spot.nama}`}
-                    />
+                    </a>
                   </div>
                 </div>
                 </article>
@@ -96,14 +97,7 @@ export default async function DestinasiPage() {
             <p className="eyebrow mb-4">
               <Tr id="Video" en="Video" zh="视频" />
             </p>
-            <h2 className="font-display text-display-lg text-shadow-soft max-w-2xl font-semibold text-balance">
-              <Tr
-                id="Lihat langsung suasananya"
-                en="See it for yourself"
-                zh="亲眼看看这里"
-              />
-            </h2>
-            <div className="mt-8 grid gap-8 lg:grid-cols-2">
+            <div className="grid gap-8 lg:grid-cols-2">
               {denganVideo.map((spot) => (
                 <figure key={spot.id}>
                   <YouTubeEmbed url={spot.videoYoutube!} title={spot.nama} />

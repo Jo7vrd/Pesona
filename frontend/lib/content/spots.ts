@@ -36,6 +36,7 @@ export const fallbackDestinasi: Destinasi[] = [
       "Gua dengan kolam air payau sebening kristal berwarna biru kehijauan. Berenang di sini terasa seperti di akuarium alami.",
     lat: -5.741,
     lng: 132.67,
+    videoYoutube: "https://www.youtube.com/watch?v=fDBnSPR9_l4",
   },
   {
     id: 4,

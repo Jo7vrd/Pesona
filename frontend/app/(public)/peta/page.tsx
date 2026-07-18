@@ -6,7 +6,6 @@ import { spots } from "@/lib/content/spots";
 import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "@/components/motion/fade-in";
 import { StaggerGrid, StaggerItem } from "@/components/motion/stagger-grid";
-import { CopyButton } from "@/components/site/copy-button";
 import { PageHeader } from "@/components/site/page-header";
 import { Tr } from "@/components/site/tr";
 
@@ -40,9 +39,9 @@ export default function PetaPage() {
           </div>
           <p className="text-muted-foreground mt-3 text-xs">
             <Tr
-              id="Peta oleh OpenStreetMap. Koordinat di bawah adalah perkiraan, selalu konfirmasi rute dengan pemandu lokal."
-              en="Map by OpenStreetMap. Coordinates below are approximate; always confirm routes with a local guide."
-              zh="地图来自OpenStreetMap。以下坐标为大致位置，请务必与当地向导确认路线。"
+              id="Peta oleh OpenStreetMap. Titik lokasi adalah perkiraan, selalu konfirmasi rute dengan pemandu lokal."
+              en="Map by OpenStreetMap. Locations are approximate; always confirm routes with a local guide."
+              zh="地图来自OpenStreetMap。地点为大致位置，请务必与当地向导确认路线。"
             />
           </p>
         </FadeIn>
@@ -59,10 +58,6 @@ export default function PetaPage() {
                       zh={jenisSpotTr[spot.jenis]?.zh}
                     />
                   </Badge>
-                  <CopyButton
-                    value={`${spot.lat}, ${spot.lng}`}
-                    label={`Salin koordinat ${spot.nama}`}
-                  />
                 </div>
                 <h2 className="font-display mt-4 text-xl">{spot.nama}</h2>
                 <p className="text-muted-foreground mt-2 flex-1 text-sm leading-relaxed">
@@ -72,10 +67,19 @@ export default function PetaPage() {
                     zh={spotDescTr[spot.id]?.zh}
                   />
                 </p>
-                <p className="text-muted-foreground mt-4 inline-flex items-center gap-1.5 font-mono text-xs">
-                  <MapPin className="text-lagoon-600 size-3.5" aria-hidden />
-                  {spot.lat}, {spot.lng}
-                </p>
+                <a
+                  href={`https://www.google.com/maps?q=${spot.lat},${spot.lng}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-lagoon-700 hover:text-lagoon-600 mt-4 inline-flex items-center gap-1.5 text-sm font-semibold transition-colors"
+                >
+                  <MapPin className="size-4" aria-hidden />
+                  <Tr
+                    id="Buka di Google Maps"
+                    en="Open in Google Maps"
+                    zh="在谷歌地图中打开"
+                  />
+                </a>
               </article>
             </StaggerItem>
           ))}

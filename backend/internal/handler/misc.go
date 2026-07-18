@@ -82,7 +82,7 @@ func NewUploadHandler(svc *service.UploadService, logger *slog.Logger) *UploadHa
 	return &UploadHandler{svc: svc, logger: logger}
 }
 
-// POST /api/v1/admin/upload — multipart: foto (file), modul (makanan|budaya)
+// POST /api/v1/admin/upload — multipart: foto (file), modul (makanan|budaya|destinasi)
 func (h *UploadHandler) Upload(c *gin.Context) {
 	file, err := c.FormFile("foto")
 	if err != nil {

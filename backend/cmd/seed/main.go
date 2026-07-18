@@ -145,9 +145,10 @@ func seedContent(db *gorm.DB, logger *slog.Logger) error {
 		{BahasaIndonesia: "Satu untuk semua, semua untuk satu", BahasaKei: "Ain ni ain", Catatan: &catatanAin},
 	}
 
-	// video: contoh tautan YouTube pada Ngurbloat — ganti dengan video
-	// resmi desa lewat admin. Koordinat perkiraan, verifikasi lapangan.
+	// video: contoh tautan YouTube — ganti dengan video resmi desa
+	// lewat admin. Koordinat perkiraan, verifikasi lapangan.
 	videoNgurbloat := "https://www.youtube.com/watch?v=C6RADZ_om4k"
+	videoHawang := "https://www.youtube.com/watch?v=fDBnSPR9_l4"
 	destinasi := []entity.Destinasi{
 		{Nama: "Pantai Ngurbloat (Pasir Panjang)", Jenis: "Pantai",
 			Lat: -5.66, Lng: 132.641, VideoYoutube: &videoNgurbloat,
@@ -158,7 +159,7 @@ func seedContent(db *gorm.DB, logger *slog.Logger) error {
 			Deskripsi: "Saat meti, air surut hingga ratusan meter dan membuka hamparan pasir luas. Tempat terbaik menikmati matahari terbenam.",
 			FotoURL:   "https://images.unsplash.com/photo-1476673160081-cf065607f449?w=1600&q=80"},
 		{Nama: "Goa Hawang", Jenis: "Gua",
-			Lat: -5.741, Lng: 132.67,
+			Lat: -5.741, Lng: 132.67, VideoYoutube: &videoHawang,
 			Deskripsi: "Gua dengan kolam air payau sebening kristal berwarna biru kehijauan. Berenang di sini terasa seperti di akuarium alami.",
 			FotoURL:   "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1600&q=80"},
 		{Nama: "Ngurtavur", Jenis: "Snorkeling",
@@ -196,6 +197,15 @@ func seedContent(db *gorm.DB, logger *slog.Logger) error {
 	for _, d := range destinasi {
 		if err := insertIfMissing(db, "destinasi", "nama", d.Nama, &d); err != nil {
 			return err
+		}
+		// insertIfMissing melewatkan baris lama; pastikan contoh video
+		// tetap terisi selama admin belum menggantinya sendiri.
+		if d.VideoYoutube != nil {
+			if err := db.Table("destinasi").
+				Where("LOWER(nama) = LOWER(?) AND video_youtube IS NULL", d.Nama).
+				Update("video_youtube", *d.VideoYoutube).Error; err != nil {
+				return err
+			}
 		}
 	}
 
