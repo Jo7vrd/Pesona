@@ -7,7 +7,7 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { adminApi, isMockMode, SESSION_COOKIE } from "@/lib/api/admin";
+import { adminApi, isMockMode, setMockSessionCookie } from "@/lib/api/admin";
 import { loginSchema, type LoginInput } from "@/lib/schemas/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,11 +30,7 @@ export function LoginForm() {
   async function onSubmit(values: LoginInput) {
     try {
       await adminApi.login(values.email, values.password);
-      // Sesi 8 jam (§7.1). Di mode mock cookie di-set dari klien;
-      // backend asli memakai httpOnly cookie dari server (BR-001).
-      if (isMockMode) {
-        document.cookie = `${SESSION_COOKIE}=1; path=/; max-age=${8 * 60 * 60}; samesite=lax`;
-      }
+      setMockSessionCookie();
       toast.success("Selamat datang kembali");
       router.replace(searchParams.get("dari") ?? "/admin/dashboard");
     } catch (error) {

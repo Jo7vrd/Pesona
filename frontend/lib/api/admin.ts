@@ -25,6 +25,15 @@ import type {
 export const SESSION_COOKIE = "kk_admin_session";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
+/**
+ * Sesi 8 jam (§7.1). Di mode mock cookie di-set dari klien; backend
+ * asli memakai httpOnly cookie dari server (BR-001), jadi no-op.
+ */
+export function setMockSessionCookie(): void {
+  if (!isMockMode) return;
+  document.cookie = `${SESSION_COOKIE}=1; path=/; max-age=${8 * 60 * 60}; samesite=lax`;
+}
+
 interface Collection<T, I> {
   list(): Promise<T[]>;
   create(input: I): Promise<T>;
