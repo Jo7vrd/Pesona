@@ -32,7 +32,7 @@ export function LoginForm() {
       await adminApi.login(values.email, values.password);
       setMockSessionCookie();
       toast.success("Selamat datang kembali");
-      router.replace(searchParams.get("dari") ?? "/admin/dashboard");
+      router.replace(searchParams?.get("dari") ?? "/admin/dashboard");
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Gagal masuk. Coba lagi."

@@ -3,6 +3,7 @@ import {
   fallbackBudaya,
   fallbackMakanan,
 } from "@/lib/content/fallback";
+import { defaultSettings } from "@/lib/content/settings";
 import { fallbackDestinasi } from "@/lib/content/spots";
 import type {
   AdminSession,
@@ -11,6 +12,7 @@ import type {
   DashboardStats,
   Destinasi,
   Makanan,
+  SiteSettings,
 } from "@/lib/types";
 
 /**
@@ -25,6 +27,7 @@ const KEYS = {
   budaya: "kk_mock_budaya",
   bahasa: "kk_mock_bahasa",
   destinasi: "kk_mock_destinasi",
+  settings: "kk_mock_settings",
   session: "kk_mock_session",
 } as const;
 
@@ -144,6 +147,27 @@ export const mockDb = {
     fallbackDestinasi,
     "nama"
   ),
+
+  settings: {
+    async get(): Promise<SiteSettings> {
+      await delay(150);
+      const raw = window.localStorage.getItem(KEYS.settings);
+      if (raw) {
+        try {
+          return JSON.parse(raw) as SiteSettings;
+        } catch {
+          // data korup — kembali ke default
+        }
+      }
+      return defaultSettings;
+    },
+    async update(input: SiteSettings): Promise<SiteSettings> {
+      await delay();
+      const next: SiteSettings = { bahasaVideo: input.bahasaVideo || null };
+      window.localStorage.setItem(KEYS.settings, JSON.stringify(next));
+      return next;
+    },
+  },
 
   async login(email: string, password: string): Promise<AdminSession> {
     await delay(500);

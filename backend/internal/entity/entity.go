@@ -6,27 +6,29 @@ import "time"
 // constraint (unique LOWER(nama), CHECK kategori) ada di migrasi SQL.
 
 type Makanan struct {
-	ID         uint   `gorm:"primaryKey"`
-	Nama       string `gorm:"size:100;not null"`
-	Kategori   string `gorm:"size:20;not null"`
-	Deskripsi  string `gorm:"type:text;not null"`
-	FotoURL    string `gorm:"size:500;not null;column:foto_url"`
-	IsUnggulan bool   `gorm:"not null;default:false"`
-	CreatedAt  time.Time
-	UpdatedAt  time.Time
+	ID           uint    `gorm:"primaryKey"`
+	Nama         string  `gorm:"size:100;not null"`
+	Kategori     string  `gorm:"size:20;not null"`
+	Deskripsi    string  `gorm:"type:text;not null"`
+	FotoURL      string  `gorm:"size:500;not null;column:foto_url"`
+	IsUnggulan   bool    `gorm:"not null;default:false"`
+	VideoYoutube *string `gorm:"size:500;column:video_youtube"`
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
 }
 
 func (Makanan) TableName() string { return "makanan" }
 
 type Budaya struct {
-	ID         uint   `gorm:"primaryKey"`
-	Nama       string `gorm:"size:100;not null"`
-	Kategori   string `gorm:"size:50;not null"`
-	Deskripsi  string `gorm:"type:text;not null"`
-	FotoURL    string `gorm:"size:500;not null;column:foto_url"`
-	IsUnggulan bool   `gorm:"not null;default:false"`
-	CreatedAt  time.Time
-	UpdatedAt  time.Time
+	ID           uint    `gorm:"primaryKey"`
+	Nama         string  `gorm:"size:100;not null"`
+	Kategori     string  `gorm:"size:50;not null"`
+	Deskripsi    string  `gorm:"type:text;not null"`
+	FotoURL      string  `gorm:"size:500;not null;column:foto_url"`
+	IsUnggulan   bool    `gorm:"not null;default:false"`
+	VideoYoutube *string `gorm:"size:500;column:video_youtube"`
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
 }
 
 func (Budaya) TableName() string { return "budaya" }
@@ -56,6 +58,19 @@ type Destinasi struct {
 }
 
 func (Destinasi) TableName() string { return "destinasi" }
+
+// Setting menyimpan setelan tingkat-situs sebagai pasangan kunci-nilai
+// (mis. "bahasa_video" → tautan YouTube halaman Bahasa Kei).
+type Setting struct {
+	Key       string `gorm:"primaryKey;size:50;column:key"`
+	Value     string `gorm:"type:text;not null"`
+	UpdatedAt time.Time
+}
+
+func (Setting) TableName() string { return "settings" }
+
+// Kunci setelan yang dikenal.
+const SettingBahasaVideo = "bahasa_video"
 
 const (
 	RoleSuperAdmin = "super_admin"

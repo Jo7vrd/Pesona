@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "@/components/motion/fade-in";
 import { ContentCard } from "@/components/cards/content-card";
 import { Tr } from "@/components/site/tr";
+import { YouTubeEmbed } from "@/components/site/youtube-embed";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -84,6 +85,22 @@ export default async function BudayaDetailPage({ params }: Props) {
           </p>
         </div>
       </FadeIn>
+
+      {item.videoYoutube ? (
+        <section
+          aria-labelledby="video-judul"
+          className="mx-auto mt-16 max-w-2xl md:mt-20"
+        >
+          <FadeIn>
+            <h2 id="video-judul" className="font-display text-display font-bold">
+              <Tr id="Video" en="Video" zh="视频" />
+            </h2>
+            <div className="mt-6">
+              <YouTubeEmbed url={item.videoYoutube} title={item.nama} />
+            </div>
+          </FadeIn>
+        </section>
+      ) : null}
 
       {extra ? (
         <section

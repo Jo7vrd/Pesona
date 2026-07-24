@@ -1,8 +1,6 @@
 import { z } from "zod";
 
-/** Hanya tautan tontonan YouTube: watch?v=, youtu.be, shorts, embed. */
-export const YOUTUBE_URL_RE =
-  /^https?:\/\/((www|m)\.)?(youtube\.com\/(watch\?v=|shorts\/|embed\/)|youtu\.be\/)[\w-]{6,}/;
+import { videoYoutubeField } from "@/lib/schemas/youtube";
 
 export const destinasiSchema = z.object({
   nama: z
@@ -27,14 +25,7 @@ export const destinasiSchema = z.object({
     .min(-180, "Longitude antara -180 dan 180")
     .max(180, "Longitude antara -180 dan 180"),
   fotoUrl: z.string().min(1, "Foto wajib diisi"),
-  videoYoutube: z
-    .string()
-    .trim()
-    .max(500, "Tautan terlalu panjang")
-    .refine((v) => v === "" || YOUTUBE_URL_RE.test(v), {
-      message:
-        "Hanya tautan YouTube yang diterima (youtube.com/watch, youtu.be, atau shorts)",
-    }),
+  videoYoutube: videoYoutubeField,
 });
 
 export type DestinasiInput = z.infer<typeof destinasiSchema>;

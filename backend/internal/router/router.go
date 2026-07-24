@@ -20,6 +20,7 @@ type Deps struct {
 	Budaya    *service.ContentService[entity.Budaya]
 	Bahasa    *service.ContentService[entity.BahasaLokal]
 	Destinasi *service.ContentService[entity.Destinasi]
+	Settings  *service.SettingsService
 	Upload    *service.UploadService
 }
 
@@ -41,6 +42,7 @@ func New(d Deps) *gin.Engine {
 	budayaH := handler.NewBudaya(d.Budaya, d.Logger)
 	bahasaH := handler.NewBahasa(d.Bahasa, d.Logger)
 	destinasiH := handler.NewDestinasi(d.Destinasi, d.Logger)
+	settingsH := handler.NewSettings(d.Settings, d.Logger)
 	statsH := handler.NewStats(d.Makanan, d.Budaya, d.Bahasa, d.Destinasi, d.Logger)
 	uploadH := handler.NewUploadHandler(d.Upload, d.Logger)
 
@@ -63,6 +65,7 @@ func New(d Deps) *gin.Engine {
 	v1.GET("/bahasa", bahasaH.List)
 	v1.GET("/destinasi", destinasiH.List)
 	v1.GET("/destinasi/:id", destinasiH.ByID)
+	v1.GET("/settings", settingsH.Get)
 
 	// ---- Autentikasi ----
 	auth := v1.Group("/auth")
@@ -99,6 +102,9 @@ func New(d Deps) *gin.Engine {
 	admin.POST("/destinasi", destinasiH.Create)
 	admin.PUT("/destinasi/:id", destinasiH.Update)
 	admin.DELETE("/destinasi/:id", destinasiH.Delete)
+
+	admin.GET("/settings", settingsH.Get)
+	admin.PUT("/settings", settingsH.Update)
 
 	return r
 }

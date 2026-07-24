@@ -77,7 +77,7 @@ export function SiteHeader() {
                 const active =
                   item.href === "/"
                     ? pathname === "/"
-                    : pathname.startsWith(item.href);
+                    : (pathname?.startsWith(item.href) ?? false);
                 return (
                   <li key={item.href}>
                     <GlowNavLink
@@ -129,7 +129,7 @@ export function SiteHeader() {
                   const active =
                     item.href === "/"
                       ? pathname === "/"
-                      : pathname.startsWith(item.href);
+                      : (pathname?.startsWith(item.href) ?? false);
                   return (
                     <motion.li
                       key={item.href}

@@ -12,6 +12,7 @@ import type {
   DashboardStats,
   Destinasi,
   Makanan,
+  SiteSettings,
 } from "@/lib/types";
 
 /**
@@ -50,6 +51,10 @@ export interface AdminApi {
   budaya: Collection<Budaya, BudayaInput>;
   bahasa: Collection<BahasaLokal, BahasaInput>;
   destinasi: Collection<Destinasi, DestinasiInput>;
+  settings: {
+    get(): Promise<SiteSettings>;
+    update(input: SiteSettings): Promise<SiteSettings>;
+  };
 }
 
 function httpApi(baseURL: string): AdminApi {
@@ -102,6 +107,14 @@ function httpApi(baseURL: string): AdminApi {
     budaya: collection("budaya"),
     bahasa: collection("bahasa"),
     destinasi: collection("destinasi"),
+    settings: {
+      get: async () =>
+        (await http.get<{ data: SiteSettings }>("/api/v1/admin/settings")).data
+          .data,
+      update: async (input) =>
+        (await http.put<{ data: SiteSettings }>("/api/v1/admin/settings", input))
+          .data.data,
+    },
   };
 }
 
@@ -114,6 +127,7 @@ const mockApi: AdminApi = {
   budaya: mockDb.budaya,
   bahasa: mockDb.bahasa,
   destinasi: mockDb.destinasi,
+  settings: mockDb.settings,
 };
 
 export const adminApi: AdminApi = API_URL ? httpApi(API_URL) : mockApi;

@@ -8,6 +8,7 @@ import { Controller, useForm } from "react-hook-form";
 import { makananSchema, type MakananInput } from "@/lib/schemas/makanan";
 import type { Makanan } from "@/lib/types";
 import { ImageField } from "@/components/admin/image-field";
+import { VideoYoutubeField } from "@/components/admin/video-youtube-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -27,7 +28,12 @@ const EMPTY: MakananInput = {
   deskripsi: "",
   fotoUrl: "",
   isUnggulan: false,
+  videoYoutube: "",
 };
+
+function toForm(item: Makanan): MakananInput {
+  return { ...item, videoYoutube: item.videoYoutube ?? "" };
+}
 
 export function MakananForm({
   initial,
@@ -46,11 +52,11 @@ export function MakananForm({
     formState: { errors },
   } = useForm<MakananInput>({
     resolver: zodResolver(makananSchema),
-    defaultValues: initial ?? EMPTY,
+    defaultValues: initial ? toForm(initial) : EMPTY,
   });
 
   useEffect(() => {
-    reset(initial ?? EMPTY);
+    reset(initial ? toForm(initial) : EMPTY);
   }, [initial, reset]);
 
   return (
@@ -148,6 +154,12 @@ export function MakananForm({
             />
           </div>
         )}
+      />
+
+      <VideoYoutubeField
+        registration={register("videoYoutube")}
+        error={errors.videoYoutube?.message}
+        hint="Opsional. Hanya tautan YouTube. Video tampil sebagai pemutar di halaman detail sajian."
       />
 
       <Button type="submit" disabled={submitting} className="w-full">

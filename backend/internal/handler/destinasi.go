@@ -50,15 +50,8 @@ func bindDestinasi(c *gin.Context) (*dto.DestinasiRequest, bool) {
 		respondInvalid(c)
 		return nil, false
 	}
-	if req.VideoYoutube != nil {
-		if *req.VideoYoutube == "" {
-			req.VideoYoutube = nil
-		} else if !dto.ValidYouTubeURL(*req.VideoYoutube) {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"message": "Tautan video harus berupa link YouTube (youtube.com atau youtu.be).",
-			})
-			return nil, false
-		}
+	if !normalizeVideo(c, &req.VideoYoutube) {
+		return nil, false
 	}
 	return &req, true
 }

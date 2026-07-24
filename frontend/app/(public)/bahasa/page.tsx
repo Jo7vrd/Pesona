@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 
-import { getAllBahasa } from "@/lib/api/server";
+import { getAllBahasa, getSiteSettings } from "@/lib/api/server";
+import { FadeIn } from "@/components/motion/fade-in";
 import { PageHeader } from "@/components/site/page-header";
+import { Tr } from "@/components/site/tr";
+import { YouTubeEmbed } from "@/components/site/youtube-embed";
 import { DictionarySearch } from "./dictionary-search";
 
 export const metadata: Metadata = {
@@ -12,7 +15,10 @@ export const metadata: Metadata = {
 };
 
 export default async function BahasaPage() {
-  const entries = await getAllBahasa();
+  const [entries, settings] = await Promise.all([
+    getAllBahasa(),
+    getSiteSettings(),
+  ]);
 
   return (
     <>
@@ -25,6 +31,27 @@ export default async function BahasaPage() {
       />
       <section className="container-page py-12 md:py-16">
         <DictionarySearch entries={entries} />
+
+        {settings.bahasaVideo ? (
+          <FadeIn className="mt-16 md:mt-24">
+            <p className="eyebrow mb-4">
+              <Tr id="Video" en="Video" zh="视频" />
+            </p>
+            <h2 className="font-display text-display-lg text-shadow-soft max-w-2xl font-semibold text-balance">
+              <Tr
+                id="Dengarkan langsung Bahasa Kei"
+                en="Hear the Kei language spoken"
+                zh="聆听基伊语的发音"
+              />
+            </h2>
+            <div className="mt-8 max-w-3xl">
+              <YouTubeEmbed
+                url={settings.bahasaVideo}
+                title="Bahasa Kei (Veveu Evav)"
+              />
+            </div>
+          </FadeIn>
+        ) : null}
       </section>
     </>
   );

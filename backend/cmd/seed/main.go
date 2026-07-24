@@ -82,8 +82,12 @@ func seedAdmin(db *gorm.DB, logger *slog.Logger) error {
 // foto: placeholder Unsplash — diganti aset R2 milik desa lewat admin.
 // Konten WAJIB divalidasi perangkat desa & penutur asli sebelum produksi.
 func seedContent(db *gorm.DB, logger *slog.Logger) error {
+	// contoh video — ganti dengan video resmi desa lewat admin.
+	videoEmbal := "https://www.youtube.com/watch?v=cbTCRM7I0f0"
+	videoMeti := "https://www.youtube.com/watch?v=6jSlpxqXM-w"
+
 	makanan := []entity.Makanan{
-		{Nama: "Embal Goreng", Kategori: "kudapan", IsUnggulan: true,
+		{Nama: "Embal Goreng", Kategori: "kudapan", IsUnggulan: true, VideoYoutube: &videoEmbal,
 			Deskripsi: "Olahan singkong khas Kepulauan Kei yang dikeringkan lalu digoreng — renyah di luar, gurih di dalam, teman minum kopi sore. Embal adalah makanan pokok masyarakat Kei yang tahan disimpan berbulan-bulan.",
 			FotoURL:   "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=1200&q=80"},
 		{Nama: "Ikan Bakar Kei", Kategori: "makanan", IsUnggulan: true,
@@ -116,7 +120,7 @@ func seedContent(db *gorm.DB, logger *slog.Logger) error {
 		{Nama: "Larvul Ngabal", Kategori: "Hukum adat", IsUnggulan: true,
 			Deskripsi: "Hukum adat tertua Kepulauan Kei — 'darah merah dan tombak dari Bali' — yang mengatur harmoni sosial, penghormatan pada sesama, dan hak atas tanah. Masih menjadi pegangan hidup masyarakat Kei hingga hari ini.",
 			FotoURL:   "https://images.unsplash.com/photo-1541417904950-b855846fe074?w=1600&q=80"},
-		{Nama: "Festival Meti Kei", Kategori: "Festival",
+		{Nama: "Festival Meti Kei", Kategori: "Festival", VideoYoutube: &videoMeti,
 			Deskripsi: "Pesta rakyat tahunan menyambut meti — surutnya air laut ekstrem yang membuka hamparan pasir luas. Warga menangkap ikan bersama, menggelar bazar kuliner, dan menampilkan seni tradisi di atas laut yang surut.",
 			FotoURL:   "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=1600&q=80"},
 		{Nama: "Ohoi", Kategori: "Tatanan adat",
@@ -182,9 +186,15 @@ func seedContent(db *gorm.DB, logger *slog.Logger) error {
 		if err := insertIfMissing(db, "makanan", "nama", m.Nama, &m); err != nil {
 			return err
 		}
+		if err := backfillVideo(db, "makanan", m.Nama, m.VideoYoutube); err != nil {
+			return err
+		}
 	}
 	for _, b := range budaya {
 		if err := insertIfMissing(db, "budaya", "nama", b.Nama, &b); err != nil {
+			return err
+		}
+		if err := backfillVideo(db, "budaya", b.Nama, b.VideoYoutube); err != nil {
 			return err
 		}
 	}
@@ -198,21 +208,45 @@ func seedContent(db *gorm.DB, logger *slog.Logger) error {
 		if err := insertIfMissing(db, "destinasi", "nama", d.Nama, &d); err != nil {
 			return err
 		}
-		// insertIfMissing melewatkan baris lama; pastikan contoh video
-		// tetap terisi selama admin belum menggantinya sendiri.
-		if d.VideoYoutube != nil {
-			if err := db.Table("destinasi").
-				Where("LOWER(nama) = LOWER(?) AND video_youtube IS NULL", d.Nama).
-				Update("video_youtube", *d.VideoYoutube).Error; err != nil {
-				return err
-			}
+		if err := backfillVideo(db, "destinasi", d.Nama, d.VideoYoutube); err != nil {
+			return err
 		}
+	}
+
+	// Video halaman Bahasa Kei (setelan tingkat-situs) — contoh; diganti
+	// operator desa lewat admin. Diisi hanya bila belum ada.
+	if err := seedSettingIfMissing(db, entity.SettingBahasaVideo,
+		"https://www.youtube.com/watch?v=k81PbidCf74"); err != nil {
+		return err
 	}
 
 	logger.Info("konten awal terpasang",
 		"makanan", len(makanan), "budaya", len(budaya),
 		"bahasa", len(bahasa), "destinasi", len(destinasi))
 	return nil
+}
+
+// backfillVideo mengisi kolom video_youtube untuk baris lama yang belum
+// punya video (insertIfMissing melewatkannya), tanpa menimpa nilai yang
+// sudah diubah admin.
+func backfillVideo(db *gorm.DB, table, nama string, video *string) error {
+	if video == nil {
+		return nil
+	}
+	return db.Table(table).
+		Where("LOWER(nama) = LOWER(?) AND video_youtube IS NULL", nama).
+		Update("video_youtube", *video).Error
+}
+
+func seedSettingIfMissing(db *gorm.DB, key, value string) error {
+	var count int64
+	if err := db.Table("settings").Where("key = ?", key).Count(&count).Error; err != nil {
+		return err
+	}
+	if count > 0 {
+		return nil
+	}
+	return db.Create(&entity.Setting{Key: key, Value: value}).Error
 }
 
 func insertIfMissing(db *gorm.DB, table, column, value string, row any) error {

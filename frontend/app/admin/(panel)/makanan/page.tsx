@@ -3,7 +3,16 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ChevronLeft, ChevronRight, Pencil, Plus, Search, Star, Trash2 } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Pencil,
+  Plus,
+  Search,
+  Star,
+  Trash2,
+  Video,
+} from "lucide-react";
 import { toast } from "sonner";
 
 import { adminApi } from "@/lib/api/admin";
@@ -129,6 +138,7 @@ export default function AdminMakananPage() {
               <TableHead>Nama</TableHead>
               <TableHead>Kategori</TableHead>
               <TableHead>Unggulan</TableHead>
+              <TableHead>Video</TableHead>
               <TableHead className="w-24 text-right">Aksi</TableHead>
             </TableRow>
           </TableHeader>
@@ -139,14 +149,14 @@ export default function AdminMakananPage() {
                   <TableCell>
                     <Skeleton className="size-12 rounded-lg" />
                   </TableCell>
-                  <TableCell colSpan={4}>
+                  <TableCell colSpan={5}>
                     <Skeleton className="h-5 w-2/3" />
                   </TableCell>
                 </TableRow>
               ))
             ) : paginated.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="h-32 text-center">
+                <TableCell colSpan={6} className="h-32 text-center">
                   <p className="font-medium">
                     {search ? "Tidak ada hasil" : "Belum ada sajian"}
                   </p>
@@ -183,6 +193,16 @@ export default function AdminMakananPage() {
                       <Badge className="bg-lagoon-600 rounded-full text-white">
                         <Star className="size-3" aria-hidden />
                         Beranda
+                      </Badge>
+                    ) : (
+                      <span className="text-muted-foreground text-sm">—</span>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {item.videoYoutube ? (
+                      <Badge className="rounded-full bg-red-600 text-white">
+                        <Video className="size-3" aria-hidden />
+                        YouTube
                       </Badge>
                     ) : (
                       <span className="text-muted-foreground text-sm">—</span>

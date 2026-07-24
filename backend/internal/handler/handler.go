@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/desakeikecil/api/internal/apperror"
+	"github.com/desakeikecil/api/internal/dto"
 )
 
 // helpers respons seragam: sukses {data}, gagal {message} (kontrak frontend)
@@ -41,4 +42,24 @@ func paramID(c *gin.Context) (uint, bool) {
 		return 0, false
 	}
 	return uint(id), true
+}
+
+// normalizeVideo memvalidasi field video opsional lintas modul: string
+// kosong dinormalkan menjadi NULL, selain itu wajib tautan YouTube.
+// Mengembalikan false (dan menulis respons 400) bila tautan tidak sah.
+func normalizeVideo(c *gin.Context, video **string) bool {
+	if *video == nil {
+		return true
+	}
+	if **video == "" {
+		*video = nil
+		return true
+	}
+	if !dto.ValidYouTubeURL(**video) {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Tautan video harus berupa link YouTube (youtube.com atau youtu.be).",
+		})
+		return false
+	}
+	return true
 }

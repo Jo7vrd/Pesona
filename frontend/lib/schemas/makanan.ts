@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { videoYoutubeField } from "@/lib/schemas/youtube";
+
 export const makananSchema = z.object({
   nama: z
     .string()
@@ -16,6 +18,7 @@ export const makananSchema = z.object({
     .max(1000, "Deskripsi maksimal 1000 karakter"),
   fotoUrl: z.string().min(1, "Foto wajib diisi"),
   isUnggulan: z.boolean(),
+  videoYoutube: videoYoutubeField,
 });
 
 export type MakananInput = z.infer<typeof makananSchema>;

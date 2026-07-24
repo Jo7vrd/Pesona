@@ -5,8 +5,15 @@ import {
   fallbackBudaya,
   fallbackMakanan,
 } from "@/lib/content/fallback";
+import { defaultSettings } from "@/lib/content/settings";
 import { fallbackDestinasi } from "@/lib/content/spots";
-import type { BahasaLokal, Budaya, Destinasi, Makanan } from "@/lib/types";
+import type {
+  BahasaLokal,
+  Budaya,
+  Destinasi,
+  Makanan,
+  SiteSettings,
+} from "@/lib/types";
 
 const API_URL = process.env.API_URL;
 
@@ -71,4 +78,9 @@ export async function getAllBahasa(): Promise<BahasaLokal[]> {
 export async function getAllDestinasi(): Promise<Destinasi[]> {
   const data = await fetchApi<Destinasi[]>("/api/v1/destinasi", "destinasi");
   return data && data.length > 0 ? data : fallbackDestinasi;
+}
+
+export async function getSiteSettings(): Promise<SiteSettings> {
+  const data = await fetchApi<SiteSettings>("/api/v1/settings", "settings");
+  return data ?? defaultSettings;
 }

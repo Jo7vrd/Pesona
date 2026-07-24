@@ -7,6 +7,8 @@ export interface Makanan {
   deskripsi: string;
   fotoUrl: string;
   isUnggulan: boolean;
+  /** Opsional; hanya tautan YouTube yang diterima. */
+  videoYoutube?: string | null;
 }
 
 export interface Budaya {
@@ -16,6 +18,8 @@ export interface Budaya {
   deskripsi: string;
   fotoUrl: string;
   isUnggulan: boolean;
+  /** Opsional; hanya tautan YouTube yang diterima. */
+  videoYoutube?: string | null;
 }
 
 export interface BahasaLokal {
@@ -64,4 +68,10 @@ export interface DashboardStats {
   budaya: ModuleStats;
   bahasa: ModuleStats;
   destinasi: ModuleStats;
+}
+
+/** Setelan tingkat-situs yang dikelola admin (mis. video halaman Bahasa Kei). */
+export interface SiteSettings {
+  /** Tautan YouTube yang di-embed di halaman Bahasa Kei; null bila kosong. */
+  bahasaVideo?: string | null;
 }

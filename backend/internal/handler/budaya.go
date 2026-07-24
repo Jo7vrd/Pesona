@@ -57,12 +57,16 @@ func (h *BudayaHandler) Create(c *gin.Context) {
 		respondInvalid(c)
 		return
 	}
+	if !normalizeVideo(c, &req.VideoYoutube) {
+		return
+	}
 	item := entity.Budaya{
-		Nama:       req.Nama,
-		Kategori:   req.Kategori,
-		Deskripsi:  req.Deskripsi,
-		FotoURL:    req.FotoURL,
-		IsUnggulan: req.IsUnggulan,
+		Nama:         req.Nama,
+		Kategori:     req.Kategori,
+		Deskripsi:    req.Deskripsi,
+		FotoURL:      req.FotoURL,
+		IsUnggulan:   req.IsUnggulan,
+		VideoYoutube: req.VideoYoutube,
 	}
 	if err := h.svc.Create(c.Request.Context(), &item); err != nil {
 		respondError(c, h.logger, err)
@@ -81,12 +85,16 @@ func (h *BudayaHandler) Update(c *gin.Context) {
 		respondInvalid(c)
 		return
 	}
+	if !normalizeVideo(c, &req.VideoYoutube) {
+		return
+	}
 	item, err := h.svc.Update(c.Request.Context(), id, func(b *entity.Budaya) {
 		b.Nama = req.Nama
 		b.Kategori = req.Kategori
 		b.Deskripsi = req.Deskripsi
 		b.FotoURL = req.FotoURL
 		b.IsUnggulan = req.IsUnggulan
+		b.VideoYoutube = req.VideoYoutube
 	})
 	if err != nil {
 		respondError(c, h.logger, err)

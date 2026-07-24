@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS settings;
+ALTER TABLE budaya  DROP COLUMN IF EXISTS video_youtube;
+ALTER TABLE makanan DROP COLUMN IF EXISTS video_youtube;

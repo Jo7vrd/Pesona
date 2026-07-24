@@ -57,12 +57,16 @@ func (h *MakananHandler) Create(c *gin.Context) {
 		respondInvalid(c)
 		return
 	}
+	if !normalizeVideo(c, &req.VideoYoutube) {
+		return
+	}
 	item := entity.Makanan{
-		Nama:       req.Nama,
-		Kategori:   req.Kategori,
-		Deskripsi:  req.Deskripsi,
-		FotoURL:    req.FotoURL,
-		IsUnggulan: req.IsUnggulan,
+		Nama:         req.Nama,
+		Kategori:     req.Kategori,
+		Deskripsi:    req.Deskripsi,
+		FotoURL:      req.FotoURL,
+		IsUnggulan:   req.IsUnggulan,
+		VideoYoutube: req.VideoYoutube,
 	}
 	if err := h.svc.Create(c.Request.Context(), &item); err != nil {
 		respondError(c, h.logger, err)
@@ -81,12 +85,16 @@ func (h *MakananHandler) Update(c *gin.Context) {
 		respondInvalid(c)
 		return
 	}
+	if !normalizeVideo(c, &req.VideoYoutube) {
+		return
+	}
 	item, err := h.svc.Update(c.Request.Context(), id, func(m *entity.Makanan) {
 		m.Nama = req.Nama
 		m.Kategori = req.Kategori
 		m.Deskripsi = req.Deskripsi
 		m.FotoURL = req.FotoURL
 		m.IsUnggulan = req.IsUnggulan
+		m.VideoYoutube = req.VideoYoutube
 	})
 	if err != nil {
 		respondError(c, h.logger, err)

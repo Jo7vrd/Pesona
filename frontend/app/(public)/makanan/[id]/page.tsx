@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "@/components/motion/fade-in";
 import { FoodCard, kategoriMakananLabel } from "@/components/cards/food-card";
 import { Tr } from "@/components/site/tr";
+import { YouTubeEmbed } from "@/components/site/youtube-embed";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -83,6 +84,19 @@ export default async function MakananDetailPage({ params }: Props) {
           </div>
         </div>
       </FadeIn>
+
+      {item.videoYoutube ? (
+        <section aria-labelledby="video-judul" className="mt-16 md:mt-20">
+          <FadeIn>
+            <h2 id="video-judul" className="font-display text-display">
+              <Tr id="Video" en="Video" zh="视频" />
+            </h2>
+            <div className="mt-6 max-w-3xl">
+              <YouTubeEmbed url={item.videoYoutube} title={item.nama} />
+            </div>
+          </FadeIn>
+        </section>
+      ) : null}
 
       {related.length > 0 ? (
         <section aria-labelledby="terkait-judul" className="mt-20 md:mt-28">

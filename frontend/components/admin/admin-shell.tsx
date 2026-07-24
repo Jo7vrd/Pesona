@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   BookA,
+  BookOpen,
   ExternalLink,
   Landmark,
   LayoutDashboard,
@@ -43,6 +44,7 @@ const menu = [
   { label: "Kuliner", href: "/admin/makanan", icon: UtensilsCrossed },
   { label: "Budaya", href: "/admin/budaya", icon: Landmark },
   { label: "Bahasa Kei", href: "/admin/bahasa", icon: BookA },
+  { label: "Panduan", href: "/admin/panduan", icon: BookOpen },
 ] as const;
 
 const THEME_KEY = "kk_admin_theme";
@@ -52,7 +54,7 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <nav aria-label="Menu admin" className="flex-1 space-y-1 px-3">
       {menu.map((item) => {
-        const active = pathname.startsWith(item.href);
+        const active = pathname?.startsWith(item.href) ?? false;
         return (
           <Link
             key={item.href}
@@ -112,7 +114,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   }
 
   const pageTitle =
-    menu.find((m) => pathname.startsWith(m.href))?.label ?? "Admin";
+    menu.find((m) => pathname?.startsWith(m.href))?.label ?? "Admin";
 
   return (
     <div className={cn(dark && "dark")}>

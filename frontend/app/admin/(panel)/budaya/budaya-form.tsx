@@ -8,6 +8,7 @@ import { Controller, useForm } from "react-hook-form";
 import { budayaSchema, type BudayaInput } from "@/lib/schemas/budaya";
 import type { Budaya } from "@/lib/types";
 import { ImageField } from "@/components/admin/image-field";
+import { VideoYoutubeField } from "@/components/admin/video-youtube-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,7 +21,12 @@ const EMPTY: BudayaInput = {
   deskripsi: "",
   fotoUrl: "",
   isUnggulan: false,
+  videoYoutube: "",
 };
+
+function toForm(item: Budaya): BudayaInput {
+  return { ...item, videoYoutube: item.videoYoutube ?? "" };
+}
 
 export function BudayaForm({
   initial,
@@ -39,11 +45,11 @@ export function BudayaForm({
     formState: { errors },
   } = useForm<BudayaInput>({
     resolver: zodResolver(budayaSchema),
-    defaultValues: initial ?? EMPTY,
+    defaultValues: initial ? toForm(initial) : EMPTY,
   });
 
   useEffect(() => {
-    reset(initial ?? EMPTY);
+    reset(initial ? toForm(initial) : EMPTY);
   }, [initial, reset]);
 
   return (
@@ -131,6 +137,12 @@ export function BudayaForm({
             />
           </div>
         )}
+      />
+
+      <VideoYoutubeField
+        registration={register("videoYoutube")}
+        error={errors.videoYoutube?.message}
+        hint="Opsional. Hanya tautan YouTube. Video tampil sebagai pemutar di halaman detail budaya."
       />
 
       <Button type="submit" disabled={submitting} className="w-full">

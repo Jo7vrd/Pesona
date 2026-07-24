@@ -96,6 +96,7 @@ func run(logger *slog.Logger) error {
 		"Destinasi", "destinasi", store, reval, logger,
 	)
 	authSvc := service.NewAuth(repository.NewAdminRepo(db), cfg.JWTSecret, cfg.JWTTTL)
+	settingsSvc := service.NewSettings(repository.NewSettingsRepo(db), reval)
 	uploadSvc := service.NewUpload(store)
 
 	engine := router.New(router.Deps{
@@ -106,6 +107,7 @@ func run(logger *slog.Logger) error {
 		Budaya:    budayaSvc,
 		Bahasa:    bahasaSvc,
 		Destinasi: destinasiSvc,
+		Settings:  settingsSvc,
 		Upload:    uploadSvc,
 	})
 

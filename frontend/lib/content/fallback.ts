@@ -19,6 +19,7 @@ export const fallbackMakanan: Makanan[] = [
     fotoUrl:
       "/images/u/1512058564366-18510be2db19.jpg",
     isUnggulan: true,
+    videoYoutube: "https://www.youtube.com/watch?v=cbTCRM7I0f0",
   },
   {
     id: 2,
@@ -122,6 +123,7 @@ export const fallbackBudaya: Budaya[] = [
     fotoUrl:
       "/images/u/1533900298318-6b8da08a523e.jpg",
     isUnggulan: false,
+    videoYoutube: "https://www.youtube.com/watch?v=6jSlpxqXM-w",
   },
   {
     id: 4,

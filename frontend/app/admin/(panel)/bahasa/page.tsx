@@ -11,6 +11,7 @@ import { adminApi } from "@/lib/api/admin";
 import { bahasaSchema, type BahasaInput } from "@/lib/schemas/bahasa";
 import type { BahasaLokal } from "@/lib/types";
 import { ConfirmDeleteDialog } from "@/components/admin/confirm-delete-dialog";
+import { BahasaVideoSetting } from "./bahasa-video-setting";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -120,6 +121,8 @@ export default function AdminBahasaPage() {
 
   return (
     <div className="mx-auto max-w-4xl">
+      <BahasaVideoSetting />
+
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="relative w-full max-w-xs">
           <Search

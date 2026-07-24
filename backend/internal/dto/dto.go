@@ -10,58 +10,64 @@ import (
 // Nama field JSON mengikuti kontrak frontend (web/lib/types.ts) persis.
 
 type MakananRequest struct {
-	Nama       string `json:"nama" binding:"required,min=3,max=100"`
-	Kategori   string `json:"kategori" binding:"required,oneof=makanan minuman kudapan"`
-	Deskripsi  string `json:"deskripsi" binding:"required,min=20,max=1000"`
-	FotoURL    string `json:"fotoUrl" binding:"required,max=500"`
-	IsUnggulan bool   `json:"isUnggulan"`
+	Nama         string  `json:"nama" binding:"required,min=3,max=100"`
+	Kategori     string  `json:"kategori" binding:"required,oneof=makanan minuman kudapan"`
+	Deskripsi    string  `json:"deskripsi" binding:"required,min=20,max=1000"`
+	FotoURL      string  `json:"fotoUrl" binding:"required,max=500"`
+	IsUnggulan   bool    `json:"isUnggulan"`
+	VideoYoutube *string `json:"videoYoutube" binding:"omitempty,max=500"`
 }
 
 type MakananResponse struct {
-	ID         uint   `json:"id"`
-	Nama       string `json:"nama"`
-	Kategori   string `json:"kategori"`
-	Deskripsi  string `json:"deskripsi"`
-	FotoURL    string `json:"fotoUrl"`
-	IsUnggulan bool   `json:"isUnggulan"`
+	ID           uint    `json:"id"`
+	Nama         string  `json:"nama"`
+	Kategori     string  `json:"kategori"`
+	Deskripsi    string  `json:"deskripsi"`
+	FotoURL      string  `json:"fotoUrl"`
+	IsUnggulan   bool    `json:"isUnggulan"`
+	VideoYoutube *string `json:"videoYoutube,omitempty"`
 }
 
 func NewMakananResponse(m entity.Makanan) MakananResponse {
 	return MakananResponse{
-		ID:         m.ID,
-		Nama:       m.Nama,
-		Kategori:   m.Kategori,
-		Deskripsi:  m.Deskripsi,
-		FotoURL:    m.FotoURL,
-		IsUnggulan: m.IsUnggulan,
+		ID:           m.ID,
+		Nama:         m.Nama,
+		Kategori:     m.Kategori,
+		Deskripsi:    m.Deskripsi,
+		FotoURL:      m.FotoURL,
+		IsUnggulan:   m.IsUnggulan,
+		VideoYoutube: m.VideoYoutube,
 	}
 }
 
 type BudayaRequest struct {
-	Nama       string `json:"nama" binding:"required,min=3,max=100"`
-	Kategori   string `json:"kategori" binding:"required,min=3,max=50"`
-	Deskripsi  string `json:"deskripsi" binding:"required,min=20,max=2000"`
-	FotoURL    string `json:"fotoUrl" binding:"required,max=500"`
-	IsUnggulan bool   `json:"isUnggulan"`
+	Nama         string  `json:"nama" binding:"required,min=3,max=100"`
+	Kategori     string  `json:"kategori" binding:"required,min=3,max=50"`
+	Deskripsi    string  `json:"deskripsi" binding:"required,min=20,max=2000"`
+	FotoURL      string  `json:"fotoUrl" binding:"required,max=500"`
+	IsUnggulan   bool    `json:"isUnggulan"`
+	VideoYoutube *string `json:"videoYoutube" binding:"omitempty,max=500"`
 }
 
 type BudayaResponse struct {
-	ID         uint   `json:"id"`
-	Nama       string `json:"nama"`
-	Kategori   string `json:"kategori"`
-	Deskripsi  string `json:"deskripsi"`
-	FotoURL    string `json:"fotoUrl"`
-	IsUnggulan bool   `json:"isUnggulan"`
+	ID           uint    `json:"id"`
+	Nama         string  `json:"nama"`
+	Kategori     string  `json:"kategori"`
+	Deskripsi    string  `json:"deskripsi"`
+	FotoURL      string  `json:"fotoUrl"`
+	IsUnggulan   bool    `json:"isUnggulan"`
+	VideoYoutube *string `json:"videoYoutube,omitempty"`
 }
 
 func NewBudayaResponse(b entity.Budaya) BudayaResponse {
 	return BudayaResponse{
-		ID:         b.ID,
-		Nama:       b.Nama,
-		Kategori:   b.Kategori,
-		Deskripsi:  b.Deskripsi,
-		FotoURL:    b.FotoURL,
-		IsUnggulan: b.IsUnggulan,
+		ID:           b.ID,
+		Nama:         b.Nama,
+		Kategori:     b.Kategori,
+		Deskripsi:    b.Deskripsi,
+		FotoURL:      b.FotoURL,
+		IsUnggulan:   b.IsUnggulan,
+		VideoYoutube: b.VideoYoutube,
 	}
 }
 
@@ -163,4 +169,20 @@ type DashboardStats struct {
 
 type UploadResponse struct {
 	URL string `json:"url"`
+}
+
+// Setelan situs. bahasaVideo opsional; string kosong → NULL/none.
+type SettingsRequest struct {
+	BahasaVideo *string `json:"bahasaVideo" binding:"omitempty,max=500"`
+}
+
+type SettingsResponse struct {
+	BahasaVideo *string `json:"bahasaVideo"`
+}
+
+func NewSettingsResponse(bahasaVideo string) SettingsResponse {
+	if bahasaVideo == "" {
+		return SettingsResponse{BahasaVideo: nil}
+	}
+	return SettingsResponse{BahasaVideo: &bahasaVideo}
 }
