@@ -19,34 +19,64 @@ func NewSettings(svc *service.SettingsService, logger *slog.Logger) *SettingsHan
 	return &SettingsHandler{svc: svc, logger: logger}
 }
 
-// GET /api/v1/settings — publik (dikonsumsi RSC halaman Bahasa Kei).
+// GET /api/v1/settings — publik (dikonsumsi RSC halaman Bahasa Kei & Peta).
 func (h *SettingsHandler) Get(c *gin.Context) {
-	video, err := h.svc.BahasaVideo(c.Request.Context())
+	ctx := c.Request.Context()
+	video, err := h.svc.BahasaVideo(ctx)
 	if err != nil {
 		respondError(c, h.logger, err)
 		return
 	}
-	respondData(c, http.StatusOK, dto.NewSettingsResponse(video))
+	petaFoto, err := h.svc.PetaKarangFoto(ctx)
+	if err != nil {
+		respondError(c, h.logger, err)
+		return
+	}
+	respondData(c, http.StatusOK, dto.NewSettingsResponse(video, petaFoto))
 }
 
-// PUT /api/v1/admin/settings — admin. Video wajib tautan YouTube; string
-// kosong menghapus video (disimpan sebagai string kosong).
+// PUT /api/v1/admin/settings — admin. Pembaruan bersifat parsial: hanya
+// field yang disertakan (non-null) yang diubah. Video wajib tautan
+// YouTube; foto peta karang berupa URL biasa. String kosong menghapus.
 func (h *SettingsHandler) Update(c *gin.Context) {
 	var req dto.SettingsRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		respondInvalid(c)
 		return
 	}
-	if !normalizeVideo(c, &req.BahasaVideo) {
-		return
-	}
-	url := ""
+	ctx := c.Request.Context()
+
 	if req.BahasaVideo != nil {
-		url = *req.BahasaVideo
+		if !normalizeVideo(c, &req.BahasaVideo) {
+			return
+		}
+		url := ""
+		if req.BahasaVideo != nil {
+			url = *req.BahasaVideo
+		}
+		if err := h.svc.SetBahasaVideo(ctx, url); err != nil {
+			respondError(c, h.logger, err)
+			return
+		}
 	}
-	if err := h.svc.SetBahasaVideo(c.Request.Context(), url); err != nil {
+
+	if req.PetaKarangFoto != nil {
+		if err := h.svc.SetPetaKarangFoto(ctx, *req.PetaKarangFoto); err != nil {
+			respondError(c, h.logger, err)
+			return
+		}
+	}
+
+	// Kembalikan snapshot terbaru kedua field.
+	video, err := h.svc.BahasaVideo(ctx)
+	if err != nil {
 		respondError(c, h.logger, err)
 		return
 	}
-	respondData(c, http.StatusOK, dto.NewSettingsResponse(url))
+	petaFoto, err := h.svc.PetaKarangFoto(ctx)
+	if err != nil {
+		respondError(c, h.logger, err)
+		return
+	}
+	respondData(c, http.StatusOK, dto.NewSettingsResponse(video, petaFoto))
 }

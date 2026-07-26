@@ -24,12 +24,12 @@ export function LoginForm() {
     formState: { errors, isSubmitting },
   } = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: "", password: "" },
+    defaultValues: { username: "", password: "" },
   });
 
   async function onSubmit(values: LoginInput) {
     try {
-      await adminApi.login(values.email, values.password);
+      await adminApi.login(values.username, values.password);
       setMockSessionCookie();
       toast.success("Selamat datang kembali");
       router.replace(searchParams?.get("dari") ?? "/admin/dashboard");
@@ -43,18 +43,18 @@ export function LoginForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5">
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="username">Username</Label>
         <Input
-          id="email"
-          type="email"
-          autoComplete="email"
-          placeholder="admin@keikecil.id"
-          aria-invalid={!!errors.email}
-          {...register("email")}
+          id="username"
+          type="text"
+          autoComplete="username"
+          placeholder="admin"
+          aria-invalid={!!errors.username}
+          {...register("username")}
         />
-        {errors.email ? (
+        {errors.username ? (
           <p role="alert" className="text-destructive text-sm">
-            {errors.email.message}
+            {errors.username.message}
           </p>
         ) : null}
       </div>
@@ -106,7 +106,7 @@ export function LoginForm() {
       {isMockMode ? (
         <p className="text-muted-foreground text-center text-xs leading-relaxed">
           Mode demo, masuk dengan{" "}
-          <code className="font-mono">admin@keikecil.id</code> /{" "}
+          <code className="font-mono">admin</code> /{" "}
           <code className="font-mono">KeiKecil#2026</code>
         </p>
       ) : null}

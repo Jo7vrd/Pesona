@@ -1,16 +1,19 @@
 import {
   fallbackBahasa,
   fallbackBudaya,
+  fallbackHero,
   fallbackMakanan,
 } from "@/lib/content/fallback";
 import { defaultSettings } from "@/lib/content/settings";
 import { fallbackDestinasi } from "@/lib/content/spots";
+import type { HeroImageInput } from "@/lib/api/admin";
 import type {
   AdminSession,
   BahasaLokal,
   Budaya,
   DashboardStats,
   Destinasi,
+  HeroImage,
   Makanan,
   SiteSettings,
 } from "@/lib/types";
@@ -27,12 +30,13 @@ const KEYS = {
   budaya: "kk_mock_budaya",
   bahasa: "kk_mock_bahasa",
   destinasi: "kk_mock_destinasi",
+  hero: "kk_mock_hero",
   settings: "kk_mock_settings",
   session: "kk_mock_session",
 } as const;
 
 // Kredensial demo — HANYA berlaku di adapter mock, bukan produksi
-const DEMO_EMAIL = "admin@keikecil.id";
+const DEMO_USERNAME = "admin";
 const DEMO_PASSWORD = "KeiKecil#2026";
 
 interface Stored<T> {
@@ -148,6 +152,30 @@ export const mockDb = {
     "nama"
   ),
 
+  hero: {
+    async list(): Promise<HeroImage[]> {
+      await delay(200);
+      return load<HeroImage>(KEYS.hero, fallbackHero).items;
+    },
+    async create(input: HeroImageInput): Promise<HeroImage> {
+      await delay();
+      const db = load<HeroImage>(KEYS.hero, fallbackHero);
+      const item: HeroImage = { ...input, id: db.nextId };
+      db.items = [...db.items, item];
+      db.nextId += 1;
+      db.updatedAt = new Date().toISOString();
+      save(KEYS.hero, db);
+      return item;
+    },
+    async remove(id: number): Promise<void> {
+      await delay();
+      const db = load<HeroImage>(KEYS.hero, fallbackHero);
+      db.items = db.items.filter((it) => it.id !== id);
+      db.updatedAt = new Date().toISOString();
+      save(KEYS.hero, db);
+    },
+  },
+
   settings: {
     async get(): Promise<SiteSettings> {
       await delay(150);
@@ -163,20 +191,39 @@ export const mockDb = {
     },
     async update(input: SiteSettings): Promise<SiteSettings> {
       await delay();
-      const next: SiteSettings = { bahasaVideo: input.bahasaVideo || null };
+      const current = window.localStorage.getItem(KEYS.settings);
+      let base: SiteSettings = defaultSettings;
+      if (current) {
+        try {
+          base = JSON.parse(current) as SiteSettings;
+        } catch {
+          // data korup — kembali ke default
+        }
+      }
+      // Pembaruan parsial: hanya field yang disertakan yang berubah.
+      const next: SiteSettings = {
+        bahasaVideo:
+          input.bahasaVideo !== undefined
+            ? input.bahasaVideo || null
+            : base.bahasaVideo,
+        petaKarangFoto:
+          input.petaKarangFoto !== undefined
+            ? input.petaKarangFoto || null
+            : base.petaKarangFoto,
+      };
       window.localStorage.setItem(KEYS.settings, JSON.stringify(next));
       return next;
     },
   },
 
-  async login(email: string, password: string): Promise<AdminSession> {
+  async login(username: string, password: string): Promise<AdminSession> {
     await delay(500);
-    if (email !== DEMO_EMAIL || password !== DEMO_PASSWORD) {
-      throw new Error("Email atau kata sandi salah.");
+    if (username !== DEMO_USERNAME || password !== DEMO_PASSWORD) {
+      throw new Error("Username atau kata sandi salah.");
     }
     const session: AdminSession = {
       token: `mock-${Date.now()}`,
-      user: { id: 1, nama: "Admin Desa", email, role: "super_admin" },
+      user: { id: 1, nama: "Admin Desa", username, role: "super_admin" },
     };
     window.localStorage.setItem(KEYS.session, JSON.stringify(session));
     return session;

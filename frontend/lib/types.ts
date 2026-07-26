@@ -49,8 +49,15 @@ export type AdminRole = "super_admin" | "admin";
 export interface AdminUser {
   id: number;
   nama: string;
-  email: string;
+  username: string;
   role: AdminRole;
+}
+
+/** Satu foto latar carousel hero beranda (dikelola admin). */
+export interface HeroImage {
+  id: number;
+  fotoUrl: string;
+  urutan: number;
 }
 
 export interface AdminSession {
@@ -74,4 +81,6 @@ export interface DashboardStats {
 export interface SiteSettings {
   /** Tautan YouTube yang di-embed di halaman Bahasa Kei; null bila kosong. */
   bahasaVideo?: string | null;
+  /** URL foto peta terumbu karang di halaman Peta; null bila kosong. */
+  petaKarangFoto?: string | null;
 }

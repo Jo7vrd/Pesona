@@ -138,16 +138,31 @@ func NewDestinasiResponse(d entity.Destinasi) DestinasiResponse {
 	}
 }
 
+type HeroImageRequest struct {
+	FotoURL string `json:"fotoUrl" binding:"required,max=500"`
+	Urutan  int    `json:"urutan" binding:"omitempty,gte=0,lte=999"`
+}
+
+type HeroImageResponse struct {
+	ID      uint   `json:"id"`
+	FotoURL string `json:"fotoUrl"`
+	Urutan  int    `json:"urutan"`
+}
+
+func NewHeroImageResponse(h entity.HeroImage) HeroImageResponse {
+	return HeroImageResponse{ID: h.ID, FotoURL: h.FotoURL, Urutan: h.Urutan}
+}
+
 type LoginRequest struct {
-	Email    string `json:"email" binding:"required,email"`
+	Username string `json:"username" binding:"required,min=3,max=50"`
 	Password string `json:"password" binding:"required,min=8"`
 }
 
 type AdminUserResponse struct {
-	ID    uint   `json:"id"`
-	Nama  string `json:"nama"`
-	Email string `json:"email"`
-	Role  string `json:"role"`
+	ID       uint   `json:"id"`
+	Nama     string `json:"nama"`
+	Username string `json:"username"`
+	Role     string `json:"role"`
 }
 
 type SessionResponse struct {
@@ -171,18 +186,27 @@ type UploadResponse struct {
 	URL string `json:"url"`
 }
 
-// Setelan situs. bahasaVideo opsional; string kosong → NULL/none.
+// Setelan situs. Field opsional; string kosong → NULL/none.
 type SettingsRequest struct {
-	BahasaVideo *string `json:"bahasaVideo" binding:"omitempty,max=500"`
+	BahasaVideo    *string `json:"bahasaVideo" binding:"omitempty,max=500"`
+	PetaKarangFoto *string `json:"petaKarangFoto" binding:"omitempty,max=500"`
 }
 
 type SettingsResponse struct {
-	BahasaVideo *string `json:"bahasaVideo"`
+	BahasaVideo    *string `json:"bahasaVideo"`
+	PetaKarangFoto *string `json:"petaKarangFoto"`
 }
 
-func NewSettingsResponse(bahasaVideo string) SettingsResponse {
-	if bahasaVideo == "" {
-		return SettingsResponse{BahasaVideo: nil}
+func strPtrOrNil(v string) *string {
+	if v == "" {
+		return nil
 	}
-	return SettingsResponse{BahasaVideo: &bahasaVideo}
+	return &v
+}
+
+func NewSettingsResponse(bahasaVideo, petaKarangFoto string) SettingsResponse {
+	return SettingsResponse{
+		BahasaVideo:    strPtrOrNil(bahasaVideo),
+		PetaKarangFoto: strPtrOrNil(petaKarangFoto),
+	}
 }

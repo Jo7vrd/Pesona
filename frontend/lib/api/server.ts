@@ -3,6 +3,7 @@ import "server-only";
 import {
   fallbackBahasa,
   fallbackBudaya,
+  fallbackHero,
   fallbackMakanan,
 } from "@/lib/content/fallback";
 import { defaultSettings } from "@/lib/content/settings";
@@ -11,6 +12,7 @@ import type {
   BahasaLokal,
   Budaya,
   Destinasi,
+  HeroImage,
   Makanan,
   SiteSettings,
 } from "@/lib/types";
@@ -83,4 +85,9 @@ export async function getAllDestinasi(): Promise<Destinasi[]> {
 export async function getSiteSettings(): Promise<SiteSettings> {
   const data = await fetchApi<SiteSettings>("/api/v1/settings", "settings");
   return data ?? defaultSettings;
+}
+
+export async function getHeroImages(): Promise<HeroImage[]> {
+  const data = await fetchApi<HeroImage[]>("/api/v1/hero", "hero");
+  return data && data.length > 0 ? data : fallbackHero;
 }

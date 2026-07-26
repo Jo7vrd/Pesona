@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import Image from "next/image";
 import {
   motion,
@@ -12,10 +12,15 @@ import {
 } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
+import type { HeroImage } from "@/lib/types";
+import { fallbackHero } from "@/lib/content/fallback";
 import { useLocale } from "@/lib/i18n";
 import { GlowButton } from "@/components/site/glow-button";
 
 const EASE_OUT_EXPO = [0.16, 1, 0.3, 1] as const;
+
+// Foto hero berganti otomatis tiap 7 detik (permintaan operator desa).
+const SLIDE_INTERVAL_MS = 7000;
 
 declare global {
   interface Window {
@@ -23,10 +28,24 @@ declare global {
   }
 }
 
-export function Hero() {
+export function Hero({ slides }: { slides?: HeroImage[] }) {
   const ref = useRef<HTMLElement>(null);
   const { t } = useLocale();
   const reduceMotion = useReducedMotion();
+
+  const images =
+    slides && slides.length > 0 ? slides : fallbackHero;
+  const [current, setCurrent] = useState(0);
+
+  // Auto-advance carousel; berhenti bila hanya satu foto atau pengguna
+  // meminta reduced-motion.
+  useEffect(() => {
+    if (images.length <= 1 || reduceMotion) return;
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % images.length);
+    }, SLIDE_INTERVAL_MS);
+    return () => clearInterval(timer);
+  }, [images.length, reduceMotion]);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -92,14 +111,26 @@ export function Hero() {
         }}
         className="absolute inset-0 will-change-transform"
       >
-        <Image
-          src="/images/u/1507525428034-b723cf961d3e.jpg"
-          alt="Pantai pasir putih Kei Kecil dengan laguna biru jernih"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
+        {/* Carousel: foto ditumpuk, hanya yang aktif yang tampak; transisi
+            silang halus (fade) mengikuti konsep contoh operator. */}
+        {images.map((slide, i) => (
+          <div
+            key={slide.id}
+            aria-hidden={i !== current}
+            className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+            style={{ opacity: i === current ? 1 : 0 }}
+          >
+            <Image
+              src={slide.fotoUrl}
+              alt=""
+              fill
+              priority={i === 0}
+              sizes="100vw"
+              className="object-cover"
+              unoptimized={!slide.fotoUrl.startsWith("/")}
+            />
+          </div>
+        ))}
         {/* Vignette diagonal: pekat di pojok kiri atas, larut ke kanan
             bawah — teks hero duduk di area tergelap */}
         <div className="from-ocean-950/90 via-ocean-950/45 to-ocean-950/0 absolute inset-0 bg-gradient-to-br via-40% to-80%" />
@@ -152,6 +183,29 @@ export function Hero() {
           <GlowButton onClick={scrollToSambutan}>{t.hero.cta}</GlowButton>
         </motion.div>
       </motion.div>
+
+      {images.length > 1 ? (
+        <div className="absolute right-5 bottom-6 z-10 flex items-center gap-4 text-white/85 md:right-8">
+          <div className="flex items-center gap-2">
+            {images.map((slide, i) => (
+              <button
+                key={slide.id}
+                type="button"
+                onClick={() => setCurrent(i)}
+                aria-label={`Tampilkan foto ${i + 1}`}
+                aria-current={i === current}
+                className={`h-1.5 rounded-full transition-all ${
+                  i === current ? "w-6 bg-white" : "w-1.5 bg-white/50"
+                }`}
+              />
+            ))}
+          </div>
+          <span className="font-mono text-sm tabular-nums">
+            {String(current + 1).padStart(2, "0")} /{" "}
+            {String(images.length).padStart(2, "0")}
+          </span>
+        </div>
+      ) : null}
 
       <motion.a
         href="#sambutan"

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { MapPin } from "lucide-react";
 
+import { getSiteSettings } from "@/lib/api/server";
 import { jenisSpotTr, spotDescTr } from "@/lib/content/i18n-content";
 import { spots } from "@/lib/content/spots";
 import { Badge } from "@/components/ui/badge";
@@ -16,7 +18,14 @@ export const metadata: Metadata = {
   alternates: { canonical: "/peta" },
 };
 
-export default function PetaPage() {
+// Foto peta karang bawaan (BR-002) bila operator desa belum mengunggah
+// gambar sendiri lewat admin.
+const DEFAULT_PETA_KARANG = "/images/u/1544551763-46a013bb70d5.jpg";
+
+export default async function PetaPage() {
+  const settings = await getSiteSettings();
+  const petaKarangFoto = settings.petaKarangFoto || DEFAULT_PETA_KARANG;
+
   return (
     <>
       <PageHeader
@@ -44,6 +53,28 @@ export default function PetaPage() {
               zh="地图来自OpenStreetMap。地点为大致位置，请务必与当地向导确认路线。"
             />
           </p>
+        </FadeIn>
+
+        <FadeIn className="mt-10">
+          <figure className="overflow-hidden rounded-(--radius-card) border shadow-(--shadow-card)">
+            <div className="relative aspect-[16/9] w-full">
+              <Image
+                src={petaKarangFoto}
+                alt="Peta sebaran terumbu karang perairan Kei Kecil"
+                fill
+                sizes="(max-width: 768px) 100vw, 900px"
+                className="object-cover"
+                unoptimized={!petaKarangFoto.startsWith("/")}
+              />
+            </div>
+            <figcaption className="text-muted-foreground bg-card px-4 py-3 text-sm">
+              <Tr
+                id="Sebaran terumbu karang dan titik snorkeling perairan Kei Kecil."
+                en="Coral reefs and snorkeling spots across Kei Kecil waters."
+                zh="小凯岛海域的珊瑚礁与浮潜地点分布。"
+              />
+            </figcaption>
+          </figure>
         </FadeIn>
 
         <StaggerGrid className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

@@ -59,6 +59,18 @@ type Destinasi struct {
 
 func (Destinasi) TableName() string { return "destinasi" }
 
+// HeroImage adalah satu foto latar carousel hero beranda. Urutan
+// menentukan giliran tampil; foto berganti otomatis di sisi frontend.
+type HeroImage struct {
+	ID        uint   `gorm:"primaryKey"`
+	FotoURL   string `gorm:"size:500;not null;column:foto_url"`
+	Urutan    int    `gorm:"not null;default:0"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+}
+
+func (HeroImage) TableName() string { return "hero_images" }
+
 // Setting menyimpan setelan tingkat-situs sebagai pasangan kunci-nilai
 // (mis. "bahasa_video" → tautan YouTube halaman Bahasa Kei).
 type Setting struct {
@@ -70,7 +82,10 @@ type Setting struct {
 func (Setting) TableName() string { return "settings" }
 
 // Kunci setelan yang dikenal.
-const SettingBahasaVideo = "bahasa_video"
+const (
+	SettingBahasaVideo    = "bahasa_video"
+	SettingPetaKarangFoto = "peta_karang_foto"
+)
 
 const (
 	RoleSuperAdmin = "super_admin"
@@ -80,7 +95,7 @@ const (
 type Admin struct {
 	ID           uint   `gorm:"primaryKey"`
 	Nama         string `gorm:"size:100;not null"`
-	Email        string `gorm:"size:150;not null;uniqueIndex"`
+	Username     string `gorm:"size:50;not null;uniqueIndex;column:username"`
 	PasswordHash string `gorm:"size:100;not null"`
 	Role         string `gorm:"size:20;not null;default:admin"`
 	CreatedAt    time.Time

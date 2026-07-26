@@ -10,7 +10,7 @@ import (
 )
 
 type AdminRepository interface {
-	ByEmail(ctx context.Context, email string) (*entity.Admin, error)
+	ByUsername(ctx context.Context, username string) (*entity.Admin, error)
 	ByID(ctx context.Context, id uint) (*entity.Admin, error)
 }
 
@@ -20,9 +20,9 @@ func NewAdminRepo(db *gorm.DB) AdminRepository {
 	return &gormAdminRepo{db: db}
 }
 
-func (r *gormAdminRepo) ByEmail(ctx context.Context, email string) (*entity.Admin, error) {
+func (r *gormAdminRepo) ByUsername(ctx context.Context, username string) (*entity.Admin, error) {
 	var admin entity.Admin
-	err := r.db.WithContext(ctx).Where("LOWER(email) = LOWER(?)", email).First(&admin).Error
+	err := r.db.WithContext(ctx).Where("LOWER(username) = LOWER(?)", username).First(&admin).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, nil
 	}

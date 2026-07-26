@@ -75,6 +75,7 @@ export function MakananForm({
               value={field.value}
               onChange={field.onChange}
               error={errors.fotoUrl?.message}
+              modul="makanan"
             />
           )}
         />

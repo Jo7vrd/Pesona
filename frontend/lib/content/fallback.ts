@@ -1,4 +1,4 @@
-import type { BahasaLokal, Budaya, Makanan } from "@/lib/types";
+import type { BahasaLokal, Budaya, HeroImage, Makanan } from "@/lib/types";
 
 /**
  * Data fallback (BR-002): dipakai saat API belum tersedia atau konten
@@ -8,6 +8,16 @@ import type { BahasaLokal, Budaya, Makanan } from "@/lib/types";
  * PENTING: seluruh isi (nama, deskripsi, kosakata Kei) wajib divalidasi
  * perangkat desa dan penutur asli sebelum produksi.
  */
+
+/**
+ * Foto hero beranda bawaan (carousel). Dipakai saat backend belum
+ * menyetel foto hero. Aset lokal di public/images/u.
+ */
+export const fallbackHero: HeroImage[] = [
+  { id: 1, fotoUrl: "/images/u/1507525428034-b723cf961d3e.jpg", urutan: 1 },
+  { id: 2, fotoUrl: "/images/u/1544551763-46a013bb70d5.jpg", urutan: 2 },
+  { id: 3, fotoUrl: "/images/u/1537956965359-7573183d1f57.jpg", urutan: 3 },
+];
 
 export const fallbackMakanan: Makanan[] = [
   {

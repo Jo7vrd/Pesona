@@ -1,6 +1,10 @@
 import Image from "next/image";
 
-import { getFeaturedBudaya, getFeaturedMakanan } from "@/lib/api/server";
+import {
+  getFeaturedBudaya,
+  getFeaturedMakanan,
+  getHeroImages,
+} from "@/lib/api/server";
 import { BLUR_DATA_URL } from "@/lib/blur";
 import { FadeIn } from "@/components/motion/fade-in";
 import { StaggerGrid, StaggerItem } from "@/components/motion/stagger-grid";
@@ -16,14 +20,15 @@ import {
 import { MarqueeStrip } from "@/components/site/marquee-strip";
 
 export default async function LandingPage() {
-  const [makanan, budaya] = await Promise.all([
+  const [makanan, budaya, heroImages] = await Promise.all([
     getFeaturedMakanan(),
     getFeaturedBudaya(),
+    getHeroImages(),
   ]);
 
   return (
     <>
-      <Hero />
+      <Hero slides={heroImages} />
 
       <section id="sambutan" className="section-y" aria-labelledby="sambutan-judul">
         <div className="container-page grid items-center gap-10 lg:grid-cols-12 lg:gap-16">

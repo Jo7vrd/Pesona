@@ -74,6 +74,7 @@ export function DestinasiForm({
               value={field.value}
               onChange={field.onChange}
               error={errors.fotoUrl?.message}
+              modul="destinasi"
             />
           )}
         />

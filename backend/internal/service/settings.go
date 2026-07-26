@@ -37,3 +37,23 @@ func (s *SettingsService) SetBahasaVideo(ctx context.Context, url string) error 
 	s.reval.Trigger("settings")
 	return nil
 }
+
+// PetaKarangFoto mengembalikan URL foto peta karang halaman Peta; string
+// kosong berarti belum diset.
+func (s *SettingsService) PetaKarangFoto(ctx context.Context) (string, error) {
+	v, _, err := s.repo.Get(ctx, entity.SettingPetaKarangFoto)
+	if err != nil {
+		return "", apperror.Internal(err)
+	}
+	return v, nil
+}
+
+func (s *SettingsService) SetPetaKarangFoto(ctx context.Context, url string) error {
+	if err := s.repo.Set(ctx, entity.SettingPetaKarangFoto, url); err != nil {
+		return apperror.Internal(err)
+	}
+	s.reval.Trigger("settings")
+	// Halaman Peta juga di-revalidasi via tag khusus bila ada
+	s.reval.Trigger("peta")
+	return nil
+}

@@ -11,9 +11,15 @@ import type {
   Budaya,
   DashboardStats,
   Destinasi,
+  HeroImage,
   Makanan,
   SiteSettings,
 } from "@/lib/types";
+
+export interface HeroImageInput {
+  fotoUrl: string;
+  urutan: number;
+}
 
 /**
  * Kontrak API admin. Ada dua implementasi:
@@ -43,7 +49,7 @@ interface Collection<T, I> {
 }
 
 export interface AdminApi {
-  login(email: string, password: string): Promise<AdminSession>;
+  login(username: string, password: string): Promise<AdminSession>;
   logout(): Promise<void>;
   getSession(): AdminSession | null;
   stats(): Promise<DashboardStats>;
@@ -51,10 +57,50 @@ export interface AdminApi {
   budaya: Collection<Budaya, BudayaInput>;
   bahasa: Collection<BahasaLokal, BahasaInput>;
   destinasi: Collection<Destinasi, DestinasiInput>;
+  hero: {
+    list(): Promise<HeroImage[]>;
+    create(input: HeroImageInput): Promise<HeroImage>;
+    remove(id: number): Promise<void>;
+  };
   settings: {
     get(): Promise<SiteSettings>;
     update(input: SiteSettings): Promise<SiteSettings>;
   };
+}
+
+/**
+ * Unggah foto ke backend dan kembalikan URL publiknya. Di mode mock
+ * file dikembalikan sebagai data URL (tanpa backend). Dengan backend
+ * asli, file dikirim ke endpoint upload yang menyusutkan & menyimpannya.
+ */
+export async function uploadImage(
+  file: File,
+  modul: string
+): Promise<string> {
+  if (isMockMode) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result));
+      reader.onerror = () => reject(new Error("Gagal membaca file."));
+      reader.readAsDataURL(file);
+    });
+  }
+  const form = new FormData();
+  form.append("foto", file);
+  form.append("modul", modul);
+  try {
+    const res = await axios.post<{ data: { url: string } }>(
+      `${API_URL}/api/v1/admin/upload`,
+      form,
+      { withCredentials: true }
+    );
+    return res.data.data.url;
+  } catch (error) {
+    const message =
+      (axios.isAxiosError(error) && error.response?.data?.message) ||
+      "Gagal mengunggah foto. Coba lagi.";
+    throw new Error(message);
+  }
 }
 
 function httpApi(baseURL: string): AdminApi {
@@ -87,10 +133,10 @@ function httpApi(baseURL: string): AdminApi {
   }
 
   return {
-    login: async (email, password) =>
+    login: async (username, password) =>
       (
         await http.post<{ data: AdminSession }>("/api/v1/auth/login", {
-          email,
+          username,
           password,
         })
       ).data.data,
@@ -107,6 +153,16 @@ function httpApi(baseURL: string): AdminApi {
     budaya: collection("budaya"),
     bahasa: collection("bahasa"),
     destinasi: collection("destinasi"),
+    hero: {
+      list: async () =>
+        (await http.get<{ data: HeroImage[] }>("/api/v1/admin/hero")).data.data,
+      create: async (input) =>
+        (await http.post<{ data: HeroImage }>("/api/v1/admin/hero", input)).data
+          .data,
+      remove: async (id) => {
+        await http.delete(`/api/v1/admin/hero/${id}`);
+      },
+    },
     settings: {
       get: async () =>
         (await http.get<{ data: SiteSettings }>("/api/v1/admin/settings")).data
@@ -119,7 +175,7 @@ function httpApi(baseURL: string): AdminApi {
 }
 
 const mockApi: AdminApi = {
-  login: (email, password) => mockDb.login(email, password),
+  login: (username, password) => mockDb.login(username, password),
   logout: () => mockDb.logout(),
   getSession: () => mockDb.getSession(),
   stats: () => mockDb.stats(),
@@ -127,6 +183,7 @@ const mockApi: AdminApi = {
   budaya: mockDb.budaya,
   bahasa: mockDb.bahasa,
   destinasi: mockDb.destinasi,
+  hero: mockDb.hero,
   settings: mockDb.settings,
 };
 

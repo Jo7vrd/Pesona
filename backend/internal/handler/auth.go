@@ -44,10 +44,10 @@ func (h *AuthHandler) Login(c *gin.Context) {
 	respondData(c, http.StatusOK, dto.SessionResponse{
 		Token: token,
 		User: dto.AdminUserResponse{
-			ID:    admin.ID,
-			Nama:  admin.Nama,
-			Email: admin.Email,
-			Role:  admin.Role,
+			ID:       admin.ID,
+			Nama:     admin.Nama,
+			Username: admin.Username,
+			Role:     admin.Role,
 		},
 	})
 }
@@ -67,9 +67,9 @@ func (h *AuthHandler) Me(c *gin.Context) {
 		id = uint(parsed)
 	}
 	respondData(c, http.StatusOK, dto.AdminUserResponse{
-		ID:    id,
-		Nama:  claims.Nama,
-		Email: claims.Email,
-		Role:  claims.Role,
+		ID:       id,
+		Nama:     claims.Nama,
+		Username: claims.Username,
+		Role:     claims.Role,
 	})
 }

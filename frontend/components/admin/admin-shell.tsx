@@ -8,6 +8,7 @@ import {
   BookA,
   BookOpen,
   ExternalLink,
+  Images,
   Landmark,
   LayoutDashboard,
   LogOut,
@@ -40,6 +41,7 @@ import {
 
 const menu = [
   { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
+  { label: "Tampilan", href: "/admin/tampilan", icon: Images },
   { label: "Destinasi", href: "/admin/destinasi", icon: MapPin },
   { label: "Kuliner", href: "/admin/makanan", icon: UtensilsCrossed },
   { label: "Budaya", href: "/admin/budaya", icon: Landmark },

@@ -48,17 +48,17 @@ func main() {
 }
 
 func seedAdmin(db *gorm.DB, logger *slog.Logger) error {
-	email := getenv("SEED_ADMIN_EMAIL", "admin@keikecil.id")
+	username := getenv("SEED_ADMIN_USERNAME", "admin")
 	password := getenv("SEED_ADMIN_PASSWORD", "KeiKecil#2026")
 	nama := getenv("SEED_ADMIN_NAMA", "Admin Desa")
 
 	var count int64
 	if err := db.Model(&entity.Admin{}).
-		Where("LOWER(email) = LOWER(?)", email).Count(&count).Error; err != nil {
+		Where("LOWER(username) = LOWER(?)", username).Count(&count).Error; err != nil {
 		return err
 	}
 	if count > 0 {
-		logger.Info("admin sudah ada, dilewati", "email", email)
+		logger.Info("admin sudah ada, dilewati", "username", username)
 		return nil
 	}
 
@@ -68,14 +68,14 @@ func seedAdmin(db *gorm.DB, logger *slog.Logger) error {
 	}
 	admin := entity.Admin{
 		Nama:         nama,
-		Email:        strings.ToLower(email),
+		Username:     strings.ToLower(username),
 		PasswordHash: string(hash),
 		Role:         entity.RoleSuperAdmin,
 	}
 	if err := db.Create(&admin).Error; err != nil {
 		return err
 	}
-	logger.Info("admin dibuat", "email", email, "role", admin.Role)
+	logger.Info("admin dibuat", "username", username, "role", admin.Role)
 	return nil
 }
 
@@ -220,6 +220,12 @@ func seedContent(db *gorm.DB, logger *slog.Logger) error {
 		return err
 	}
 
+	// Foto carousel hero beranda — contoh; diganti operator desa lewat
+	// admin. Hanya diisi bila tabel masih kosong.
+	if err := seedHeroIfEmpty(db); err != nil {
+		return err
+	}
+
 	logger.Info("konten awal terpasang",
 		"makanan", len(makanan), "budaya", len(budaya),
 		"bahasa", len(bahasa), "destinasi", len(destinasi))
@@ -236,6 +242,22 @@ func backfillVideo(db *gorm.DB, table, nama string, video *string) error {
 	return db.Table(table).
 		Where("LOWER(nama) = LOWER(?) AND video_youtube IS NULL", nama).
 		Update("video_youtube", *video).Error
+}
+
+func seedHeroIfEmpty(db *gorm.DB) error {
+	var count int64
+	if err := db.Model(&entity.HeroImage{}).Count(&count).Error; err != nil {
+		return err
+	}
+	if count > 0 {
+		return nil
+	}
+	defaults := []entity.HeroImage{
+		{FotoURL: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&q=80", Urutan: 1},
+		{FotoURL: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1920&q=80", Urutan: 2},
+		{FotoURL: "https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=1920&q=80", Urutan: 3},
+	}
+	return db.Create(&defaults).Error
 }
 
 func seedSettingIfMissing(db *gorm.DB, key, value string) error {

@@ -68,6 +68,7 @@ export function BudayaForm({
               value={field.value}
               onChange={field.onChange}
               error={errors.fotoUrl?.message}
+              modul="budaya"
             />
           )}
         />

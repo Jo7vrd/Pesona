@@ -26,7 +26,10 @@ const (
 	jpegQuality   = 85
 )
 
-var allowedModul = map[string]bool{"makanan": true, "budaya": true, "destinasi": true}
+var allowedModul = map[string]bool{
+	"makanan": true, "budaya": true, "destinasi": true,
+	"hero": true, "umum": true,
+}
 
 type UploadService struct {
 	storage storage.ObjectStorage
@@ -43,7 +46,7 @@ func NewUpload(store storage.ObjectStorage) *UploadService {
 // anggaran performa.
 func (s *UploadService) Process(ctx context.Context, modul string, file *multipart.FileHeader) (string, error) {
 	if !allowedModul[modul] {
-		return "", apperror.BadRequest("Modul tidak dikenal. Gunakan: makanan / budaya / destinasi.")
+		return "", apperror.BadRequest("Modul tidak dikenal. Gunakan: makanan / budaya / destinasi / hero / umum.")
 	}
 	if file.Size > maxUploadSize {
 		return "", apperror.BadRequest("Ukuran foto maksimal 5MB.")
