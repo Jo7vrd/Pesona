@@ -45,7 +45,23 @@ export interface UpdateAdminInput {
  */
 
 export const SESSION_COOKIE = "kk_admin_session";
+const TOKEN_KEY = "kk_admin_token";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+// Token JWT disimpan di localStorage dan dikirim sebagai header Bearer.
+// Ini menghindari masalah cookie lintas-domain (frontend Vercel ↔ backend
+// Railway) yang sering diblokir browser sebagai cookie pihak-ketiga.
+function storeToken(token: string): void {
+  if (typeof window !== "undefined") window.localStorage.setItem(TOKEN_KEY, token);
+}
+function clearToken(): void {
+  if (typeof window !== "undefined") window.localStorage.removeItem(TOKEN_KEY);
+}
+function readToken(): string | null {
+  return typeof window !== "undefined"
+    ? window.localStorage.getItem(TOKEN_KEY)
+    : null;
+}
 
 /**
  * Sesi 8 jam (§7.1). Di mode mock cookie di-set dari klien; backend
@@ -130,12 +146,23 @@ export async function uploadImage(
 function httpApi(baseURL: string): AdminApi {
   const http = axios.create({ baseURL, withCredentials: true });
 
+  // Sisipkan token Bearer pada tiap permintaan (identitas utama).
+  http.interceptors.request.use((config) => {
+    const token = readToken();
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+    return config;
+  });
+
   http.interceptors.response.use(undefined, (error) => {
     const message =
       error.response?.data?.message ??
       "Tidak dapat terhubung ke server. Coba lagi.";
     if (error.response?.status === 401 && typeof window !== "undefined") {
-      window.location.assign("/admin/login");
+      clearToken();
+      // Hindari loop bila sudah di halaman login
+      if (!window.location.pathname.startsWith("/admin/login")) {
+        window.location.assign("/admin/login");
+      }
     }
     return Promise.reject(new Error(message));
   });
@@ -157,15 +184,22 @@ function httpApi(baseURL: string): AdminApi {
   }
 
   return {
-    login: async (username, password) =>
-      (
+    login: async (username, password) => {
+      const session = (
         await http.post<{ data: AdminSession }>("/api/v1/auth/login", {
           username,
           password,
         })
-      ).data.data,
+      ).data.data;
+      storeToken(session.token);
+      return session;
+    },
     logout: async () => {
-      await http.post("/api/v1/auth/logout");
+      try {
+        await http.post("/api/v1/auth/logout");
+      } finally {
+        clearToken();
+      }
     },
     // Dengan backend asli, identitas dibaca dari JWT httpOnly via /me;
     // sesi lokal hanya cache tampilan
