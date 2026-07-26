@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
       // Foto hasil unggahan admin saat pengembangan (disk lokal backend).
       { protocol: "http", hostname: "localhost", port: "8080" },
       // Produksi: tambahkan hostname bucket R2 publik Anda di sini, mis.
-      // { protocol: "https", hostname: "aset.keikecil.id" },
+      { protocol: "https", hostname: "pesona-production.up.railway.app" },
     ],
     // AVIF dihilangkan: encoding-nya berat (terasa lag saat gambar
     // pertama dimuat) dengan selisih ukuran kecil dibanding WebP
