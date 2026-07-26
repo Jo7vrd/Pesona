@@ -6,7 +6,9 @@ import type { BudayaInput } from "@/lib/schemas/budaya";
 import type { DestinasiInput } from "@/lib/schemas/destinasi";
 import type { MakananInput } from "@/lib/schemas/makanan";
 import type {
+  AdminAccount,
   AdminSession,
+  AdminUser,
   BahasaLokal,
   Budaya,
   DashboardStats,
@@ -19,6 +21,19 @@ import type {
 export interface HeroImageInput {
   fotoUrl: string;
   urutan: number;
+}
+
+export interface CreateAdminInput {
+  nama: string;
+  username: string;
+  password: string;
+  role: "admin" | "super_admin";
+}
+
+export interface UpdateAdminInput {
+  nama: string;
+  role: "admin" | "super_admin";
+  isActive: boolean;
 }
 
 /**
@@ -52,6 +67,8 @@ export interface AdminApi {
   login(username: string, password: string): Promise<AdminSession>;
   logout(): Promise<void>;
   getSession(): AdminSession | null;
+  /** Identitas terkini dari JWT httpOnly (backend asli) atau sesi mock. */
+  me(): Promise<AdminUser | null>;
   stats(): Promise<DashboardStats>;
   makanan: Collection<Makanan, MakananInput>;
   budaya: Collection<Budaya, BudayaInput>;
@@ -60,6 +77,13 @@ export interface AdminApi {
   hero: {
     list(): Promise<HeroImage[]>;
     create(input: HeroImageInput): Promise<HeroImage>;
+    remove(id: number): Promise<void>;
+  };
+  admins: {
+    list(): Promise<AdminAccount[]>;
+    create(input: CreateAdminInput): Promise<AdminAccount>;
+    update(id: number, input: UpdateAdminInput): Promise<AdminAccount>;
+    resetPassword(id: number, password: string): Promise<void>;
     remove(id: number): Promise<void>;
   };
   settings: {
@@ -146,6 +170,14 @@ function httpApi(baseURL: string): AdminApi {
     // Dengan backend asli, identitas dibaca dari JWT httpOnly via /me;
     // sesi lokal hanya cache tampilan
     getSession: () => mockDb.getSession(),
+    me: async () => {
+      try {
+        return (await http.get<{ data: AdminUser }>("/api/v1/auth/me")).data
+          .data;
+      } catch {
+        return null;
+      }
+    },
     stats: async () =>
       (await http.get<{ data: DashboardStats }>("/api/v1/admin/stats")).data
         .data,
@@ -163,6 +195,27 @@ function httpApi(baseURL: string): AdminApi {
         await http.delete(`/api/v1/admin/hero/${id}`);
       },
     },
+    admins: {
+      list: async () =>
+        (await http.get<{ data: AdminAccount[] }>("/api/v1/admin/admins")).data
+          .data,
+      create: async (input) =>
+        (await http.post<{ data: AdminAccount }>("/api/v1/admin/admins", input))
+          .data.data,
+      update: async (id, input) =>
+        (
+          await http.put<{ data: AdminAccount }>(
+            `/api/v1/admin/admins/${id}`,
+            input
+          )
+        ).data.data,
+      resetPassword: async (id, password) => {
+        await http.put(`/api/v1/admin/admins/${id}/password`, { password });
+      },
+      remove: async (id) => {
+        await http.delete(`/api/v1/admin/admins/${id}`);
+      },
+    },
     settings: {
       get: async () =>
         (await http.get<{ data: SiteSettings }>("/api/v1/admin/settings")).data
@@ -178,12 +231,14 @@ const mockApi: AdminApi = {
   login: (username, password) => mockDb.login(username, password),
   logout: () => mockDb.logout(),
   getSession: () => mockDb.getSession(),
+  me: async () => mockDb.getSession()?.user ?? null,
   stats: () => mockDb.stats(),
   makanan: mockDb.makanan,
   budaya: mockDb.budaya,
   bahasa: mockDb.bahasa,
   destinasi: mockDb.destinasi,
   hero: mockDb.hero,
+  admins: mockDb.admins,
   settings: mockDb.settings,
 };
 

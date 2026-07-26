@@ -95,22 +95,25 @@ func run(logger *slog.Logger) error {
 		func(d *entity.Destinasi) string { return d.FotoURL },
 		"Destinasi", "destinasi", store, reval, logger,
 	)
-	authSvc := service.NewAuth(repository.NewAdminRepo(db), cfg.JWTSecret, cfg.JWTTTL)
+	adminRepo := repository.NewAdminRepo(db)
+	authSvc := service.NewAuth(adminRepo, cfg.JWTSecret, cfg.JWTTTL)
+	adminUsersSvc := service.NewAdminService(adminRepo)
 	settingsSvc := service.NewSettings(repository.NewSettingsRepo(db), reval)
 	heroSvc := service.NewHero(repository.NewHeroRepo(db), store, reval, logger)
 	uploadSvc := service.NewUpload(store)
 
 	engine := router.New(router.Deps{
-		Config:  cfg,
-		Logger:  logger,
-		Auth:    authSvc,
-		Makanan:   makananSvc,
-		Budaya:    budayaSvc,
-		Bahasa:    bahasaSvc,
-		Destinasi: destinasiSvc,
-		Settings:  settingsSvc,
-		Hero:      heroSvc,
-		Upload:    uploadSvc,
+		Config:     cfg,
+		Logger:     logger,
+		Auth:       authSvc,
+		Makanan:    makananSvc,
+		Budaya:     budayaSvc,
+		Bahasa:     bahasaSvc,
+		Destinasi:  destinasiSvc,
+		Settings:   settingsSvc,
+		Hero:       heroSvc,
+		AdminUsers: adminUsersSvc,
+		Upload:     uploadSvc,
 	})
 
 	srv := &http.Server{

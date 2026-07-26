@@ -16,6 +16,7 @@ import {
   Menu,
   Moon,
   Sun,
+  Users,
   UtensilsCrossed,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -39,23 +40,40 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-const menu = [
+type MenuItem = {
+  label: string;
+  href: string;
+  icon: typeof LayoutDashboard;
+  superAdminOnly?: boolean;
+};
+
+const menu: MenuItem[] = [
   { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
   { label: "Tampilan", href: "/admin/tampilan", icon: Images },
   { label: "Destinasi", href: "/admin/destinasi", icon: MapPin },
   { label: "Kuliner", href: "/admin/makanan", icon: UtensilsCrossed },
   { label: "Budaya", href: "/admin/budaya", icon: Landmark },
   { label: "Bahasa Kei", href: "/admin/bahasa", icon: BookA },
+  { label: "Akun Admin", href: "/admin/akun", icon: Users, superAdminOnly: true },
   { label: "Panduan", href: "/admin/panduan", icon: BookOpen },
-] as const;
+];
 
 const THEME_KEY = "kk_admin_theme";
 
-function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
+function NavLinks({
+  onNavigate,
+  role,
+}: {
+  onNavigate?: () => void;
+  role?: string;
+}) {
   const pathname = usePathname();
+  const items = menu.filter(
+    (item) => !item.superAdminOnly || role === "super_admin"
+  );
   return (
     <nav aria-label="Menu admin" className="flex-1 space-y-1 px-3">
-      {menu.map((item) => {
+      {items.map((item) => {
         const active = pathname?.startsWith(item.href) ?? false;
         return (
           <Link
@@ -87,9 +105,11 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<AdminSession | null>(null);
 
   useEffect(() => {
-    // Sesi dibaca setelah mount: localStorage tidak ada saat SSR dan
-    // membacanya saat render memicu hydration mismatch
-    setSession(adminApi.getSession());
+    // Identitas dibaca setelah mount via /me (backend asli) atau sesi mock.
+    // Menghindari hydration mismatch dari localStorage saat render.
+    adminApi.me().then((user) => {
+      if (user) setSession({ token: "", user });
+    });
     const stored = window.localStorage.getItem(THEME_KEY);
     if (stored) setDark(stored === "dark");
   }, []);
@@ -134,7 +154,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               admin
             </span>
           </div>
-          <NavLinks />
+          <NavLinks role={session?.user.role} />
           <div className="border-t p-3">
             <Link
               href="/"
@@ -172,7 +192,10 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
                     className="h-8 w-auto"
                   />
                 </SheetTitle>
-                <NavLinks onNavigate={() => setMobileOpen(false)} />
+                <NavLinks
+                  onNavigate={() => setMobileOpen(false)}
+                  role={session?.user.role}
+                />
               </SheetContent>
             </Sheet>
 

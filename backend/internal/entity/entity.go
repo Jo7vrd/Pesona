@@ -98,6 +98,7 @@ type Admin struct {
 	Username     string `gorm:"size:50;not null;uniqueIndex;column:username"`
 	PasswordHash string `gorm:"size:100;not null"`
 	Role         string `gorm:"size:20;not null;default:admin"`
+	IsActive     bool   `gorm:"not null;default:true;column:is_active"`
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 }

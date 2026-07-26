@@ -50,6 +50,9 @@ func (s *AuthService) Login(ctx context.Context, req dto.LoginRequest) (*entity.
 	if err := bcrypt.CompareHashAndPassword([]byte(admin.PasswordHash), []byte(req.Password)); err != nil {
 		return nil, "", apperror.Unauthorized("Username atau kata sandi salah.")
 	}
+	if !admin.IsActive {
+		return nil, "", apperror.Unauthorized("Akun Anda telah dinonaktifkan. Hubungi super admin.")
+	}
 
 	token, err := s.issueToken(admin)
 	if err != nil {

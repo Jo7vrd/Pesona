@@ -170,6 +170,45 @@ type SessionResponse struct {
 	User  AdminUserResponse `json:"user"`
 }
 
+// ---- Kelola akun admin (khusus super_admin) ----
+
+type AdminAccountResponse struct {
+	ID        uint      `json:"id"`
+	Nama      string    `json:"nama"`
+	Username  string    `json:"username"`
+	Role      string    `json:"role"`
+	IsActive  bool      `json:"isActive"`
+	CreatedAt time.Time `json:"createdAt"`
+}
+
+func NewAdminAccountResponse(a entity.Admin) AdminAccountResponse {
+	return AdminAccountResponse{
+		ID:        a.ID,
+		Nama:      a.Nama,
+		Username:  a.Username,
+		Role:      a.Role,
+		IsActive:  a.IsActive,
+		CreatedAt: a.CreatedAt,
+	}
+}
+
+type CreateAdminRequest struct {
+	Nama     string `json:"nama" binding:"required,min=3,max=100"`
+	Username string `json:"username" binding:"required,min=3,max=50,alphanum"`
+	Password string `json:"password" binding:"required,min=8,max=100"`
+	Role     string `json:"role" binding:"required,oneof=admin super_admin"`
+}
+
+type UpdateAdminRequest struct {
+	Nama     string `json:"nama" binding:"required,min=3,max=100"`
+	Role     string `json:"role" binding:"required,oneof=admin super_admin"`
+	IsActive *bool  `json:"isActive" binding:"required"`
+}
+
+type ResetPasswordRequest struct {
+	Password string `json:"password" binding:"required,min=8,max=100"`
+}
+
 type ModuleStats struct {
 	Total              int64      `json:"total"`
 	TerakhirDiperbarui *time.Time `json:"terakhirDiperbarui"`

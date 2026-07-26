@@ -6,8 +6,13 @@ import {
 } from "@/lib/content/fallback";
 import { defaultSettings } from "@/lib/content/settings";
 import { fallbackDestinasi } from "@/lib/content/spots";
-import type { HeroImageInput } from "@/lib/api/admin";
 import type {
+  CreateAdminInput,
+  HeroImageInput,
+  UpdateAdminInput,
+} from "@/lib/api/admin";
+import type {
+  AdminAccount,
   AdminSession,
   BahasaLokal,
   Budaya,
@@ -31,9 +36,21 @@ const KEYS = {
   bahasa: "kk_mock_bahasa",
   destinasi: "kk_mock_destinasi",
   hero: "kk_mock_hero",
+  admins: "kk_mock_admins",
   settings: "kk_mock_settings",
   session: "kk_mock_session",
 } as const;
+
+const seedAdmins: AdminAccount[] = [
+  {
+    id: 1,
+    nama: "Admin Desa",
+    username: "admin",
+    role: "super_admin",
+    isActive: true,
+    createdAt: new Date().toISOString(),
+  },
+];
 
 // Kredensial demo — HANYA berlaku di adapter mock, bukan produksi
 const DEMO_USERNAME = "admin";
@@ -173,6 +190,52 @@ export const mockDb = {
       db.items = db.items.filter((it) => it.id !== id);
       db.updatedAt = new Date().toISOString();
       save(KEYS.hero, db);
+    },
+  },
+
+  admins: {
+    async list(): Promise<AdminAccount[]> {
+      await delay(200);
+      return load<AdminAccount>(KEYS.admins, seedAdmins).items;
+    },
+    async create(input: CreateAdminInput): Promise<AdminAccount> {
+      await delay();
+      const db = load<AdminAccount>(KEYS.admins, seedAdmins);
+      const uname = input.username.toLowerCase();
+      if (db.items.some((a) => a.username.toLowerCase() === uname)) {
+        throw new Error(`"${input.username}" sudah terdaftar. Gunakan lain.`);
+      }
+      const item: AdminAccount = {
+        id: db.nextId,
+        nama: input.nama,
+        username: uname,
+        role: input.role,
+        isActive: true,
+        createdAt: new Date().toISOString(),
+      };
+      db.items = [...db.items, item];
+      db.nextId += 1;
+      save(KEYS.admins, db);
+      return item;
+    },
+    async update(id: number, input: UpdateAdminInput): Promise<AdminAccount> {
+      await delay();
+      const db = load<AdminAccount>(KEYS.admins, seedAdmins);
+      const index = db.items.findIndex((a) => a.id === id);
+      if (index === -1) throw new Error("Akun tidak ditemukan.");
+      const item = { ...db.items[index], ...input };
+      db.items[index] = item;
+      save(KEYS.admins, db);
+      return item;
+    },
+    async resetPassword(): Promise<void> {
+      await delay();
+    },
+    async remove(id: number): Promise<void> {
+      await delay();
+      const db = load<AdminAccount>(KEYS.admins, seedAdmins);
+      db.items = db.items.filter((a) => a.id !== id);
+      save(KEYS.admins, db);
     },
   },
 

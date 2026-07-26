@@ -65,6 +65,16 @@ export interface AdminSession {
   user: AdminUser;
 }
 
+/** Akun admin yang dikelola super admin di panel "Akun Admin". */
+export interface AdminAccount {
+  id: number;
+  nama: string;
+  username: string;
+  role: AdminRole;
+  isActive: boolean;
+  createdAt: string;
+}
+
 export interface ModuleStats {
   total: number;
   terakhirDiperbarui: string | null;

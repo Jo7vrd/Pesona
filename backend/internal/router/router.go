@@ -13,16 +13,17 @@ import (
 )
 
 type Deps struct {
-	Config  *config.Config
-	Logger  *slog.Logger
-	Auth    *service.AuthService
-	Makanan   *service.ContentService[entity.Makanan]
-	Budaya    *service.ContentService[entity.Budaya]
-	Bahasa    *service.ContentService[entity.BahasaLokal]
-	Destinasi *service.ContentService[entity.Destinasi]
-	Settings  *service.SettingsService
-	Hero      *service.HeroService
-	Upload    *service.UploadService
+	Config     *config.Config
+	Logger     *slog.Logger
+	Auth       *service.AuthService
+	Makanan    *service.ContentService[entity.Makanan]
+	Budaya     *service.ContentService[entity.Budaya]
+	Bahasa     *service.ContentService[entity.BahasaLokal]
+	Destinasi  *service.ContentService[entity.Destinasi]
+	Settings   *service.SettingsService
+	Hero       *service.HeroService
+	AdminUsers *service.AdminService
+	Upload     *service.UploadService
 }
 
 func New(d Deps) *gin.Engine {
@@ -45,6 +46,7 @@ func New(d Deps) *gin.Engine {
 	destinasiH := handler.NewDestinasi(d.Destinasi, d.Logger)
 	settingsH := handler.NewSettings(d.Settings, d.Logger)
 	heroH := handler.NewHero(d.Hero, d.Logger)
+	adminUsersH := handler.NewAdminUsers(d.AdminUsers, d.Logger)
 	statsH := handler.NewStats(d.Makanan, d.Budaya, d.Bahasa, d.Destinasi, d.Logger)
 	uploadH := handler.NewUploadHandler(d.Upload, d.Logger)
 
@@ -112,6 +114,15 @@ func New(d Deps) *gin.Engine {
 	admin.GET("/hero", heroH.List)
 	admin.POST("/hero", heroH.Create)
 	admin.DELETE("/hero/:id", heroH.Delete)
+
+	// ---- Kelola akun admin (khusus super_admin) ----
+	adminUsers := admin.Group("/admins")
+	adminUsers.Use(middleware.RequireRole(entity.RoleSuperAdmin))
+	adminUsers.GET("", adminUsersH.List)
+	adminUsers.POST("", adminUsersH.Create)
+	adminUsers.PUT("/:id", adminUsersH.Update)
+	adminUsers.PUT("/:id/password", adminUsersH.ResetPassword)
+	adminUsers.DELETE("/:id", adminUsersH.Delete)
 
 	return r
 }
