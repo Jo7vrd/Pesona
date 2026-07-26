@@ -23,6 +23,18 @@ func NewAuth(auth *service.AuthService, cookieName string, cookieSecure bool, lo
 	return &AuthHandler{auth: auth, cookieName: cookieName, cookieSecure: cookieSecure, logger: logger}
 }
 
+// applySameSite memilih atribut SameSite cookie sesi. Di produksi
+// (cookieSecure=true) frontend & backend biasanya beda domain (Vercel ↔
+// Railway) sehingga cookie harus SameSite=None; Secure agar terkirim
+// lintas-situs. Di pengembangan cukup Lax.
+func (h *AuthHandler) applySameSite(c *gin.Context) {
+	if h.cookieSecure {
+		c.SetSameSite(http.SameSiteNoneMode)
+	} else {
+		c.SetSameSite(http.SameSiteLaxMode)
+	}
+}
+
 // POST /api/v1/auth/login
 func (h *AuthHandler) Login(c *gin.Context) {
 	var req dto.LoginRequest
@@ -38,7 +50,7 @@ func (h *AuthHandler) Login(c *gin.Context) {
 	}
 
 	// JWT di cookie httpOnly (BR-001): tidak bisa dibaca JavaScript
-	c.SetSameSite(http.SameSiteLaxMode)
+	h.applySameSite(c)
 	c.SetCookie(h.cookieName, token, int(h.auth.TTL().Seconds()), "/", "", h.cookieSecure, true)
 
 	respondData(c, http.StatusOK, dto.SessionResponse{
@@ -54,7 +66,7 @@ func (h *AuthHandler) Login(c *gin.Context) {
 
 // POST /api/v1/auth/logout
 func (h *AuthHandler) Logout(c *gin.Context) {
-	c.SetSameSite(http.SameSiteLaxMode)
+	h.applySameSite(c)
 	c.SetCookie(h.cookieName, "", -1, "/", "", h.cookieSecure, true)
 	respondData(c, http.StatusOK, gin.H{"loggedOut": true})
 }
