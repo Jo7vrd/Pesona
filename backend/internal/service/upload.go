@@ -20,8 +20,8 @@ import (
 )
 
 const (
-	// §8.4: maksimal 5MB, sisi terpanjang 800px
-	maxUploadSize = 5 * 1024 * 1024
+	// maksimal 10MB, sisi terpanjang 800px (keluaran tetap kecil)
+	maxUploadSize = 10 * 1024 * 1024
 	maxDimension  = 800
 	jpegQuality   = 85
 )
@@ -49,7 +49,7 @@ func (s *UploadService) Process(ctx context.Context, modul string, file *multipa
 		return "", apperror.BadRequest("Modul tidak dikenal. Gunakan: makanan / budaya / destinasi / hero / umum.")
 	}
 	if file.Size > maxUploadSize {
-		return "", apperror.BadRequest("Ukuran foto maksimal 5MB.")
+		return "", apperror.BadRequest("Ukuran foto maksimal 10MB.")
 	}
 
 	f, err := file.Open()
@@ -63,7 +63,7 @@ func (s *UploadService) Process(ctx context.Context, modul string, file *multipa
 		return "", apperror.Internal(err)
 	}
 	if len(raw) > maxUploadSize {
-		return "", apperror.BadRequest("Ukuran foto maksimal 5MB.")
+		return "", apperror.BadRequest("Ukuran foto maksimal 10MB.")
 	}
 
 	contentType := http.DetectContentType(raw)

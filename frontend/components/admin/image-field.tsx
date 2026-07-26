@@ -9,12 +9,12 @@ import { uploadImage } from "@/lib/api/admin";
 import { Button } from "@/components/ui/button";
 
 /**
- * Field foto: menerima unggahan file (JPG/PNG/WebP, maks 5MB — §8.4).
+ * Field foto: menerima unggahan file (JPG/PNG/WebP, maks 10MB — §8.4).
  * Di mode mock file disimpan sebagai data URL; dengan backend asli file
  * diunggah ke endpoint upload dan nilai menjadi URL publik (R2/lokal).
  * `modul` menentukan folder tujuan di storage.
  */
-const MAX_SIZE = 5 * 1024 * 1024;
+const MAX_SIZE = 10 * 1024 * 1024;
 const ACCEPTED = ["image/jpeg", "image/png", "image/webp"];
 
 export function ImageField({
@@ -38,7 +38,7 @@ export function ImageField({
       return;
     }
     if (file.size > MAX_SIZE) {
-      toast.error("Ukuran foto maksimal 5MB.");
+      toast.error("Ukuran foto maksimal 10MB.");
       return;
     }
     setUploading(true);
@@ -120,7 +120,7 @@ export function ImageField({
             <>
               <ImagePlus className="size-6" aria-hidden />
               <span className="text-sm font-medium">Pilih foto</span>
-              <span className="text-xs">JPG, PNG, atau WebP · maks 5MB</span>
+              <span className="text-xs">JPG, PNG, atau WebP · maks 10MB</span>
             </>
           )}
         </button>
