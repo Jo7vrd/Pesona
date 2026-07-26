@@ -55,7 +55,10 @@ function storeToken(token: string): void {
   if (typeof window !== "undefined") window.localStorage.setItem(TOKEN_KEY, token);
 }
 function clearToken(): void {
-  if (typeof window !== "undefined") window.localStorage.removeItem(TOKEN_KEY);
+  if (typeof window === "undefined") return;
+  window.localStorage.removeItem(TOKEN_KEY);
+  // Bersihkan juga cookie gerbang agar proxy.ts tidak menahan di /admin.
+  document.cookie = `${SESSION_COOKIE}=; path=/; max-age=0; samesite=lax`;
 }
 function readToken(): string | null {
   return typeof window !== "undefined"
@@ -68,7 +71,10 @@ function readToken(): string | null {
  * asli memakai httpOnly cookie dari server (BR-001), jadi no-op.
  */
 export function setMockSessionCookie(): void {
-  if (!isMockMode) return;
+  if (typeof window === "undefined") return;
+  // Cookie gerbang UX (first-party, di domain frontend) yang dibaca
+  // proxy.ts untuk mengizinkan /admin/**. Berlaku di mode mock MAUPUN
+  // backend nyata — otorisasi sebenarnya tetap lewat token Bearer.
   document.cookie = `${SESSION_COOKIE}=1; path=/; max-age=${8 * 60 * 60}; samesite=lax`;
 }
 
