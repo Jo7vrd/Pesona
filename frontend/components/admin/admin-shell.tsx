@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
   BookA,
   BookOpen,
@@ -19,7 +19,6 @@ import {
   Users,
   UtensilsCrossed,
 } from "lucide-react";
-import { toast } from "sonner";
 
 import { adminApi, SESSION_COOKIE } from "@/lib/api/admin";
 import type { AdminSession } from "@/lib/types";
@@ -98,7 +97,6 @@ function NavLinks({
 }
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
   const pathname = usePathname();
   const [dark, setDark] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -129,10 +127,15 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   }
 
   async function handleLogout() {
-    await adminApi.logout();
+    try {
+      await adminApi.logout();
+    } catch {
+      // Abaikan galat jaringan — yang penting sesi lokal dibersihkan
+    }
     document.cookie = `${SESSION_COOKIE}=; path=/; max-age=0`;
-    toast.success("Anda telah keluar");
-    router.replace("/admin/login");
+    // Redirect keras: langsung ke login + muat ulang penuh, tanpa perlu
+    // refresh manual dan tanpa sisa state admin.
+    window.location.assign("/admin/login");
   }
 
   const pageTitle =
