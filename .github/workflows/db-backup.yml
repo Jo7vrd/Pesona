@@ -1,0 +1,39 @@
+name: Backup Database
+
+# Cadangkan database Postgres (Railway) otomatis tiap hari + bisa manual.
+# Hasil dump disimpan sebagai artifact GitHub (retensi 30 hari), gratis.
+#
+# SETUP (sekali):
+#   GitHub repo → Settings → Secrets and variables → Actions → New secret
+#   Name: DATABASE_URL
+#   Value: DATABASE_PUBLIC_URL dari Railway (yang mengandung proxy.rlwy.net)
+
+on:
+  schedule:
+    - cron: "0 18 * * *" # 18:00 UTC = ~01:00 WIT setiap hari
+  workflow_dispatch: {} # tombol jalankan manual
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    container: postgres:16-alpine # pg_dump v16 agar cocok dgn server
+    steps:
+      - name: Dump database
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "::error::Secret DATABASE_URL belum diset di repo."
+            exit 1
+          fi
+          STAMP=$(date +%Y-%m-%d)
+          pg_dump "$DATABASE_URL" --no-owner --no-privileges > "keikecil-$STAMP.sql"
+          echo "BACKUP_FILE=keikecil-$STAMP.sql" >> "$GITHUB_ENV"
+          ls -lh keikecil-*.sql
+
+      - name: Upload backup artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: db-backup-${{ github.run_number }}
+          path: keikecil-*.sql
+          retention-days: 30

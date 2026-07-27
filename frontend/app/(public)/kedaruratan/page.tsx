@@ -44,6 +44,10 @@ export default async function KedaruratanPage() {
         </div>
 
         <h2 className="font-display text-display mt-12">Kontak penting</h2>
+        <p className="text-muted-foreground mt-2 max-w-2xl text-sm leading-relaxed">
+          Nomor di bawah berlaku nasional. Simpan juga nomor Puskesmas/Pustu
+          dan pos SAR terdekat di desamu untuk respons lebih cepat.
+        </p>
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {emergencyContacts.map((c) => (
             <a

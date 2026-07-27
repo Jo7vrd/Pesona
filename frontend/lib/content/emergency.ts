@@ -43,6 +43,21 @@ export const emergencyContacts: EmergencyContact[] = [
     telepon: "110",
     icon: Shield,
   },
+  // ── LENGKAPI NOMOR LOKAL SEBELUM PRODUKSI ──
+  // Salin pola di bawah, isi nomor asli, lalu hapus komentarnya.
+  // Verifikasi ke perangkat desa / puskesmas setempat.
+  // {
+  //   nama: "Puskesmas Kei Kecil",
+  //   peran: "Kesehatan setempat",
+  //   telepon: "0916xxxxxxx",
+  //   icon: Ambulance,
+  // },
+  // {
+  //   nama: "Polres Maluku Tenggara",
+  //   peran: "Keamanan setempat",
+  //   telepon: "0916xxxxxxx",
+  //   icon: Shield,
+  // },
 ];
 
 export interface P3KGuide {
