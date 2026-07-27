@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Phone, TriangleAlert } from "lucide-react";
 
-import { getPageHeroImage } from "@/lib/api/server";
-import { emergencyContacts, p3kGuides } from "@/lib/content/emergency";
+import { getEmergencyContacts, getPageHeroImage } from "@/lib/api/server";
+import { emergencyIconMap, p3kGuides } from "@/lib/content/emergency";
 import {
   Accordion,
   AccordionContent,
@@ -19,10 +19,10 @@ export const metadata: Metadata = {
 };
 
 export default async function KedaruratanPage() {
-  const heroImg = await getPageHeroImage(
-    "kedaruratan",
-    "/images/u/1476673160081-cf065607f449.jpg"
-  );
+  const [heroImg, contacts] = await Promise.all([
+    getPageHeroImage("kedaruratan", "/images/u/1476673160081-cf065607f449.jpg"),
+    getEmergencyContacts(),
+  ]);
   return (
     <>
       <PageHeader
@@ -49,23 +49,26 @@ export default async function KedaruratanPage() {
           dan pos SAR terdekat di desamu untuk respons lebih cepat.
         </p>
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {emergencyContacts.map((c) => (
-            <a
-              key={c.telepon}
-              href={`tel:${c.telepon}`}
-              className="group bg-card shadow-(--shadow-card) hover:shadow-(--shadow-card-hover) focus-visible:ring-ring block rounded-(--radius-card) border p-6 transition-all hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-            >
-              <span className="bg-coral-600/10 text-coral-700 flex size-11 items-center justify-center rounded-full">
-                <c.icon className="size-5" aria-hidden />
-              </span>
-              <p className="mt-4 font-semibold">{c.nama}</p>
-              <p className="text-muted-foreground mt-0.5 text-sm">{c.peran}</p>
-              <p className="text-coral-700 mt-3 inline-flex items-center gap-1.5 text-2xl font-bold tabular-nums">
-                <Phone className="size-4" aria-hidden />
-                {c.telepon}
-              </p>
-            </a>
-          ))}
+          {contacts.map((c) => {
+            const Icon = emergencyIconMap[c.ikon] ?? emergencyIconMap.phone;
+            return (
+              <a
+                key={c.id}
+                href={`tel:${c.telepon}`}
+                className="group bg-card shadow-(--shadow-card) hover:shadow-(--shadow-card-hover) focus-visible:ring-ring block rounded-(--radius-card) border p-6 transition-all hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+              >
+                <span className="bg-coral-600/10 text-coral-700 flex size-11 items-center justify-center rounded-full">
+                  <Icon className="size-5" aria-hidden />
+                </span>
+                <p className="mt-4 font-semibold">{c.nama}</p>
+                <p className="text-muted-foreground mt-0.5 text-sm">{c.peran}</p>
+                <p className="text-coral-700 mt-3 inline-flex items-center gap-1.5 text-2xl font-bold tabular-nums">
+                  <Phone className="size-4" aria-hidden />
+                  {c.telepon}
+                </p>
+              </a>
+            );
+          })}
         </div>
 
         <h2 className="font-display text-display mt-16">

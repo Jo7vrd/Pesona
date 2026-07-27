@@ -60,6 +60,17 @@ export interface HeroImage {
   urutan: number;
 }
 
+/** Kontak darurat di halaman Kedaruratan (dikelola admin). */
+export interface EmergencyContact {
+  id: number;
+  nama: string;
+  peran: string;
+  telepon: string;
+  /** Kunci ikon: phone | anchor | ambulance | shield | waves | hospital. */
+  ikon: string;
+  urutan: number;
+}
+
 export interface AdminSession {
   token: string;
   user: AdminUser;

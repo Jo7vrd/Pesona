@@ -153,6 +153,34 @@ func NewHeroImageResponse(h entity.HeroImage) HeroImageResponse {
 	return HeroImageResponse{ID: h.ID, FotoURL: h.FotoURL, Urutan: h.Urutan}
 }
 
+type EmergencyContactRequest struct {
+	Nama    string `json:"nama" binding:"required,min=2,max=100"`
+	Peran   string `json:"peran" binding:"required,min=2,max=150"`
+	Telepon string `json:"telepon" binding:"required,min=3,max=30"`
+	Ikon    string `json:"ikon" binding:"omitempty,oneof=phone anchor ambulance shield waves hospital"`
+	Urutan  int    `json:"urutan" binding:"omitempty,gte=0,lte=999"`
+}
+
+type EmergencyContactResponse struct {
+	ID      uint   `json:"id"`
+	Nama    string `json:"nama"`
+	Peran   string `json:"peran"`
+	Telepon string `json:"telepon"`
+	Ikon    string `json:"ikon"`
+	Urutan  int    `json:"urutan"`
+}
+
+func NewEmergencyContactResponse(e entity.EmergencyContact) EmergencyContactResponse {
+	return EmergencyContactResponse{
+		ID:      e.ID,
+		Nama:    e.Nama,
+		Peran:   e.Peran,
+		Telepon: e.Telepon,
+		Ikon:    e.Ikon,
+		Urutan:  e.Urutan,
+	}
+}
+
 type LoginRequest struct {
 	Username string `json:"username" binding:"required,min=3,max=50"`
 	Password string `json:"password" binding:"required,min=8"`

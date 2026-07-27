@@ -15,6 +15,7 @@ import {
   MapPin,
   Menu,
   Moon,
+  Siren,
   Sun,
   Users,
   UtensilsCrossed,
@@ -53,6 +54,7 @@ const menu: MenuItem[] = [
   { label: "Kuliner", href: "/admin/makanan", icon: UtensilsCrossed },
   { label: "Budaya", href: "/admin/budaya", icon: Landmark },
   { label: "Bahasa Kei", href: "/admin/bahasa", icon: BookA },
+  { label: "Kedaruratan", href: "/admin/kedaruratan", icon: Siren },
   { label: "Akun Admin", href: "/admin/akun", icon: Users, superAdminOnly: true },
   { label: "Panduan", href: "/admin/panduan", icon: BookOpen },
 ];

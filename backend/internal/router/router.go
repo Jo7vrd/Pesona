@@ -22,6 +22,7 @@ type Deps struct {
 	Destinasi  *service.ContentService[entity.Destinasi]
 	Settings   *service.SettingsService
 	Hero       *service.HeroService
+	Emergency  *service.EmergencyService
 	AdminUsers *service.AdminService
 	Upload     *service.UploadService
 }
@@ -46,6 +47,7 @@ func New(d Deps) *gin.Engine {
 	destinasiH := handler.NewDestinasi(d.Destinasi, d.Logger)
 	settingsH := handler.NewSettings(d.Settings, d.Logger)
 	heroH := handler.NewHero(d.Hero, d.Logger)
+	emergencyH := handler.NewEmergency(d.Emergency, d.Logger)
 	adminUsersH := handler.NewAdminUsers(d.AdminUsers, d.Logger)
 	statsH := handler.NewStats(d.Makanan, d.Budaya, d.Bahasa, d.Destinasi, d.Logger)
 	uploadH := handler.NewUploadHandler(d.Upload, d.Logger)
@@ -71,6 +73,7 @@ func New(d Deps) *gin.Engine {
 	v1.GET("/destinasi/:id", destinasiH.ByID)
 	v1.GET("/settings", settingsH.Get)
 	v1.GET("/hero", heroH.List)
+	v1.GET("/kedaruratan", emergencyH.List)
 
 	// ---- Autentikasi ----
 	auth := v1.Group("/auth")
@@ -114,6 +117,11 @@ func New(d Deps) *gin.Engine {
 	admin.GET("/hero", heroH.List)
 	admin.POST("/hero", heroH.Create)
 	admin.DELETE("/hero/:id", heroH.Delete)
+
+	admin.GET("/kedaruratan", emergencyH.List)
+	admin.POST("/kedaruratan", emergencyH.Create)
+	admin.PUT("/kedaruratan/:id", emergencyH.Update)
+	admin.DELETE("/kedaruratan/:id", emergencyH.Delete)
 
 	// ---- Kelola akun admin (khusus super_admin) ----
 	adminUsers := admin.Group("/admins")

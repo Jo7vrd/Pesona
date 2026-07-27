@@ -4,10 +4,12 @@ import {
   fallbackHero,
   fallbackMakanan,
 } from "@/lib/content/fallback";
+import { fallbackEmergency } from "@/lib/content/emergency";
 import { defaultSettings } from "@/lib/content/settings";
 import { fallbackDestinasi } from "@/lib/content/spots";
 import type {
   CreateAdminInput,
+  EmergencyContactInput,
   HeroImageInput,
   UpdateAdminInput,
 } from "@/lib/api/admin";
@@ -18,6 +20,7 @@ import type {
   Budaya,
   DashboardStats,
   Destinasi,
+  EmergencyContact,
   HeroImage,
   Makanan,
   SiteSettings,
@@ -35,6 +38,7 @@ const KEYS = {
   budaya: "kk_mock_budaya",
   bahasa: "kk_mock_bahasa",
   destinasi: "kk_mock_destinasi",
+  kedaruratan: "kk_mock_kedaruratan",
   hero: "kk_mock_hero",
   admins: "kk_mock_admins",
   settings: "kk_mock_settings",
@@ -166,6 +170,11 @@ export const mockDb = {
   destinasi: makeCollection<Destinasi, Omit<Destinasi, "id">>(
     KEYS.destinasi,
     fallbackDestinasi,
+    "nama"
+  ),
+  kedaruratan: makeCollection<EmergencyContact, EmergencyContactInput>(
+    KEYS.kedaruratan,
+    fallbackEmergency,
     "nama"
   ),
 

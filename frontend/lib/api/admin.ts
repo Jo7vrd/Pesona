@@ -13,10 +13,13 @@ import type {
   Budaya,
   DashboardStats,
   Destinasi,
+  EmergencyContact,
   HeroImage,
   Makanan,
   SiteSettings,
 } from "@/lib/types";
+
+export type EmergencyContactInput = Omit<EmergencyContact, "id">;
 
 export interface HeroImageInput {
   fotoUrl: string;
@@ -96,6 +99,7 @@ export interface AdminApi {
   budaya: Collection<Budaya, BudayaInput>;
   bahasa: Collection<BahasaLokal, BahasaInput>;
   destinasi: Collection<Destinasi, DestinasiInput>;
+  kedaruratan: Collection<EmergencyContact, EmergencyContactInput>;
   hero: {
     list(): Promise<HeroImage[]>;
     create(input: HeroImageInput): Promise<HeroImage>;
@@ -225,6 +229,7 @@ function httpApi(baseURL: string): AdminApi {
     budaya: collection("budaya"),
     bahasa: collection("bahasa"),
     destinasi: collection("destinasi"),
+    kedaruratan: collection("kedaruratan"),
     hero: {
       list: async () =>
         (await http.get<{ data: HeroImage[] }>("/api/v1/admin/hero")).data.data,
@@ -277,6 +282,7 @@ const mockApi: AdminApi = {
   budaya: mockDb.budaya,
   bahasa: mockDb.bahasa,
   destinasi: mockDb.destinasi,
+  kedaruratan: mockDb.kedaruratan,
   hero: mockDb.hero,
   admins: mockDb.admins,
   settings: mockDb.settings,

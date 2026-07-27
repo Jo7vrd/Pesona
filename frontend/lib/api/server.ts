@@ -6,12 +6,14 @@ import {
   fallbackHero,
   fallbackMakanan,
 } from "@/lib/content/fallback";
+import { fallbackEmergency } from "@/lib/content/emergency";
 import { defaultSettings } from "@/lib/content/settings";
 import { fallbackDestinasi } from "@/lib/content/spots";
 import type {
   BahasaLokal,
   Budaya,
   Destinasi,
+  EmergencyContact,
   HeroImage,
   Makanan,
   SiteSettings,
@@ -102,4 +104,12 @@ export async function getPageHeroImage(
 ): Promise<string> {
   const settings = await getSiteSettings();
   return settings.heroImages?.[page] || fallback;
+}
+
+export async function getEmergencyContacts(): Promise<EmergencyContact[]> {
+  const data = await fetchApi<EmergencyContact[]>(
+    "/api/v1/kedaruratan",
+    "kedaruratan"
+  );
+  return data && data.length > 0 ? data : fallbackEmergency;
 }

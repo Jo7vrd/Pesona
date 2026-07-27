@@ -226,6 +226,12 @@ func seedContent(db *gorm.DB, logger *slog.Logger) error {
 		return err
 	}
 
+	// Kontak darurat nasional — diisi hanya bila tabel masih kosong.
+	// Nomor lokal (puskesmas, SAR) dilengkapi operator desa lewat admin.
+	if err := seedEmergencyIfEmpty(db); err != nil {
+		return err
+	}
+
 	logger.Info("konten awal terpasang",
 		"makanan", len(makanan), "budaya", len(budaya),
 		"bahasa", len(bahasa), "destinasi", len(destinasi))
@@ -256,6 +262,23 @@ func seedHeroIfEmpty(db *gorm.DB) error {
 		{FotoURL: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&q=80", Urutan: 1},
 		{FotoURL: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1920&q=80", Urutan: 2},
 		{FotoURL: "https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=1920&q=80", Urutan: 3},
+	}
+	return db.Create(&defaults).Error
+}
+
+func seedEmergencyIfEmpty(db *gorm.DB) error {
+	var count int64
+	if err := db.Model(&entity.EmergencyContact{}).Count(&count).Error; err != nil {
+		return err
+	}
+	if count > 0 {
+		return nil
+	}
+	defaults := []entity.EmergencyContact{
+		{Nama: "Nomor Darurat Nasional", Peran: "Semua jenis kedaruratan", Telepon: "112", Ikon: "phone", Urutan: 1},
+		{Nama: "Basarnas", Peran: "Pencarian & pertolongan di laut", Telepon: "115", Ikon: "anchor", Urutan: 2},
+		{Nama: "Ambulans", Peran: "Kedaruratan medis", Telepon: "119", Ikon: "ambulance", Urutan: 3},
+		{Nama: "Polisi", Peran: "Keamanan & ketertiban", Telepon: "110", Ikon: "shield", Urutan: 4},
 	}
 	return db.Create(&defaults).Error
 }

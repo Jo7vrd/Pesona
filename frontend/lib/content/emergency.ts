@@ -1,63 +1,44 @@
 import {
   Ambulance,
   Anchor,
+  HeartPulse,
   Phone,
   Shield,
+  Waves,
   type LucideIcon,
 } from "lucide-react";
 
-export interface EmergencyContact {
-  nama: string;
-  peran: string;
-  telepon: string;
-  icon: LucideIcon;
-}
+import type { EmergencyContact } from "@/lib/types";
+
+/** Peta kunci ikon → komponen lucide untuk kontak darurat. */
+export const emergencyIconMap: Record<string, LucideIcon> = {
+  phone: Phone,
+  anchor: Anchor,
+  ambulance: Ambulance,
+  shield: Shield,
+  waves: Waves,
+  hospital: HeartPulse,
+};
+
+/** Pilihan ikon untuk form admin kontak darurat. */
+export const emergencyIconOptions = [
+  { value: "phone", label: "Telepon" },
+  { value: "anchor", label: "Laut / SAR" },
+  { value: "ambulance", label: "Ambulans / medis" },
+  { value: "shield", label: "Keamanan" },
+  { value: "waves", label: "Pesisir" },
+  { value: "hospital", label: "Rumah sakit" },
+] as const;
 
 /**
- * Konten statis sesuai BR-004, tidak dikelola lewat admin.
- * Nomor nasional resmi; nomor lokal (puskesmas, pos SAR terdekat)
- * dilengkapi perangkat desa sebelum produksi.
+ * Fallback (BR-002) kontak darurat bila backend belum tersedia. Nomor
+ * nasional resmi; nomor lokal dilengkapi operator desa lewat admin.
  */
-export const emergencyContacts: EmergencyContact[] = [
-  {
-    nama: "Nomor Darurat Nasional",
-    peran: "Semua jenis kedaruratan",
-    telepon: "112",
-    icon: Phone,
-  },
-  {
-    nama: "Basarnas",
-    peran: "Pencarian & pertolongan di laut",
-    telepon: "115",
-    icon: Anchor,
-  },
-  {
-    nama: "Ambulans",
-    peran: "Kedaruratan medis",
-    telepon: "119",
-    icon: Ambulance,
-  },
-  {
-    nama: "Polisi",
-    peran: "Keamanan & ketertiban",
-    telepon: "110",
-    icon: Shield,
-  },
-  // ── LENGKAPI NOMOR LOKAL SEBELUM PRODUKSI ──
-  // Salin pola di bawah, isi nomor asli, lalu hapus komentarnya.
-  // Verifikasi ke perangkat desa / puskesmas setempat.
-  // {
-  //   nama: "Puskesmas Kei Kecil",
-  //   peran: "Kesehatan setempat",
-  //   telepon: "0916xxxxxxx",
-  //   icon: Ambulance,
-  // },
-  // {
-  //   nama: "Polres Maluku Tenggara",
-  //   peran: "Keamanan setempat",
-  //   telepon: "0916xxxxxxx",
-  //   icon: Shield,
-  // },
+export const fallbackEmergency: EmergencyContact[] = [
+  { id: 1, nama: "Nomor Darurat Nasional", peran: "Semua jenis kedaruratan", telepon: "112", ikon: "phone", urutan: 1 },
+  { id: 2, nama: "Basarnas", peran: "Pencarian & pertolongan di laut", telepon: "115", ikon: "anchor", urutan: 2 },
+  { id: 3, nama: "Ambulans", peran: "Kedaruratan medis", telepon: "119", ikon: "ambulance", urutan: 3 },
+  { id: 4, nama: "Polisi", peran: "Keamanan & ketertiban", telepon: "110", ikon: "shield", urutan: 4 },
 ];
 
 export interface P3KGuide {

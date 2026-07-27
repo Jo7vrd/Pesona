@@ -100,6 +100,7 @@ func run(logger *slog.Logger) error {
 	adminUsersSvc := service.NewAdminService(adminRepo)
 	settingsSvc := service.NewSettings(repository.NewSettingsRepo(db), reval)
 	heroSvc := service.NewHero(repository.NewHeroRepo(db), store, reval, logger)
+	emergencySvc := service.NewEmergency(repository.NewEmergencyRepo(db), reval)
 	uploadSvc := service.NewUpload(store)
 
 	engine := router.New(router.Deps{
@@ -112,6 +113,7 @@ func run(logger *slog.Logger) error {
 		Destinasi:  destinasiSvc,
 		Settings:   settingsSvc,
 		Hero:       heroSvc,
+		Emergency:  emergencySvc,
 		AdminUsers: adminUsersSvc,
 		Upload:     uploadSvc,
 	})

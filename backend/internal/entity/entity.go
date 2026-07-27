@@ -71,6 +71,21 @@ type HeroImage struct {
 
 func (HeroImage) TableName() string { return "hero_images" }
 
+// EmergencyContact adalah satu kontak darurat di halaman Kedaruratan,
+// dikelola operator desa lewat admin. Ikon disimpan sebagai kunci string.
+type EmergencyContact struct {
+	ID        uint   `gorm:"primaryKey"`
+	Nama      string `gorm:"size:100;not null"`
+	Peran     string `gorm:"size:150;not null"`
+	Telepon   string `gorm:"size:30;not null"`
+	Ikon      string `gorm:"size:20;not null;default:phone"`
+	Urutan    int    `gorm:"not null;default:0"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+}
+
+func (EmergencyContact) TableName() string { return "emergency_contacts" }
+
 // Setting menyimpan setelan tingkat-situs sebagai pasangan kunci-nilai
 // (mis. "bahasa_video" → tautan YouTube halaman Bahasa Kei).
 type Setting struct {

@@ -9,6 +9,7 @@ const VALID_TAGS = new Set([
   "settings",
   "hero",
   "peta",
+  "kedaruratan",
 ]);
 
 /**
