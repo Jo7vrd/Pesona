@@ -57,3 +57,30 @@ func (s *SettingsService) SetPetaKarangFoto(ctx context.Context, url string) err
 	s.reval.Trigger("peta")
 	return nil
 }
+
+// PageHeroes mengembalikan peta slug-halaman → URL foto hero untuk
+// halaman yang sudah disetel (yang kosong dilewati).
+func (s *SettingsService) PageHeroes(ctx context.Context) (map[string]string, error) {
+	out := make(map[string]string)
+	for _, page := range entity.PageHeroPages {
+		v, _, err := s.repo.Get(ctx, entity.PageHeroKey(page))
+		if err != nil {
+			return nil, apperror.Internal(err)
+		}
+		if v != "" {
+			out[page] = v
+		}
+	}
+	return out, nil
+}
+
+func (s *SettingsService) SetPageHero(ctx context.Context, page, url string) error {
+	if !entity.IsPageHeroPage(page) {
+		return apperror.BadRequest("Halaman hero tidak dikenal.")
+	}
+	if err := s.repo.Set(ctx, entity.PageHeroKey(page), url); err != nil {
+		return apperror.Internal(err)
+	}
+	s.reval.Trigger("settings")
+	return nil
+}

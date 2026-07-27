@@ -3,7 +3,15 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { GripVertical, ImageIcon, Loader2, MapPin, Plus, Trash2 } from "lucide-react";
+import {
+  GripVertical,
+  ImageIcon,
+  Loader2,
+  MapPin,
+  PanelTop,
+  Plus,
+  Trash2,
+} from "lucide-react";
 import { toast } from "sonner";
 
 import { adminApi } from "@/lib/api/admin";
@@ -16,12 +24,85 @@ import { Skeleton } from "@/components/ui/skeleton";
 const HERO_KEY = ["admin", "hero"];
 const SETTINGS_KEY = ["admin", "settings"];
 
+const HERO_PAGES = [
+  { slug: "destinasi", label: "Destinasi" },
+  { slug: "makanan", label: "Kuliner" },
+  { slug: "budaya", label: "Budaya" },
+  { slug: "bahasa", label: "Bahasa Kei" },
+  { slug: "peta", label: "Peta" },
+  { slug: "kedaruratan", label: "Kedaruratan" },
+] as const;
+
 export default function AdminTampilanPage() {
   return (
     <div className="mx-auto max-w-4xl space-y-8">
       <HeroCarouselManager />
+      <PageHeroesManager />
       <PetaKarangSetting />
     </div>
+  );
+}
+
+/* ------------------------------------------------ Hero tiap halaman */
+
+function PageHeroesManager() {
+  const queryClient = useQueryClient();
+  const [savingSlug, setSavingSlug] = useState<string | null>(null);
+
+  const { data, isPending } = useQuery({
+    queryKey: SETTINGS_KEY,
+    queryFn: () => adminApi.settings.get(),
+  });
+
+  const mutation = useMutation({
+    mutationFn: (v: { slug: string; url: string }) =>
+      adminApi.settings.update({ heroImages: { [v.slug]: v.url || null } }),
+    onMutate: (v) => setSavingSlug(v.slug),
+    onSuccess: (saved) => {
+      queryClient.setQueryData(SETTINGS_KEY, saved);
+      toast.success("Foto hero halaman disimpan");
+    },
+    onError: (error) => toast.error(error.message),
+    onSettled: () => setSavingSlug(null),
+  });
+
+  return (
+    <section className="bg-card rounded-xl border p-5">
+      <div className="flex items-center gap-2">
+        <PanelTop className="text-lagoon-600 size-4.5" aria-hidden />
+        <h2 className="font-semibold">Foto hero tiap halaman</h2>
+      </div>
+      <p className="text-muted-foreground mt-1 text-sm">
+        Gambar besar di bagian atas tiap halaman. Unggah untuk mengganti;
+        kosongkan (tombol ✕) untuk kembali ke foto bawaan. Tersimpan otomatis.
+      </p>
+
+      {isPending ? (
+        <div className="mt-4 grid gap-5 sm:grid-cols-2">
+          {HERO_PAGES.map((p) => (
+            <Skeleton key={p.slug} className="aspect-[16/9] w-full rounded-xl" />
+          ))}
+        </div>
+      ) : (
+        <div className="mt-4 grid gap-5 sm:grid-cols-2">
+          {HERO_PAGES.map((p) => (
+            <div key={p.slug}>
+              <div className="mb-2 flex items-center gap-2">
+                <p className="text-sm font-medium">{p.label}</p>
+                {savingSlug === p.slug ? (
+                  <Loader2 className="text-muted-foreground size-3.5 animate-spin" aria-hidden />
+                ) : null}
+              </div>
+              <ImageField
+                value={data?.heroImages?.[p.slug] ?? ""}
+                onChange={(url) => mutation.mutate({ slug: p.slug, url })}
+                modul="umum"
+              />
+            </div>
+          ))}
+        </div>
+      )}
+    </section>
   );
 }
 

@@ -93,4 +93,6 @@ export interface SiteSettings {
   bahasaVideo?: string | null;
   /** URL foto peta terumbu karang di halaman Peta; null bila kosong. */
   petaKarangFoto?: string | null;
+  /** Foto hero per halaman modul: slug → URL (null/kosong = pakai bawaan). */
+  heroImages?: Record<string, string | null>;
 }

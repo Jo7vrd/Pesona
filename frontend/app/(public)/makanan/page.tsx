@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { getAllMakanan } from "@/lib/api/server";
+import { getAllMakanan, getPageHeroImage } from "@/lib/api/server";
 import { PageHeader } from "@/components/site/page-header";
 import { FoodExplorer } from "./food-explorer";
 
@@ -12,7 +12,10 @@ export const metadata: Metadata = {
 };
 
 export default async function MakananPage() {
-  const items = await getAllMakanan();
+  const [items, heroImg] = await Promise.all([
+    getAllMakanan(),
+    getPageHeroImage("makanan", "/images/kuliner-kei.jpg"),
+  ]);
 
   return (
     <>
@@ -21,7 +24,7 @@ export default async function MakananPage() {
         eyebrow="Kuliner"
         title="Cita rasa dari tanah dan laut Kei"
         description="Makanan pokok dari singkong, hasil laut yang diambil secukupnya, dan rempah yang tumbuh di pekarangan, inilah meja makan masyarakat Kei."
-        imageUrl="/images/kuliner-kei.jpg"
+        imageUrl={heroImg}
       />
       <section className="container-page py-12 md:py-16">
         <FoodExplorer items={items} />

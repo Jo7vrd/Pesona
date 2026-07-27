@@ -273,6 +273,9 @@ export const mockDb = {
           input.petaKarangFoto !== undefined
             ? input.petaKarangFoto || null
             : base.petaKarangFoto,
+        heroImages: input.heroImages
+          ? { ...(base.heroImages ?? {}), ...input.heroImages }
+          : base.heroImages,
       };
       window.localStorage.setItem(KEYS.settings, JSON.stringify(next));
       return next;

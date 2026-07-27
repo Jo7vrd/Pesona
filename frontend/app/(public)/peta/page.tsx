@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { MapPin } from "lucide-react";
 
 import { getSiteSettings } from "@/lib/api/server";
@@ -9,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "@/components/motion/fade-in";
 import { StaggerGrid, StaggerItem } from "@/components/motion/stagger-grid";
 import { PageHeader } from "@/components/site/page-header";
+import { ReefMapViewer } from "@/components/site/reef-map-viewer";
 import { Tr } from "@/components/site/tr";
 
 export const metadata: Metadata = {
@@ -25,6 +25,8 @@ const DEFAULT_PETA_KARANG = "/images/u/1544551763-46a013bb70d5.jpg";
 export default async function PetaPage() {
   const settings = await getSiteSettings();
   const petaKarangFoto = settings.petaKarangFoto || DEFAULT_PETA_KARANG;
+  const heroImg =
+    settings.heroImages?.peta ?? "/images/u/1537956965359-7573183d1f57.jpg";
 
   return (
     <>
@@ -33,7 +35,7 @@ export default async function PetaPage() {
         eyebrow="Peta karang"
         title="Temukan titik terbaik di perairan Kei"
         description="Pantai, laguna, dan taman karang pilihan beserta koordinatnya. Hormati aturan sasi: bila ada tanda larangan, jangan memanen apa pun."
-        imageUrl="/images/u/1537956965359-7573183d1f57.jpg"
+        imageUrl={heroImg}
       />
 
       <section className="container-page py-12 md:py-16">
@@ -56,25 +58,17 @@ export default async function PetaPage() {
         </FadeIn>
 
         <FadeIn className="mt-10">
-          <figure className="overflow-hidden rounded-(--radius-card) border shadow-(--shadow-card)">
-            <div className="relative aspect-[16/9] w-full">
-              <Image
-                src={petaKarangFoto}
-                alt="Peta sebaran terumbu karang perairan Kei Kecil"
-                fill
-                sizes="(max-width: 768px) 100vw, 900px"
-                className="object-cover"
-                unoptimized={!petaKarangFoto.startsWith("/")}
-              />
-            </div>
-            <figcaption className="text-muted-foreground bg-card px-4 py-3 text-sm">
-              <Tr
-                id="Sebaran terumbu karang dan titik snorkeling perairan Kei Kecil."
-                en="Coral reefs and snorkeling spots across Kei Kecil waters."
-                zh="小凯岛海域的珊瑚礁与浮潜地点分布。"
-              />
-            </figcaption>
-          </figure>
+          <ReefMapViewer
+            src={petaKarangFoto}
+            alt="Peta sebaran terumbu karang perairan Kei Kecil"
+          />
+          <p className="text-muted-foreground mt-3 text-sm">
+            <Tr
+              id="Sebaran terumbu karang dan titik snorkeling perairan Kei Kecil. Seret dan zoom untuk menjelajah."
+              en="Coral reefs and snorkeling spots across Kei Kecil waters. Drag and zoom to explore."
+              zh="小凯岛海域的珊瑚礁与浮潜地点分布。拖动并缩放以浏览。"
+            />
+          </p>
         </FadeIn>
 
         <StaggerGrid className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

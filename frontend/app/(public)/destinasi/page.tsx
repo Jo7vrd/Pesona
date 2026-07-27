@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, MapPin } from "lucide-react";
 
-import { getAllDestinasi } from "@/lib/api/server";
+import { getAllDestinasi, getPageHeroImage } from "@/lib/api/server";
 import { BLUR_DATA_URL } from "@/lib/blur";
 import { jenisSpotTr, spotDescTr } from "@/lib/content/i18n-content";
 import { Badge } from "@/components/ui/badge";
@@ -22,7 +22,10 @@ export const metadata: Metadata = {
 };
 
 export default async function DestinasiPage() {
-  const spots = await getAllDestinasi();
+  const [spots, heroImg] = await Promise.all([
+    getAllDestinasi(),
+    getPageHeroImage("destinasi", "/images/u/1546484475-7f7bd55792da.jpg"),
+  ]);
   const denganVideo = spots.filter((s) => s.videoYoutube);
 
   return (
@@ -32,7 +35,7 @@ export default async function DestinasiPage() {
         eyebrow="Destinasi"
         title="Tempat-tempat yang membuat Kei dikenang"
         description="Dari pasir sehalus tepung hingga laguna tersembunyi di balik karst, inilah alasan orang datang jauh-jauh ke ujung timur Indonesia."
-        imageUrl="/images/u/1546484475-7f7bd55792da.jpg"
+        imageUrl={heroImg}
       />
 
       <section className="container-page py-12 md:py-16">

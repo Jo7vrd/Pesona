@@ -19,7 +19,8 @@ func NewSettings(svc *service.SettingsService, logger *slog.Logger) *SettingsHan
 	return &SettingsHandler{svc: svc, logger: logger}
 }
 
-// GET /api/v1/settings — publik (dikonsumsi RSC halaman Bahasa Kei & Peta).
+// GET /api/v1/settings — publik (dikonsumsi RSC halaman Bahasa Kei, Peta,
+// dan foto hero tiap halaman modul).
 func (h *SettingsHandler) Get(c *gin.Context) {
 	ctx := c.Request.Context()
 	video, err := h.svc.BahasaVideo(ctx)
@@ -32,7 +33,12 @@ func (h *SettingsHandler) Get(c *gin.Context) {
 		respondError(c, h.logger, err)
 		return
 	}
-	respondData(c, http.StatusOK, dto.NewSettingsResponse(video, petaFoto))
+	heroes, err := h.svc.PageHeroes(ctx)
+	if err != nil {
+		respondError(c, h.logger, err)
+		return
+	}
+	respondData(c, http.StatusOK, dto.NewSettingsResponse(video, petaFoto, heroes))
 }
 
 // PUT /api/v1/admin/settings — admin. Pembaruan bersifat parsial: hanya
@@ -67,7 +73,22 @@ func (h *SettingsHandler) Update(c *gin.Context) {
 		}
 	}
 
-	// Kembalikan snapshot terbaru kedua field.
+	for page, urlPtr := range req.HeroImages {
+		url := ""
+		if urlPtr != nil {
+			url = *urlPtr
+		}
+		if len(url) > 500 {
+			respondInvalid(c)
+			return
+		}
+		if err := h.svc.SetPageHero(ctx, page, url); err != nil {
+			respondError(c, h.logger, err)
+			return
+		}
+	}
+
+	// Kembalikan snapshot terbaru.
 	video, err := h.svc.BahasaVideo(ctx)
 	if err != nil {
 		respondError(c, h.logger, err)
@@ -78,5 +99,10 @@ func (h *SettingsHandler) Update(c *gin.Context) {
 		respondError(c, h.logger, err)
 		return
 	}
-	respondData(c, http.StatusOK, dto.NewSettingsResponse(video, petaFoto))
+	heroes, err := h.svc.PageHeroes(ctx)
+	if err != nil {
+		respondError(c, h.logger, err)
+		return
+	}
+	respondData(c, http.StatusOK, dto.NewSettingsResponse(video, petaFoto, heroes))
 }

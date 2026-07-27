@@ -91,3 +91,15 @@ export async function getHeroImages(): Promise<HeroImage[]> {
   const data = await fetchApi<HeroImage[]>("/api/v1/hero", "hero");
   return data && data.length > 0 ? data : fallbackHero;
 }
+
+/**
+ * Foto hero untuk halaman modul tertentu (mis. "destinasi"). Memakai
+ * foto yang disetel admin, atau fallback lokal bila belum ada.
+ */
+export async function getPageHeroImage(
+  page: string,
+  fallback: string
+): Promise<string> {
+  const settings = await getSiteSettings();
+  return settings.heroImages?.[page] || fallback;
+}

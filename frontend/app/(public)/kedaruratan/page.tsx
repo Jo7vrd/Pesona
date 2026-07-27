@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Phone, TriangleAlert } from "lucide-react";
 
+import { getPageHeroImage } from "@/lib/api/server";
 import { emergencyContacts, p3kGuides } from "@/lib/content/emergency";
 import {
   Accordion,
@@ -17,7 +18,11 @@ export const metadata: Metadata = {
   alternates: { canonical: "/kedaruratan" },
 };
 
-export default function KedaruratanPage() {
+export default async function KedaruratanPage() {
+  const heroImg = await getPageHeroImage(
+    "kedaruratan",
+    "/images/u/1476673160081-cf065607f449.jpg"
+  );
   return (
     <>
       <PageHeader
@@ -25,7 +30,7 @@ export default function KedaruratanPage() {
         eyebrow="Kedaruratan pesisir"
         title="Tenang, dan ikuti langkahnya"
         description="Simpan halaman ini sebelum ke pantai. Kontak penting bisa langsung dihubungi dari ponsel Anda."
-        imageUrl="/images/u/1476673160081-cf065607f449.jpg"
+        imageUrl={heroImg}
       />
 
       <section className="container-page py-12 md:py-16">

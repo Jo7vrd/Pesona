@@ -27,7 +27,10 @@ export default async function BahasaPage() {
         eyebrow="Bahasa Kei"
         title="Sapa warga dengan bahasanya sendiri"
         description="Beberapa kata Kei yang Anda ucapkan akan membuka lebih banyak senyum daripada seribu foto. Mulai dari sini."
-        imageUrl="/images/u/1541417904950-b855846fe074.jpg"
+        imageUrl={
+          settings.heroImages?.bahasa ??
+          "/images/u/1541417904950-b855846fe074.jpg"
+        }
       />
       <section className="container-page py-12 md:py-16">
         <DictionarySearch entries={entries} />

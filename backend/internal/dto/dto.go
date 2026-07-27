@@ -226,14 +226,17 @@ type UploadResponse struct {
 }
 
 // Setelan situs. Field opsional; string kosong → NULL/none.
+// heroImages: peta slug-halaman → URL foto hero (pembaruan parsial).
 type SettingsRequest struct {
-	BahasaVideo    *string `json:"bahasaVideo" binding:"omitempty,max=500"`
-	PetaKarangFoto *string `json:"petaKarangFoto" binding:"omitempty,max=500"`
+	BahasaVideo    *string            `json:"bahasaVideo" binding:"omitempty,max=500"`
+	PetaKarangFoto *string            `json:"petaKarangFoto" binding:"omitempty,max=500"`
+	HeroImages     map[string]*string `json:"heroImages"`
 }
 
 type SettingsResponse struct {
-	BahasaVideo    *string `json:"bahasaVideo"`
-	PetaKarangFoto *string `json:"petaKarangFoto"`
+	BahasaVideo    *string           `json:"bahasaVideo"`
+	PetaKarangFoto *string           `json:"petaKarangFoto"`
+	HeroImages     map[string]string `json:"heroImages"`
 }
 
 func strPtrOrNil(v string) *string {
@@ -243,9 +246,13 @@ func strPtrOrNil(v string) *string {
 	return &v
 }
 
-func NewSettingsResponse(bahasaVideo, petaKarangFoto string) SettingsResponse {
+func NewSettingsResponse(bahasaVideo, petaKarangFoto string, heroImages map[string]string) SettingsResponse {
+	if heroImages == nil {
+		heroImages = map[string]string{}
+	}
 	return SettingsResponse{
 		BahasaVideo:    strPtrOrNil(bahasaVideo),
 		PetaKarangFoto: strPtrOrNil(petaKarangFoto),
+		HeroImages:     heroImages,
 	}
 }
