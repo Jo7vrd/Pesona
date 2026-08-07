@@ -62,13 +62,19 @@ export default async function PetaPage() {
             src={petaKarangFoto}
             alt="Peta sebaran terumbu karang perairan Kei Kecil"
           />
-          <p className="text-muted-foreground mt-3 text-sm">
-            <Tr
-              id="Sebaran terumbu karang dan titik snorkeling perairan Kei Kecil. Seret dan zoom untuk menjelajah."
-              en="Coral reefs and snorkeling spots across Kei Kecil waters. Drag and zoom to explore."
-              zh="小凯岛海域的珊瑚礁与浮潜地点分布。拖动并缩放以浏览。"
-            />
-          </p>
+          {settings.petaKarangDeskripsi ? (
+            <p className="text-muted-foreground mt-3 text-sm whitespace-pre-line">
+              {settings.petaKarangDeskripsi}
+            </p>
+          ) : (
+            <p className="text-muted-foreground mt-3 text-sm">
+              <Tr
+                id="Sebaran terumbu karang dan titik snorkeling perairan Kei Kecil. Seret dan zoom untuk menjelajah."
+                en="Coral reefs and snorkeling spots across Kei Kecil waters. Drag and zoom to explore."
+                zh="小凯岛海域的珊瑚礁与浮潜地点分布。拖动并缩放以浏览。"
+              />
+            </p>
+          )}
         </FadeIn>
 
         <StaggerGrid className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

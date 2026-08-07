@@ -19,26 +19,40 @@ func NewSettings(svc *service.SettingsService, logger *slog.Logger) *SettingsHan
 	return &SettingsHandler{svc: svc, logger: logger}
 }
 
-// GET /api/v1/settings — publik (dikonsumsi RSC halaman Bahasa Kei, Peta,
-// dan foto hero tiap halaman modul).
-func (h *SettingsHandler) Get(c *gin.Context) {
+// snapshot mengumpulkan seluruh setelan menjadi satu respons.
+func (h *SettingsHandler) snapshot(c *gin.Context) (dto.SettingsResponse, bool) {
 	ctx := c.Request.Context()
 	video, err := h.svc.BahasaVideo(ctx)
 	if err != nil {
 		respondError(c, h.logger, err)
-		return
+		return dto.SettingsResponse{}, false
 	}
 	petaFoto, err := h.svc.PetaKarangFoto(ctx)
 	if err != nil {
 		respondError(c, h.logger, err)
-		return
+		return dto.SettingsResponse{}, false
+	}
+	petaDesk, err := h.svc.PetaKarangDeskripsi(ctx)
+	if err != nil {
+		respondError(c, h.logger, err)
+		return dto.SettingsResponse{}, false
 	}
 	heroes, err := h.svc.PageHeroes(ctx)
 	if err != nil {
 		respondError(c, h.logger, err)
+		return dto.SettingsResponse{}, false
+	}
+	return dto.NewSettingsResponse(video, petaFoto, petaDesk, heroes), true
+}
+
+// GET /api/v1/settings — publik (dikonsumsi RSC halaman Bahasa Kei, Peta,
+// dan foto hero tiap halaman modul).
+func (h *SettingsHandler) Get(c *gin.Context) {
+	resp, ok := h.snapshot(c)
+	if !ok {
 		return
 	}
-	respondData(c, http.StatusOK, dto.NewSettingsResponse(video, petaFoto, heroes))
+	respondData(c, http.StatusOK, resp)
 }
 
 // PUT /api/v1/admin/settings — admin. Pembaruan bersifat parsial: hanya
@@ -73,6 +87,13 @@ func (h *SettingsHandler) Update(c *gin.Context) {
 		}
 	}
 
+	if req.PetaKarangDeskrip != nil {
+		if err := h.svc.SetPetaKarangDeskripsi(ctx, *req.PetaKarangDeskrip); err != nil {
+			respondError(c, h.logger, err)
+			return
+		}
+	}
+
 	for page, urlPtr := range req.HeroImages {
 		url := ""
 		if urlPtr != nil {
@@ -88,21 +109,9 @@ func (h *SettingsHandler) Update(c *gin.Context) {
 		}
 	}
 
-	// Kembalikan snapshot terbaru.
-	video, err := h.svc.BahasaVideo(ctx)
-	if err != nil {
-		respondError(c, h.logger, err)
+	resp, ok := h.snapshot(c)
+	if !ok {
 		return
 	}
-	petaFoto, err := h.svc.PetaKarangFoto(ctx)
-	if err != nil {
-		respondError(c, h.logger, err)
-		return
-	}
-	heroes, err := h.svc.PageHeroes(ctx)
-	if err != nil {
-		respondError(c, h.logger, err)
-		return
-	}
-	respondData(c, http.StatusOK, dto.NewSettingsResponse(video, petaFoto, heroes))
+	respondData(c, http.StatusOK, resp)
 }

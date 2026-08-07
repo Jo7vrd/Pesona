@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, MapPin } from "lucide-react";
+import { ArrowRight, ChevronDown, MapPin } from "lucide-react";
 
 import { getAllDestinasi, getPageHeroImage } from "@/lib/api/server";
 import { BLUR_DATA_URL } from "@/lib/blur";
@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "@/components/motion/fade-in";
 import { StaggerGrid, StaggerItem } from "@/components/motion/stagger-grid";
 import { TiltCard } from "@/components/motion/tilt-card";
+import { Subsections } from "@/components/site/subsections";
 import { PageHeader } from "@/components/site/page-header";
 import { Tr } from "@/components/site/tr";
 import { YouTubeEmbed } from "@/components/site/youtube-embed";
@@ -73,6 +74,18 @@ export default async function DestinasiPage() {
                       zh={spotDescTr[spot.id]?.zh}
                     />
                   </p>
+                  {spot.subsections && spot.subsections.length > 0 ? (
+                    <details className="group/sub mt-3">
+                      <summary className="text-lagoon-700 hover:text-lagoon-600 flex cursor-pointer list-none items-center gap-1 text-sm font-medium">
+                        <ChevronDown
+                          className="size-4 transition-transform group-open/sub:rotate-180"
+                          aria-hidden
+                        />
+                        Selengkapnya ({spot.subsections.length})
+                      </summary>
+                      <Subsections items={spot.subsections} className="mt-3" />
+                    </details>
+                  ) : null}
                   <div className="mt-4 border-t pt-4">
                     <a
                       href={`https://www.google.com/maps?q=${spot.lat},${spot.lng}`}

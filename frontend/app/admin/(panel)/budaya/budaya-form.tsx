@@ -8,6 +8,7 @@ import { Controller, useForm } from "react-hook-form";
 import { budayaSchema, type BudayaInput } from "@/lib/schemas/budaya";
 import type { Budaya } from "@/lib/types";
 import { ImageField } from "@/components/admin/image-field";
+import { SubsectionEditor } from "@/components/admin/subsection-editor";
 import { VideoYoutubeField } from "@/components/admin/video-youtube-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,10 +23,15 @@ const EMPTY: BudayaInput = {
   fotoUrl: "",
   isUnggulan: false,
   videoYoutube: "",
+  subsections: [],
 };
 
 function toForm(item: Budaya): BudayaInput {
-  return { ...item, videoYoutube: item.videoYoutube ?? "" };
+  return {
+    ...item,
+    videoYoutube: item.videoYoutube ?? "",
+    subsections: item.subsections ?? [],
+  };
 }
 
 export function BudayaForm({
@@ -145,6 +151,20 @@ export function BudayaForm({
         error={errors.videoYoutube?.message}
         hint="Opsional. Hanya tautan YouTube. Video tampil sebagai pemutar di halaman detail budaya."
       />
+
+      <div className="space-y-2 border-t pt-5">
+        <Label>Sub-bagian (opsional)</Label>
+        <Controller
+          control={control}
+          name="subsections"
+          render={({ field }) => (
+            <SubsectionEditor
+              value={field.value ?? []}
+              onChange={field.onChange}
+            />
+          )}
+        />
+      </div>
 
       <Button type="submit" disabled={submitting} className="w-full">
         {submitting ? (

@@ -19,7 +19,9 @@ import type { HeroImage } from "@/lib/types";
 import { ConfirmDeleteDialog } from "@/components/admin/confirm-delete-dialog";
 import { ImageField } from "@/components/admin/image-field";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Textarea } from "@/components/ui/textarea";
 
 const HERO_KEY = ["admin", "hero"];
 const SETTINGS_KEY = ["admin", "settings"];
@@ -240,6 +242,7 @@ function HeroCarouselManager() {
 function PetaKarangSetting() {
   const queryClient = useQueryClient();
   const [foto, setFoto] = useState("");
+  const [desk, setDesk] = useState("");
 
   const { data, isPending } = useQuery({
     queryKey: SETTINGS_KEY,
@@ -247,42 +250,59 @@ function PetaKarangSetting() {
   });
 
   useEffect(() => {
-    if (data) setFoto(data.petaKarangFoto ?? "");
+    if (data) {
+      setFoto(data.petaKarangFoto ?? "");
+      setDesk(data.petaKarangDeskripsi ?? "");
+    }
   }, [data]);
 
   const mutation = useMutation({
-    mutationFn: (petaKarangFoto: string) =>
-      adminApi.settings.update({ petaKarangFoto: petaKarangFoto || null }),
+    mutationFn: () =>
+      adminApi.settings.update({
+        petaKarangFoto: foto || null,
+        petaKarangDeskripsi: desk || null,
+      }),
     onSuccess: (saved) => {
       queryClient.setQueryData(SETTINGS_KEY, saved);
-      toast.success("Foto peta karang disimpan");
+      toast.success("Peta karang disimpan");
     },
     onError: (error) => toast.error(error.message),
   });
 
-  const dirty = (data?.petaKarangFoto ?? "") !== foto;
+  const dirty =
+    (data?.petaKarangFoto ?? "") !== foto ||
+    (data?.petaKarangDeskripsi ?? "") !== desk;
 
   return (
     <section className="bg-card rounded-xl border p-5">
       <div className="flex items-center gap-2">
         <MapPin className="text-lagoon-600 size-4.5" aria-hidden />
-        <h2 className="font-semibold">Foto peta terumbu karang</h2>
+        <h2 className="font-semibold">Peta terumbu karang</h2>
       </div>
       <p className="text-muted-foreground mt-1 text-sm">
-        Gambar peta/ilustrasi terumbu karang yang tampil di halaman Peta.
-        Kosongkan untuk menyembunyikannya.
+        Gambar & keterangan peta karang yang tampil di halaman Peta.
+        Kosongkan untuk menyembunyikan.
       </p>
 
       {isPending ? (
         <Skeleton className="mt-4 aspect-[16/9] w-full max-w-md rounded-lg" />
       ) : (
-        <div className="mt-4 max-w-md">
+        <div className="mt-4 max-w-md space-y-3">
           <ImageField value={foto} onChange={setFoto} modul="umum" />
+          <div className="space-y-1.5">
+            <Label htmlFor="petaDesk">Deskripsi / keterangan</Label>
+            <Textarea
+              id="petaDesk"
+              rows={3}
+              value={desk}
+              onChange={(e) => setDesk(e.target.value)}
+              placeholder="Keterangan singkat peta karang…"
+            />
+          </div>
           <Button
             type="button"
-            className="mt-3"
             disabled={mutation.isPending || !dirty}
-            onClick={() => mutation.mutate(foto)}
+            onClick={() => mutation.mutate()}
           >
             {mutation.isPending ? (
               <>
@@ -290,7 +310,7 @@ function PetaKarangSetting() {
                 Menyimpan…
               </>
             ) : (
-              "Simpan foto peta"
+              "Simpan peta karang"
             )}
           </Button>
         </div>

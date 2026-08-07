@@ -67,6 +67,7 @@ func (h *MakananHandler) Create(c *gin.Context) {
 		FotoURL:      req.FotoURL,
 		IsUnggulan:   req.IsUnggulan,
 		VideoYoutube: req.VideoYoutube,
+		Subsections:  dto.ToEntitySubsections(req.Subsections),
 	}
 	if err := h.svc.Create(c.Request.Context(), &item); err != nil {
 		respondError(c, h.logger, err)
@@ -95,6 +96,7 @@ func (h *MakananHandler) Update(c *gin.Context) {
 		m.FotoURL = req.FotoURL
 		m.IsUnggulan = req.IsUnggulan
 		m.VideoYoutube = req.VideoYoutube
+		m.Subsections = dto.ToEntitySubsections(req.Subsections)
 	})
 	if err != nil {
 		respondError(c, h.logger, err)

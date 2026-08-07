@@ -8,6 +8,7 @@ import { Controller, useForm } from "react-hook-form";
 import { makananSchema, type MakananInput } from "@/lib/schemas/makanan";
 import type { Makanan } from "@/lib/types";
 import { ImageField } from "@/components/admin/image-field";
+import { SubsectionEditor } from "@/components/admin/subsection-editor";
 import { VideoYoutubeField } from "@/components/admin/video-youtube-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,10 +30,15 @@ const EMPTY: MakananInput = {
   fotoUrl: "",
   isUnggulan: false,
   videoYoutube: "",
+  subsections: [],
 };
 
 function toForm(item: Makanan): MakananInput {
-  return { ...item, videoYoutube: item.videoYoutube ?? "" };
+  return {
+    ...item,
+    videoYoutube: item.videoYoutube ?? "",
+    subsections: item.subsections ?? [],
+  };
 }
 
 export function MakananForm({
@@ -162,6 +168,20 @@ export function MakananForm({
         error={errors.videoYoutube?.message}
         hint="Opsional. Hanya tautan YouTube. Video tampil sebagai pemutar di halaman detail sajian."
       />
+
+      <div className="space-y-2 border-t pt-5">
+        <Label>Sub-bagian (opsional)</Label>
+        <Controller
+          control={control}
+          name="subsections"
+          render={({ field }) => (
+            <SubsectionEditor
+              value={field.value ?? []}
+              onChange={field.onChange}
+            />
+          )}
+        />
+      </div>
 
       <Button type="submit" disabled={submitting} className="w-full">
         {submitting ? (

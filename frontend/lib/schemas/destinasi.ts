@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { subsectionsField } from "@/lib/schemas/subsection";
 import { videoYoutubeField } from "@/lib/schemas/youtube";
 
 export const destinasiSchema = z.object({
@@ -26,6 +27,7 @@ export const destinasiSchema = z.object({
     .max(180, "Longitude antara -180 dan 180"),
   fotoUrl: z.string().min(1, "Foto wajib diisi"),
   videoYoutube: videoYoutubeField,
+  subsections: subsectionsField,
 });
 
 export type DestinasiInput = z.infer<typeof destinasiSchema>;

@@ -1,3 +1,9 @@
+/** Blok bertajuk opsional di bawah deskripsi konten (mis. pasal adat). */
+export interface Subsection {
+  judul: string;
+  isi: string;
+}
+
 export type KategoriMakanan = "makanan" | "minuman" | "kudapan";
 
 export interface Makanan {
@@ -9,6 +15,8 @@ export interface Makanan {
   isUnggulan: boolean;
   /** Opsional; hanya tautan YouTube yang diterima. */
   videoYoutube?: string | null;
+  /** Sub-bagian bertajuk opsional di bawah deskripsi. */
+  subsections?: Subsection[];
 }
 
 export interface Budaya {
@@ -20,6 +28,8 @@ export interface Budaya {
   isUnggulan: boolean;
   /** Opsional; hanya tautan YouTube yang diterima. */
   videoYoutube?: string | null;
+  /** Sub-bagian bertajuk opsional di bawah deskripsi. */
+  subsections?: Subsection[];
 }
 
 export interface BahasaLokal {
@@ -42,6 +52,8 @@ export interface Destinasi {
   fotoUrl: string;
   /** Opsional; hanya tautan YouTube yang diterima. */
   videoYoutube?: string | null;
+  /** Sub-bagian bertajuk opsional di bawah deskripsi. */
+  subsections?: Subsection[];
 }
 
 export type AdminRole = "super_admin" | "admin";
@@ -104,6 +116,8 @@ export interface SiteSettings {
   bahasaVideo?: string | null;
   /** URL foto peta terumbu karang di halaman Peta; null bila kosong. */
   petaKarangFoto?: string | null;
+  /** Deskripsi/keterangan peta terumbu karang; null bila kosong. */
+  petaKarangDeskripsi?: string | null;
   /** Foto hero per halaman modul: slug → URL (null/kosong = pakai bawaan). */
   heroImages?: Record<string, string | null>;
 }

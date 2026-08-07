@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { subsectionsField } from "@/lib/schemas/subsection";
 import { videoYoutubeField } from "@/lib/schemas/youtube";
 
 export const budayaSchema = z.object({
@@ -21,6 +22,7 @@ export const budayaSchema = z.object({
   fotoUrl: z.string().min(1, "Foto wajib diisi"),
   isUnggulan: z.boolean(),
   videoYoutube: videoYoutubeField,
+  subsections: subsectionsField,
 });
 
 export type BudayaInput = z.infer<typeof budayaSchema>;

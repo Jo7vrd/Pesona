@@ -8,6 +8,7 @@ import { Controller, useForm } from "react-hook-form";
 import { destinasiSchema, type DestinasiInput } from "@/lib/schemas/destinasi";
 import type { Destinasi } from "@/lib/types";
 import { ImageField } from "@/components/admin/image-field";
+import { SubsectionEditor } from "@/components/admin/subsection-editor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -28,6 +29,7 @@ const EMPTY: DestinasiInput = {
   lng: 0,
   fotoUrl: "",
   videoYoutube: "",
+  subsections: [],
 };
 
 export function DestinasiForm({
@@ -48,7 +50,11 @@ export function DestinasiForm({
   } = useForm<DestinasiInput>({
     resolver: zodResolver(destinasiSchema),
     defaultValues: initial
-      ? { ...initial, videoYoutube: initial.videoYoutube ?? "" }
+      ? {
+          ...initial,
+          videoYoutube: initial.videoYoutube ?? "",
+          subsections: initial.subsections ?? [],
+        }
       : EMPTY,
   });
 
@@ -194,6 +200,20 @@ export function DestinasiForm({
             {errors.videoYoutube.message}
           </p>
         ) : null}
+      </div>
+
+      <div className="space-y-2 border-t pt-5">
+        <Label>Sub-bagian (opsional)</Label>
+        <Controller
+          control={control}
+          name="subsections"
+          render={({ field }) => (
+            <SubsectionEditor
+              value={field.value ?? []}
+              onChange={field.onChange}
+            />
+          )}
+        />
       </div>
 
       <Button type="submit" disabled={submitting} className="w-full">

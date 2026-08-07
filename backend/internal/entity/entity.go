@@ -5,14 +5,24 @@ import "time"
 // Entitas mengikuti skema PRD §8.3. Nama kolom snake_case dikelola GORM;
 // constraint (unique LOWER(nama), CHECK kategori) ada di migrasi SQL.
 
+// Subsection adalah blok bertajuk opsional di bawah deskripsi konten
+// (mis. "Tujuh Pasal Larvul Ngabal"). Disimpan JSONB via serializer GORM.
+type Subsection struct {
+	Judul string `json:"judul"`
+	Isi   string `json:"isi"`
+}
+
+type Subsections []Subsection
+
 type Makanan struct {
-	ID           uint    `gorm:"primaryKey"`
-	Nama         string  `gorm:"size:100;not null"`
-	Kategori     string  `gorm:"size:20;not null"`
-	Deskripsi    string  `gorm:"type:text;not null"`
-	FotoURL      string  `gorm:"size:500;not null;column:foto_url"`
-	IsUnggulan   bool    `gorm:"not null;default:false"`
-	VideoYoutube *string `gorm:"size:500;column:video_youtube"`
+	ID           uint        `gorm:"primaryKey"`
+	Nama         string      `gorm:"size:100;not null"`
+	Kategori     string      `gorm:"size:20;not null"`
+	Deskripsi    string      `gorm:"type:text;not null"`
+	FotoURL      string      `gorm:"size:500;not null;column:foto_url"`
+	IsUnggulan   bool        `gorm:"not null;default:false"`
+	VideoYoutube *string     `gorm:"size:500;column:video_youtube"`
+	Subsections  Subsections `gorm:"serializer:json;type:jsonb;column:subsections"`
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 }
@@ -20,13 +30,14 @@ type Makanan struct {
 func (Makanan) TableName() string { return "makanan" }
 
 type Budaya struct {
-	ID           uint    `gorm:"primaryKey"`
-	Nama         string  `gorm:"size:100;not null"`
-	Kategori     string  `gorm:"size:50;not null"`
-	Deskripsi    string  `gorm:"type:text;not null"`
-	FotoURL      string  `gorm:"size:500;not null;column:foto_url"`
-	IsUnggulan   bool    `gorm:"not null;default:false"`
-	VideoYoutube *string `gorm:"size:500;column:video_youtube"`
+	ID           uint        `gorm:"primaryKey"`
+	Nama         string      `gorm:"size:100;not null"`
+	Kategori     string      `gorm:"size:50;not null"`
+	Deskripsi    string      `gorm:"type:text;not null"`
+	FotoURL      string      `gorm:"size:500;not null;column:foto_url"`
+	IsUnggulan   bool        `gorm:"not null;default:false"`
+	VideoYoutube *string     `gorm:"size:500;column:video_youtube"`
+	Subsections  Subsections `gorm:"serializer:json;type:jsonb;column:subsections"`
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 }
@@ -45,14 +56,15 @@ type BahasaLokal struct {
 func (BahasaLokal) TableName() string { return "bahasa_lokal" }
 
 type Destinasi struct {
-	ID           uint    `gorm:"primaryKey"`
-	Nama         string  `gorm:"size:100;not null"`
-	Jenis        string  `gorm:"size:20;not null"`
-	Deskripsi    string  `gorm:"type:text;not null"`
-	Lat          float64 `gorm:"not null"`
-	Lng          float64 `gorm:"not null"`
-	FotoURL      string  `gorm:"size:500;not null;column:foto_url"`
-	VideoYoutube *string `gorm:"size:500;column:video_youtube"`
+	ID           uint        `gorm:"primaryKey"`
+	Nama         string      `gorm:"size:100;not null"`
+	Jenis        string      `gorm:"size:20;not null"`
+	Deskripsi    string      `gorm:"type:text;not null"`
+	Lat          float64     `gorm:"not null"`
+	Lng          float64     `gorm:"not null"`
+	FotoURL      string      `gorm:"size:500;not null;column:foto_url"`
+	VideoYoutube *string     `gorm:"size:500;column:video_youtube"`
+	Subsections  Subsections `gorm:"serializer:json;type:jsonb;column:subsections"`
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 }
@@ -98,8 +110,9 @@ func (Setting) TableName() string { return "settings" }
 
 // Kunci setelan yang dikenal.
 const (
-	SettingBahasaVideo    = "bahasa_video"
-	SettingPetaKarangFoto = "peta_karang_foto"
+	SettingBahasaVideo       = "bahasa_video"
+	SettingPetaKarangFoto    = "peta_karang_foto"
+	SettingPetaKarangDeskrip = "peta_karang_deskripsi"
 )
 
 // PageHeroPages adalah halaman modul yang foto hero-nya bisa diedit

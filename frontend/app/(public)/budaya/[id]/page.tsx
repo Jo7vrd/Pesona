@@ -13,6 +13,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "@/components/motion/fade-in";
 import { ContentCard } from "@/components/cards/content-card";
+import { Subsections } from "@/components/site/subsections";
 import { Tr } from "@/components/site/tr";
 import { YouTubeEmbed } from "@/components/site/youtube-embed";
 
@@ -83,6 +84,7 @@ export default async function BudayaDetailPage({ params }: Props) {
               zh={budayaDescTr[item.id]?.zh}
             />
           </p>
+          <Subsections items={item.subsections} className="mt-8" />
         </div>
       </FadeIn>
 

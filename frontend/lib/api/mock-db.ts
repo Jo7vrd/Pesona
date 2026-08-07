@@ -282,6 +282,10 @@ export const mockDb = {
           input.petaKarangFoto !== undefined
             ? input.petaKarangFoto || null
             : base.petaKarangFoto,
+        petaKarangDeskripsi:
+          input.petaKarangDeskripsi !== undefined
+            ? input.petaKarangDeskripsi || null
+            : base.petaKarangDeskripsi,
         heroImages: input.heroImages
           ? { ...(base.heroImages ?? {}), ...input.heroImages }
           : base.heroImages,

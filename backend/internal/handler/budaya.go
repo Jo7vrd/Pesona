@@ -67,6 +67,7 @@ func (h *BudayaHandler) Create(c *gin.Context) {
 		FotoURL:      req.FotoURL,
 		IsUnggulan:   req.IsUnggulan,
 		VideoYoutube: req.VideoYoutube,
+		Subsections:  dto.ToEntitySubsections(req.Subsections),
 	}
 	if err := h.svc.Create(c.Request.Context(), &item); err != nil {
 		respondError(c, h.logger, err)
@@ -95,6 +96,7 @@ func (h *BudayaHandler) Update(c *gin.Context) {
 		b.FotoURL = req.FotoURL
 		b.IsUnggulan = req.IsUnggulan
 		b.VideoYoutube = req.VideoYoutube
+		b.Subsections = dto.ToEntitySubsections(req.Subsections)
 	})
 	if err != nil {
 		respondError(c, h.logger, err)

@@ -20,11 +20,21 @@ import (
 )
 
 const (
-	// maksimal 10MB, sisi terpanjang 800px (keluaran tetap kecil)
+	// maksimal 10MB; sisi terpanjang dibatasi per-modul (lihat di bawah)
 	maxUploadSize = 10 * 1024 * 1024
-	maxDimension  = 800
 	jpegQuality   = 85
 )
+
+// maxDimensionFor: foto hero & peta butuh detail lebih tinggi (bisa
+// di-zoom), sedangkan foto konten (kartu) cukup 800px.
+func maxDimensionFor(modul string) int {
+	switch modul {
+	case "hero", "umum":
+		return 2000
+	default:
+		return 800
+	}
+}
 
 var allowedModul = map[string]bool{
 	"makanan": true, "budaya": true, "destinasi": true,
@@ -78,9 +88,10 @@ func (s *UploadService) Process(ctx context.Context, modul string, file *multipa
 		return "", apperror.BadRequest("File bukan gambar yang valid.")
 	}
 
+	dim := maxDimensionFor(modul)
 	bounds := img.Bounds()
-	if bounds.Dx() > maxDimension || bounds.Dy() > maxDimension {
-		img = imaging.Fit(img, maxDimension, maxDimension, imaging.Lanczos)
+	if bounds.Dx() > dim || bounds.Dy() > dim {
+		img = imaging.Fit(img, dim, dim, imaging.Lanczos)
 	}
 
 	var out bytes.Buffer

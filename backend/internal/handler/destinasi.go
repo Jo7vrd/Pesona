@@ -69,6 +69,7 @@ func (h *DestinasiHandler) Create(c *gin.Context) {
 		Lng:          req.Lng,
 		FotoURL:      req.FotoURL,
 		VideoYoutube: req.VideoYoutube,
+		Subsections:  dto.ToEntitySubsections(req.Subsections),
 	}
 	if err := h.svc.Create(c.Request.Context(), &item); err != nil {
 		respondError(c, h.logger, err)
@@ -94,6 +95,7 @@ func (h *DestinasiHandler) Update(c *gin.Context) {
 		d.Lng = req.Lng
 		d.FotoURL = req.FotoURL
 		d.VideoYoutube = req.VideoYoutube
+		d.Subsections = dto.ToEntitySubsections(req.Subsections)
 	})
 	if err != nil {
 		respondError(c, h.logger, err)

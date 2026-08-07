@@ -9,13 +9,35 @@ import (
 
 // Nama field JSON mengikuti kontrak frontend (web/lib/types.ts) persis.
 
+type SubsectionDTO struct {
+	Judul string `json:"judul" binding:"required,min=1,max=120"`
+	Isi   string `json:"isi" binding:"required,min=1,max=4000"`
+}
+
+func ToEntitySubsections(subs []SubsectionDTO) entity.Subsections {
+	out := make(entity.Subsections, len(subs))
+	for i, s := range subs {
+		out[i] = entity.Subsection{Judul: s.Judul, Isi: s.Isi}
+	}
+	return out
+}
+
+func fromEntitySubsections(subs entity.Subsections) []SubsectionDTO {
+	out := make([]SubsectionDTO, len(subs))
+	for i, s := range subs {
+		out[i] = SubsectionDTO{Judul: s.Judul, Isi: s.Isi}
+	}
+	return out
+}
+
 type MakananRequest struct {
 	Nama         string  `json:"nama" binding:"required,min=3,max=100"`
 	Kategori     string  `json:"kategori" binding:"required,oneof=makanan minuman kudapan"`
 	Deskripsi    string  `json:"deskripsi" binding:"required,min=20,max=1000"`
 	FotoURL      string  `json:"fotoUrl" binding:"required,max=500"`
 	IsUnggulan   bool    `json:"isUnggulan"`
-	VideoYoutube *string `json:"videoYoutube" binding:"omitempty,max=500"`
+	VideoYoutube *string         `json:"videoYoutube" binding:"omitempty,max=500"`
+	Subsections  []SubsectionDTO `json:"subsections" binding:"omitempty,dive"`
 }
 
 type MakananResponse struct {
@@ -25,7 +47,8 @@ type MakananResponse struct {
 	Deskripsi    string  `json:"deskripsi"`
 	FotoURL      string  `json:"fotoUrl"`
 	IsUnggulan   bool    `json:"isUnggulan"`
-	VideoYoutube *string `json:"videoYoutube,omitempty"`
+	VideoYoutube *string         `json:"videoYoutube,omitempty"`
+	Subsections  []SubsectionDTO `json:"subsections"`
 }
 
 func NewMakananResponse(m entity.Makanan) MakananResponse {
@@ -37,6 +60,7 @@ func NewMakananResponse(m entity.Makanan) MakananResponse {
 		FotoURL:      m.FotoURL,
 		IsUnggulan:   m.IsUnggulan,
 		VideoYoutube: m.VideoYoutube,
+		Subsections:  fromEntitySubsections(m.Subsections),
 	}
 }
 
@@ -46,7 +70,8 @@ type BudayaRequest struct {
 	Deskripsi    string  `json:"deskripsi" binding:"required,min=20,max=2000"`
 	FotoURL      string  `json:"fotoUrl" binding:"required,max=500"`
 	IsUnggulan   bool    `json:"isUnggulan"`
-	VideoYoutube *string `json:"videoYoutube" binding:"omitempty,max=500"`
+	VideoYoutube *string         `json:"videoYoutube" binding:"omitempty,max=500"`
+	Subsections  []SubsectionDTO `json:"subsections" binding:"omitempty,dive"`
 }
 
 type BudayaResponse struct {
@@ -56,7 +81,8 @@ type BudayaResponse struct {
 	Deskripsi    string  `json:"deskripsi"`
 	FotoURL      string  `json:"fotoUrl"`
 	IsUnggulan   bool    `json:"isUnggulan"`
-	VideoYoutube *string `json:"videoYoutube,omitempty"`
+	VideoYoutube *string         `json:"videoYoutube,omitempty"`
+	Subsections  []SubsectionDTO `json:"subsections"`
 }
 
 func NewBudayaResponse(b entity.Budaya) BudayaResponse {
@@ -68,6 +94,7 @@ func NewBudayaResponse(b entity.Budaya) BudayaResponse {
 		FotoURL:      b.FotoURL,
 		IsUnggulan:   b.IsUnggulan,
 		VideoYoutube: b.VideoYoutube,
+		Subsections:  fromEntitySubsections(b.Subsections),
 	}
 }
 
@@ -111,7 +138,8 @@ type DestinasiRequest struct {
 	Lat          float64 `json:"lat" binding:"required,gte=-90,lte=90"`
 	Lng          float64 `json:"lng" binding:"required,gte=-180,lte=180"`
 	FotoURL      string  `json:"fotoUrl" binding:"required,max=500"`
-	VideoYoutube *string `json:"videoYoutube" binding:"omitempty,max=500"`
+	VideoYoutube *string         `json:"videoYoutube" binding:"omitempty,max=500"`
+	Subsections  []SubsectionDTO `json:"subsections" binding:"omitempty,dive"`
 }
 
 type DestinasiResponse struct {
@@ -122,7 +150,8 @@ type DestinasiResponse struct {
 	Lat          float64 `json:"lat"`
 	Lng          float64 `json:"lng"`
 	FotoURL      string  `json:"fotoUrl"`
-	VideoYoutube *string `json:"videoYoutube,omitempty"`
+	VideoYoutube *string         `json:"videoYoutube,omitempty"`
+	Subsections  []SubsectionDTO `json:"subsections"`
 }
 
 func NewDestinasiResponse(d entity.Destinasi) DestinasiResponse {
@@ -135,6 +164,7 @@ func NewDestinasiResponse(d entity.Destinasi) DestinasiResponse {
 		Lng:          d.Lng,
 		FotoURL:      d.FotoURL,
 		VideoYoutube: d.VideoYoutube,
+		Subsections:  fromEntitySubsections(d.Subsections),
 	}
 }
 
@@ -256,15 +286,17 @@ type UploadResponse struct {
 // Setelan situs. Field opsional; string kosong → NULL/none.
 // heroImages: peta slug-halaman → URL foto hero (pembaruan parsial).
 type SettingsRequest struct {
-	BahasaVideo    *string            `json:"bahasaVideo" binding:"omitempty,max=500"`
-	PetaKarangFoto *string            `json:"petaKarangFoto" binding:"omitempty,max=500"`
-	HeroImages     map[string]*string `json:"heroImages"`
+	BahasaVideo       *string            `json:"bahasaVideo" binding:"omitempty,max=500"`
+	PetaKarangFoto    *string            `json:"petaKarangFoto" binding:"omitempty,max=500"`
+	PetaKarangDeskrip *string            `json:"petaKarangDeskripsi" binding:"omitempty,max=1000"`
+	HeroImages        map[string]*string `json:"heroImages"`
 }
 
 type SettingsResponse struct {
-	BahasaVideo    *string           `json:"bahasaVideo"`
-	PetaKarangFoto *string           `json:"petaKarangFoto"`
-	HeroImages     map[string]string `json:"heroImages"`
+	BahasaVideo       *string           `json:"bahasaVideo"`
+	PetaKarangFoto    *string           `json:"petaKarangFoto"`
+	PetaKarangDeskrip *string           `json:"petaKarangDeskripsi"`
+	HeroImages        map[string]string `json:"heroImages"`
 }
 
 func strPtrOrNil(v string) *string {
@@ -274,13 +306,14 @@ func strPtrOrNil(v string) *string {
 	return &v
 }
 
-func NewSettingsResponse(bahasaVideo, petaKarangFoto string, heroImages map[string]string) SettingsResponse {
+func NewSettingsResponse(bahasaVideo, petaKarangFoto, petaKarangDeskrip string, heroImages map[string]string) SettingsResponse {
 	if heroImages == nil {
 		heroImages = map[string]string{}
 	}
 	return SettingsResponse{
-		BahasaVideo:    strPtrOrNil(bahasaVideo),
-		PetaKarangFoto: strPtrOrNil(petaKarangFoto),
-		HeroImages:     heroImages,
+		BahasaVideo:       strPtrOrNil(bahasaVideo),
+		PetaKarangFoto:    strPtrOrNil(petaKarangFoto),
+		PetaKarangDeskrip: strPtrOrNil(petaKarangDeskrip),
+		HeroImages:        heroImages,
 	}
 }
