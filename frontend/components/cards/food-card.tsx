@@ -21,6 +21,7 @@ export function FoodCard({ item }: { item: Makanan }) {
       href={`/makanan/${item.id}`}
       fotoUrl={item.fotoUrl}
       fotoPosisi={item.fotoPosisi}
+      fotoZoom={item.fotoZoom}
       nama={item.nama}
       kategori={
         <Tr

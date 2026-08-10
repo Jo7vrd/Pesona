@@ -36,6 +36,7 @@ type MakananRequest struct {
 	Deskripsi    string          `json:"deskripsi" binding:"required,min=20,max=1000"`
 	FotoURL      string          `json:"fotoUrl" binding:"required,max=500"`
 	FotoPosisi   string          `json:"fotoPosisi" binding:"omitempty,max=20"`
+	FotoZoom     float64         `json:"fotoZoom" binding:"omitempty,gte=1,lte=3"`
 	IsUnggulan   bool            `json:"isUnggulan"`
 	VideoYoutube *string         `json:"videoYoutube" binding:"omitempty,max=500"`
 	Subsections  []SubsectionDTO `json:"subsections" binding:"omitempty,dive"`
@@ -48,6 +49,7 @@ type MakananResponse struct {
 	Deskripsi    string          `json:"deskripsi"`
 	FotoURL      string          `json:"fotoUrl"`
 	FotoPosisi   string          `json:"fotoPosisi"`
+	FotoZoom     float64         `json:"fotoZoom"`
 	IsUnggulan   bool            `json:"isUnggulan"`
 	VideoYoutube *string         `json:"videoYoutube,omitempty"`
 	Subsections  []SubsectionDTO `json:"subsections"`
@@ -61,6 +63,7 @@ func NewMakananResponse(m entity.Makanan) MakananResponse {
 		Deskripsi:    m.Deskripsi,
 		FotoURL:      m.FotoURL,
 		FotoPosisi:   FotoPosisiOrDefault(m.FotoPosisi),
+		FotoZoom:     FotoZoomOrDefault(m.FotoZoom),
 		IsUnggulan:   m.IsUnggulan,
 		VideoYoutube: m.VideoYoutube,
 		Subsections:  fromEntitySubsections(m.Subsections),
@@ -73,6 +76,7 @@ type BudayaRequest struct {
 	Deskripsi    string          `json:"deskripsi" binding:"required,min=20,max=2000"`
 	FotoURL      string          `json:"fotoUrl" binding:"required,max=500"`
 	FotoPosisi   string          `json:"fotoPosisi" binding:"omitempty,max=20"`
+	FotoZoom     float64         `json:"fotoZoom" binding:"omitempty,gte=1,lte=3"`
 	IsUnggulan   bool            `json:"isUnggulan"`
 	VideoYoutube *string         `json:"videoYoutube" binding:"omitempty,max=500"`
 	Subsections  []SubsectionDTO `json:"subsections" binding:"omitempty,dive"`
@@ -85,6 +89,7 @@ type BudayaResponse struct {
 	Deskripsi    string          `json:"deskripsi"`
 	FotoURL      string          `json:"fotoUrl"`
 	FotoPosisi   string          `json:"fotoPosisi"`
+	FotoZoom     float64         `json:"fotoZoom"`
 	IsUnggulan   bool            `json:"isUnggulan"`
 	VideoYoutube *string         `json:"videoYoutube,omitempty"`
 	Subsections  []SubsectionDTO `json:"subsections"`
@@ -98,6 +103,7 @@ func NewBudayaResponse(b entity.Budaya) BudayaResponse {
 		Deskripsi:    b.Deskripsi,
 		FotoURL:      b.FotoURL,
 		FotoPosisi:   FotoPosisiOrDefault(b.FotoPosisi),
+		FotoZoom:     FotoZoomOrDefault(b.FotoZoom),
 		IsUnggulan:   b.IsUnggulan,
 		VideoYoutube: b.VideoYoutube,
 		Subsections:  fromEntitySubsections(b.Subsections),
@@ -145,6 +151,7 @@ type DestinasiRequest struct {
 	Lng          float64         `json:"lng" binding:"required,gte=-180,lte=180"`
 	FotoURL      string          `json:"fotoUrl" binding:"required,max=500"`
 	FotoPosisi   string          `json:"fotoPosisi" binding:"omitempty,max=20"`
+	FotoZoom     float64         `json:"fotoZoom" binding:"omitempty,gte=1,lte=3"`
 	VideoYoutube *string         `json:"videoYoutube" binding:"omitempty,max=500"`
 	Subsections  []SubsectionDTO `json:"subsections" binding:"omitempty,dive"`
 }
@@ -158,6 +165,7 @@ type DestinasiResponse struct {
 	Lng          float64         `json:"lng"`
 	FotoURL      string          `json:"fotoUrl"`
 	FotoPosisi   string          `json:"fotoPosisi"`
+	FotoZoom     float64         `json:"fotoZoom"`
 	VideoYoutube *string         `json:"videoYoutube,omitempty"`
 	Subsections  []SubsectionDTO `json:"subsections"`
 }
@@ -172,22 +180,25 @@ func NewDestinasiResponse(d entity.Destinasi) DestinasiResponse {
 		Lng:          d.Lng,
 		FotoURL:      d.FotoURL,
 		FotoPosisi:   FotoPosisiOrDefault(d.FotoPosisi),
+		FotoZoom:     FotoZoomOrDefault(d.FotoZoom),
 		VideoYoutube: d.VideoYoutube,
 		Subsections:  fromEntitySubsections(d.Subsections),
 	}
 }
 
 type HeroImageRequest struct {
-	FotoURL    string `json:"fotoUrl" binding:"required,max=500"`
-	FotoPosisi string `json:"fotoPosisi" binding:"omitempty,max=20"`
-	Urutan     int    `json:"urutan" binding:"omitempty,gte=0,lte=999"`
+	FotoURL    string  `json:"fotoUrl" binding:"required,max=500"`
+	FotoPosisi string  `json:"fotoPosisi" binding:"omitempty,max=20"`
+	FotoZoom   float64 `json:"fotoZoom" binding:"omitempty,gte=1,lte=3"`
+	Urutan     int     `json:"urutan" binding:"omitempty,gte=0,lte=999"`
 }
 
 type HeroImageResponse struct {
-	ID         uint   `json:"id"`
-	FotoURL    string `json:"fotoUrl"`
-	FotoPosisi string `json:"fotoPosisi"`
-	Urutan     int    `json:"urutan"`
+	ID         uint    `json:"id"`
+	FotoURL    string  `json:"fotoUrl"`
+	FotoPosisi string  `json:"fotoPosisi"`
+	FotoZoom   float64 `json:"fotoZoom"`
+	Urutan     int     `json:"urutan"`
 }
 
 func NewHeroImageResponse(h entity.HeroImage) HeroImageResponse {
@@ -195,6 +206,7 @@ func NewHeroImageResponse(h entity.HeroImage) HeroImageResponse {
 		ID:         h.ID,
 		FotoURL:    h.FotoURL,
 		FotoPosisi: FotoPosisiOrDefault(h.FotoPosisi),
+		FotoZoom:   FotoZoomOrDefault(h.FotoZoom),
 		Urutan:     h.Urutan,
 	}
 }
@@ -204,6 +216,18 @@ func NewHeroImageResponse(h entity.HeroImage) HeroImageResponse {
 func FotoPosisiOrDefault(v string) string {
 	if v == "" {
 		return "50% 50%"
+	}
+	return v
+}
+
+// FotoZoomOrDefault menjaga skala foto di rentang [1,3]; nilai 0 (baris
+// lama / tak diisi) → 1 (tanpa perbesaran).
+func FotoZoomOrDefault(v float64) float64 {
+	if v < 1 {
+		return 1
+	}
+	if v > 3 {
+		return 3
 	}
 	return v
 }
@@ -311,17 +335,21 @@ type UploadResponse struct {
 // Setelan situs. Field opsional; string kosong → NULL/none.
 // heroImages: peta slug-halaman → URL foto hero (pembaruan parsial).
 type SettingsRequest struct {
-	BahasaVideo       *string            `json:"bahasaVideo" binding:"omitempty,max=500"`
-	PetaKarangFoto    *string            `json:"petaKarangFoto" binding:"omitempty,max=500"`
-	PetaKarangDeskrip *string            `json:"petaKarangDeskripsi" binding:"omitempty,max=1000"`
-	HeroImages        map[string]*string `json:"heroImages"`
+	BahasaVideo       *string             `json:"bahasaVideo" binding:"omitempty,max=500"`
+	PetaKarangFoto    *string             `json:"petaKarangFoto" binding:"omitempty,max=500"`
+	PetaKarangDeskrip *string             `json:"petaKarangDeskripsi" binding:"omitempty,max=1000"`
+	HeroImages        map[string]*string  `json:"heroImages"`
+	HeroImagePos      map[string]*string  `json:"heroImagePos"`
+	HeroImageZoom     map[string]*float64 `json:"heroImageZoom"`
 }
 
 type SettingsResponse struct {
-	BahasaVideo       *string           `json:"bahasaVideo"`
-	PetaKarangFoto    *string           `json:"petaKarangFoto"`
-	PetaKarangDeskrip *string           `json:"petaKarangDeskripsi"`
-	HeroImages        map[string]string `json:"heroImages"`
+	BahasaVideo       *string            `json:"bahasaVideo"`
+	PetaKarangFoto    *string            `json:"petaKarangFoto"`
+	PetaKarangDeskrip *string            `json:"petaKarangDeskripsi"`
+	HeroImages        map[string]string  `json:"heroImages"`
+	HeroImagePos      map[string]string  `json:"heroImagePos"`
+	HeroImageZoom     map[string]float64 `json:"heroImageZoom"`
 }
 
 func strPtrOrNil(v string) *string {
@@ -331,14 +359,22 @@ func strPtrOrNil(v string) *string {
 	return &v
 }
 
-func NewSettingsResponse(bahasaVideo, petaKarangFoto, petaKarangDeskrip string, heroImages map[string]string) SettingsResponse {
+func NewSettingsResponse(bahasaVideo, petaKarangFoto, petaKarangDeskrip string, heroImages map[string]string, heroImagePos map[string]string, heroImageZoom map[string]float64) SettingsResponse {
 	if heroImages == nil {
 		heroImages = map[string]string{}
+	}
+	if heroImagePos == nil {
+		heroImagePos = map[string]string{}
+	}
+	if heroImageZoom == nil {
+		heroImageZoom = map[string]float64{}
 	}
 	return SettingsResponse{
 		BahasaVideo:       strPtrOrNil(bahasaVideo),
 		PetaKarangFoto:    strPtrOrNil(petaKarangFoto),
 		PetaKarangDeskrip: strPtrOrNil(petaKarangDeskrip),
 		HeroImages:        heroImages,
+		HeroImagePos:      heroImagePos,
+		HeroImageZoom:     heroImageZoom,
 	}
 }

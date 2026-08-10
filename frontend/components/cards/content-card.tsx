@@ -9,14 +9,17 @@ export function ContentCard({
   href,
   fotoUrl,
   fotoPosisi,
+  fotoZoom,
   nama,
   kategori,
   deskripsi,
 }: {
   href: string;
   fotoUrl: string;
-  /** Titik fokus foto (object-position); default tengah. */
+  /** Titik pandang foto (object-position); default tengah. */
   fotoPosisi?: string;
+  /** Skala/zoom foto (1–3); default 1. */
+  fotoZoom?: number;
   nama: string;
   kategori: React.ReactNode;
   deskripsi: React.ReactNode;
@@ -28,7 +31,7 @@ export function ContentCard({
     >
       <TiltCard>
         <article className="bg-card shadow-(--shadow-card) hover:shadow-(--shadow-card-hover) overflow-hidden rounded-(--radius-card) transition-shadow duration-300">
-        <div className="relative aspect-[4/5] overflow-hidden">
+        <div className="relative aspect-[4/5] overflow-hidden transition-transform duration-700 ease-out group-hover:scale-105">
           <Image
             src={fotoUrl}
             alt={nama}
@@ -36,8 +39,12 @@ export function ContentCard({
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             placeholder="blur"
             blurDataURL={BLUR_DATA_URL}
-            style={{ objectPosition: fotoPosisi || "50% 50%" }}
-            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            style={{
+              objectPosition: fotoPosisi || "50% 50%",
+              transform: `scale(${fotoZoom || 1})`,
+              transformOrigin: fotoPosisi || "50% 50%",
+            }}
+            className="object-cover"
           />
           <Badge className="bg-background/85 text-foreground absolute top-3 left-3 rounded-full border-0 backdrop-blur-sm">
             {kategori}

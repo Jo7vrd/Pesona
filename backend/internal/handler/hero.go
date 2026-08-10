@@ -40,6 +40,7 @@ func (h *HeroHandler) Create(c *gin.Context) {
 	item := entity.HeroImage{
 		FotoURL:    req.FotoURL,
 		FotoPosisi: dto.FotoPosisiOrDefault(req.FotoPosisi),
+		FotoZoom:   dto.FotoZoomOrDefault(req.FotoZoom),
 		Urutan:     req.Urutan,
 	}
 	if err := h.svc.Create(c.Request.Context(), &item); err != nil {

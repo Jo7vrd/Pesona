@@ -42,7 +42,17 @@ func (h *SettingsHandler) snapshot(c *gin.Context) (dto.SettingsResponse, bool) 
 		respondError(c, h.logger, err)
 		return dto.SettingsResponse{}, false
 	}
-	return dto.NewSettingsResponse(video, petaFoto, petaDesk, heroes), true
+	heroPos, err := h.svc.PageHeroPositions(ctx)
+	if err != nil {
+		respondError(c, h.logger, err)
+		return dto.SettingsResponse{}, false
+	}
+	heroZoom, err := h.svc.PageHeroZooms(ctx)
+	if err != nil {
+		respondError(c, h.logger, err)
+		return dto.SettingsResponse{}, false
+	}
+	return dto.NewSettingsResponse(video, petaFoto, petaDesk, heroes, heroPos, heroZoom), true
 }
 
 // GET /api/v1/settings — publik (dikonsumsi RSC halaman Bahasa Kei, Peta,
@@ -104,6 +114,32 @@ func (h *SettingsHandler) Update(c *gin.Context) {
 			return
 		}
 		if err := h.svc.SetPageHero(ctx, page, url); err != nil {
+			respondError(c, h.logger, err)
+			return
+		}
+	}
+
+	for page, posPtr := range req.HeroImagePos {
+		pos := ""
+		if posPtr != nil {
+			pos = *posPtr
+		}
+		if len(pos) > 20 {
+			respondInvalid(c)
+			return
+		}
+		if err := h.svc.SetPageHeroPosition(ctx, page, pos); err != nil {
+			respondError(c, h.logger, err)
+			return
+		}
+	}
+
+	for page, zoomPtr := range req.HeroImageZoom {
+		zoom := 1.0
+		if zoomPtr != nil {
+			zoom = *zoomPtr
+		}
+		if err := h.svc.SetPageHeroZoom(ctx, page, zoom); err != nil {
 			respondError(c, h.logger, err)
 			return
 		}

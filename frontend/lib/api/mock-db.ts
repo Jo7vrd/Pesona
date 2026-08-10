@@ -289,6 +289,12 @@ export const mockDb = {
         heroImages: input.heroImages
           ? { ...(base.heroImages ?? {}), ...input.heroImages }
           : base.heroImages,
+        heroImagePos: input.heroImagePos
+          ? { ...(base.heroImagePos ?? {}), ...input.heroImagePos }
+          : base.heroImagePos,
+        heroImageZoom: input.heroImageZoom
+          ? { ...(base.heroImageZoom ?? {}), ...input.heroImageZoom }
+          : base.heroImageZoom,
       };
       window.localStorage.setItem(KEYS.settings, JSON.stringify(next));
       return next;

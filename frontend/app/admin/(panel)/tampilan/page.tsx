@@ -47,18 +47,43 @@ export default function AdminTampilanPage() {
 
 /* ------------------------------------------------ Hero tiap halaman */
 
+interface HeroDraft {
+  url: string;
+  pos: string;
+  zoom: number;
+}
+
 function PageHeroesManager() {
   const queryClient = useQueryClient();
   const [savingSlug, setSavingSlug] = useState<string | null>(null);
+  const [drafts, setDrafts] = useState<Record<string, HeroDraft>>({});
 
   const { data, isPending } = useQuery({
     queryKey: SETTINGS_KEY,
     queryFn: () => adminApi.settings.get(),
   });
 
+  // Seed draft dari setelan tersimpan begitu tersedia.
+  useEffect(() => {
+    if (!data) return;
+    const seeded: Record<string, HeroDraft> = {};
+    for (const p of HERO_PAGES) {
+      seeded[p.slug] = {
+        url: data.heroImages?.[p.slug] ?? "",
+        pos: data.heroImagePos?.[p.slug] ?? "50% 50%",
+        zoom: data.heroImageZoom?.[p.slug] ?? 1,
+      };
+    }
+    setDrafts(seeded);
+  }, [data]);
+
   const mutation = useMutation({
-    mutationFn: (v: { slug: string; url: string }) =>
-      adminApi.settings.update({ heroImages: { [v.slug]: v.url || null } }),
+    mutationFn: (v: { slug: string } & HeroDraft) =>
+      adminApi.settings.update({
+        heroImages: { [v.slug]: v.url || null },
+        heroImagePos: { [v.slug]: v.pos },
+        heroImageZoom: { [v.slug]: v.zoom },
+      }),
     onMutate: (v) => setSavingSlug(v.slug),
     onSuccess: (saved) => {
       queryClient.setQueryData(SETTINGS_KEY, saved);
@@ -68,6 +93,23 @@ function PageHeroesManager() {
     onSettled: () => setSavingSlug(null),
   });
 
+  function patchDraft(slug: string, patch: Partial<HeroDraft>) {
+    setDrafts((d) => ({
+      ...d,
+      [slug]: { ...(d[slug] ?? { url: "", pos: "50% 50%", zoom: 1 }), ...patch },
+    }));
+  }
+
+  function isDirty(slug: string): boolean {
+    const d = drafts[slug];
+    if (!d) return false;
+    return (
+      d.url !== (data?.heroImages?.[slug] ?? "") ||
+      d.pos !== (data?.heroImagePos?.[slug] ?? "50% 50%") ||
+      d.zoom !== (data?.heroImageZoom?.[slug] ?? 1)
+    );
+  }
+
   return (
     <section className="bg-card rounded-xl border p-5">
       <div className="flex items-center gap-2">
@@ -75,8 +117,9 @@ function PageHeroesManager() {
         <h2 className="font-semibold">Foto hero tiap halaman</h2>
       </div>
       <p className="text-muted-foreground mt-1 text-sm">
-        Gambar besar di bagian atas tiap halaman. Unggah untuk mengganti;
-        kosongkan (tombol ✕) untuk kembali ke foto bawaan. Tersimpan otomatis.
+        Gambar besar di bagian atas tiap halaman. Unggah, atur bingkai (geser
+        &amp; zoom), lalu simpan. Kosongkan (tombol ✕) untuk kembali ke foto
+        bawaan.
       </p>
 
       {isPending ? (
@@ -87,21 +130,37 @@ function PageHeroesManager() {
         </div>
       ) : (
         <div className="mt-4 grid gap-5 sm:grid-cols-2">
-          {HERO_PAGES.map((p) => (
-            <div key={p.slug}>
-              <div className="mb-2 flex items-center gap-2">
-                <p className="text-sm font-medium">{p.label}</p>
-                {savingSlug === p.slug ? (
-                  <Loader2 className="text-muted-foreground size-3.5 animate-spin" aria-hidden />
-                ) : null}
+          {HERO_PAGES.map((p) => {
+            const d = drafts[p.slug] ?? { url: "", pos: "50% 50%", zoom: 1 };
+            return (
+              <div key={p.slug}>
+                <div className="mb-2 flex items-center gap-2">
+                  <p className="text-sm font-medium">{p.label}</p>
+                  {savingSlug === p.slug ? (
+                    <Loader2 className="text-muted-foreground size-3.5 animate-spin" aria-hidden />
+                  ) : null}
+                </div>
+                <ImageField
+                  value={d.url}
+                  onChange={(url) => patchDraft(p.slug, { url })}
+                  modul="umum"
+                  position={d.pos}
+                  onPositionChange={(pos) => patchDraft(p.slug, { pos })}
+                  zoom={d.zoom}
+                  onZoomChange={(zoom) => patchDraft(p.slug, { zoom })}
+                />
+                <Button
+                  type="button"
+                  size="sm"
+                  className="mt-2"
+                  disabled={!isDirty(p.slug) || savingSlug === p.slug}
+                  onClick={() => mutation.mutate({ slug: p.slug, ...d })}
+                >
+                  Simpan
+                </Button>
               </div>
-              <ImageField
-                value={data?.heroImages?.[p.slug] ?? ""}
-                onChange={(url) => mutation.mutate({ slug: p.slug, url })}
-                modul="umum"
-              />
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </section>
@@ -114,6 +173,7 @@ function HeroCarouselManager() {
   const queryClient = useQueryClient();
   const [staged, setStaged] = useState("");
   const [stagedPos, setStagedPos] = useState("50% 50%");
+  const [stagedZoom, setStagedZoom] = useState(1);
   const [deleteTarget, setDeleteTarget] = useState<HeroImage | null>(null);
 
   const { data: images, isPending } = useQuery({
@@ -122,7 +182,7 @@ function HeroCarouselManager() {
   });
 
   const createMutation = useMutation({
-    mutationFn: (input: { fotoUrl: string; fotoPosisi: string }) => {
+    mutationFn: (input: { fotoUrl: string; fotoPosisi: string; fotoZoom: number }) => {
       const urutan = (images?.length ?? 0) + 1;
       return adminApi.hero.create({ ...input, urutan });
     },
@@ -130,6 +190,7 @@ function HeroCarouselManager() {
       queryClient.invalidateQueries({ queryKey: HERO_KEY });
       setStaged("");
       setStagedPos("50% 50%");
+      setStagedZoom(1);
       toast.success("Foto hero ditambahkan");
     },
     onError: (error) => toast.error(error.message),
@@ -175,7 +236,11 @@ function HeroCarouselManager() {
                 fill
                 sizes="240px"
                 className="object-cover"
-                style={{ objectPosition: img.fotoPosisi || "50% 50%" }}
+                style={{
+                  objectPosition: img.fotoPosisi || "50% 50%",
+                  transform: `scale(${img.fotoZoom || 1})`,
+                  transformOrigin: img.fotoPosisi || "50% 50%",
+                }}
                 unoptimized={!img.fotoUrl.startsWith("/")}
               />
               <span className="bg-background/80 absolute top-1.5 left-1.5 flex items-center gap-1 rounded-md px-1.5 py-0.5 text-xs font-medium">
@@ -210,6 +275,8 @@ function HeroCarouselManager() {
           modul="hero"
           position={stagedPos}
           onPositionChange={setStagedPos}
+          zoom={stagedZoom}
+          onZoomChange={setStagedZoom}
         />
         {staged ? (
           <Button
@@ -217,7 +284,11 @@ function HeroCarouselManager() {
             className="mt-3"
             disabled={createMutation.isPending}
             onClick={() =>
-              createMutation.mutate({ fotoUrl: staged, fotoPosisi: stagedPos })
+              createMutation.mutate({
+                fotoUrl: staged,
+                fotoPosisi: stagedPos,
+                fotoZoom: stagedZoom,
+              })
             }
           >
             {createMutation.isPending ? (

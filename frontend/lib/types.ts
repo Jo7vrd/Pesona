@@ -12,8 +12,10 @@ export interface Makanan {
   kategori: KategoriMakanan;
   deskripsi: string;
   fotoUrl: string;
-  /** Titik fokus foto (CSS object-position, mis. "50% 30%"). Default tengah. */
+  /** Titik pandang foto (CSS object-position, mis. "50% 30%"). Default tengah. */
   fotoPosisi?: string;
+  /** Skala/zoom foto (1–3). Default 1. */
+  fotoZoom?: number;
   isUnggulan: boolean;
   /** Opsional; hanya tautan YouTube yang diterima. */
   videoYoutube?: string | null;
@@ -27,8 +29,10 @@ export interface Budaya {
   kategori: string;
   deskripsi: string;
   fotoUrl: string;
-  /** Titik fokus foto (CSS object-position, mis. "50% 30%"). Default tengah. */
+  /** Titik pandang foto (CSS object-position, mis. "50% 30%"). Default tengah. */
   fotoPosisi?: string;
+  /** Skala/zoom foto (1–3). Default 1. */
+  fotoZoom?: number;
   isUnggulan: boolean;
   /** Opsional; hanya tautan YouTube yang diterima. */
   videoYoutube?: string | null;
@@ -54,8 +58,10 @@ export interface Destinasi {
   lat: number;
   lng: number;
   fotoUrl: string;
-  /** Titik fokus foto (CSS object-position, mis. "50% 30%"). Default tengah. */
+  /** Titik pandang foto (CSS object-position, mis. "50% 30%"). Default tengah. */
   fotoPosisi?: string;
+  /** Skala/zoom foto (1–3). Default 1. */
+  fotoZoom?: number;
   /** Opsional; hanya tautan YouTube yang diterima. */
   videoYoutube?: string | null;
   /** Sub-bagian bertajuk opsional di bawah deskripsi. */
@@ -75,8 +81,10 @@ export interface AdminUser {
 export interface HeroImage {
   id: number;
   fotoUrl: string;
-  /** Titik fokus foto (CSS object-position, mis. "50% 30%"). Default tengah. */
+  /** Titik pandang foto (CSS object-position, mis. "50% 30%"). Default tengah. */
   fotoPosisi?: string;
+  /** Skala/zoom foto (1–3). Default 1. */
+  fotoZoom?: number;
   urutan: number;
 }
 
@@ -128,4 +136,8 @@ export interface SiteSettings {
   petaKarangDeskripsi?: string | null;
   /** Foto hero per halaman modul: slug → URL (null/kosong = pakai bawaan). */
   heroImages?: Record<string, string | null>;
+  /** Titik pandang foto hero per halaman: slug → object-position ("x% y%"). */
+  heroImagePos?: Record<string, string>;
+  /** Skala/zoom foto hero per halaman: slug → angka (1–3). */
+  heroImageZoom?: Record<string, number>;
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Phone, TriangleAlert } from "lucide-react";
 
-import { getEmergencyContacts, getPageHeroImage } from "@/lib/api/server";
+import { getEmergencyContacts, getPageHero } from "@/lib/api/server";
 import { emergencyIconMap, p3kGuides } from "@/lib/content/emergency";
 import {
   Accordion,
@@ -19,8 +19,8 @@ export const metadata: Metadata = {
 };
 
 export default async function KedaruratanPage() {
-  const [heroImg, contacts] = await Promise.all([
-    getPageHeroImage("kedaruratan", "/images/u/1476673160081-cf065607f449.jpg"),
+  const [hero, contacts] = await Promise.all([
+    getPageHero("kedaruratan", "/images/u/1476673160081-cf065607f449.jpg"),
     getEmergencyContacts(),
   ]);
   return (
@@ -30,7 +30,9 @@ export default async function KedaruratanPage() {
         eyebrow="Kedaruratan pesisir"
         title="Tenang, dan ikuti langkahnya"
         description="Simpan halaman ini sebelum ke pantai. Kontak penting bisa langsung dihubungi dari ponsel Anda."
-        imageUrl={heroImg}
+        imageUrl={hero.url}
+        imagePosition={hero.position}
+        imageZoom={hero.zoom}
       />
 
       <section className="container-page py-12 md:py-16">

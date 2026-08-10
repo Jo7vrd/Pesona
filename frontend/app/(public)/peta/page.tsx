@@ -36,6 +36,8 @@ export default async function PetaPage() {
         title="Temukan titik terbaik di perairan Kei"
         description="Pantai, laguna, dan taman karang pilihan beserta koordinatnya. Hormati aturan sasi: bila ada tanda larangan, jangan memanen apa pun."
         imageUrl={heroImg}
+        imagePosition={settings.heroImagePos?.peta}
+        imageZoom={settings.heroImageZoom?.peta}
       />
 
       <section className="container-page py-12 md:py-16">

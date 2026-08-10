@@ -69,6 +69,7 @@ func (h *DestinasiHandler) Create(c *gin.Context) {
 		Lng:          req.Lng,
 		FotoURL:      req.FotoURL,
 		FotoPosisi:   dto.FotoPosisiOrDefault(req.FotoPosisi),
+		FotoZoom:     dto.FotoZoomOrDefault(req.FotoZoom),
 		VideoYoutube: req.VideoYoutube,
 		Subsections:  dto.ToEntitySubsections(req.Subsections),
 	}
@@ -96,6 +97,7 @@ func (h *DestinasiHandler) Update(c *gin.Context) {
 		d.Lng = req.Lng
 		d.FotoURL = req.FotoURL
 		d.FotoPosisi = dto.FotoPosisiOrDefault(req.FotoPosisi)
+		d.FotoZoom = dto.FotoZoomOrDefault(req.FotoZoom)
 		d.VideoYoutube = req.VideoYoutube
 		d.Subsections = dto.ToEntitySubsections(req.Subsections)
 	})

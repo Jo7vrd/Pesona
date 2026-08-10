@@ -31,6 +31,8 @@ export default async function BahasaPage() {
           settings.heroImages?.bahasa ??
           "/images/u/1541417904950-b855846fe074.jpg"
         }
+        imagePosition={settings.heroImagePos?.bahasa}
+        imageZoom={settings.heroImageZoom?.bahasa}
       />
       <section className="container-page py-12 md:py-16">
         <DictionarySearch entries={entries} />

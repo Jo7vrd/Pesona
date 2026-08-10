@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/desakeikecil/api/internal/apperror"
 	"github.com/desakeikecil/api/internal/entity"
@@ -96,6 +97,67 @@ func (s *SettingsService) SetPageHero(ctx context.Context, page, url string) err
 		return apperror.BadRequest("Halaman hero tidak dikenal.")
 	}
 	if err := s.repo.Set(ctx, entity.PageHeroKey(page), url); err != nil {
+		return apperror.Internal(err)
+	}
+	s.reval.Trigger("settings")
+	return nil
+}
+
+// PageHeroPositions & PageHeroZooms mengembalikan titik pandang (object-
+// position) dan skala foto hero tiap halaman. Nilai kosong/tak diset
+// dilewati (frontend memakai default: tengah, zoom 1).
+func (s *SettingsService) PageHeroPositions(ctx context.Context) (map[string]string, error) {
+	out := make(map[string]string)
+	for _, page := range entity.PageHeroPages {
+		v, _, err := s.repo.Get(ctx, entity.PageHeroPosKey(page))
+		if err != nil {
+			return nil, apperror.Internal(err)
+		}
+		if v != "" {
+			out[page] = v
+		}
+	}
+	return out, nil
+}
+
+func (s *SettingsService) PageHeroZooms(ctx context.Context) (map[string]float64, error) {
+	out := make(map[string]float64)
+	for _, page := range entity.PageHeroPages {
+		v, _, err := s.repo.Get(ctx, entity.PageHeroZoomKey(page))
+		if err != nil {
+			return nil, apperror.Internal(err)
+		}
+		if v == "" {
+			continue
+		}
+		if f, perr := strconv.ParseFloat(v, 64); perr == nil {
+			out[page] = f
+		}
+	}
+	return out, nil
+}
+
+func (s *SettingsService) SetPageHeroPosition(ctx context.Context, page, pos string) error {
+	if !entity.IsPageHeroPage(page) {
+		return apperror.BadRequest("Halaman hero tidak dikenal.")
+	}
+	if err := s.repo.Set(ctx, entity.PageHeroPosKey(page), pos); err != nil {
+		return apperror.Internal(err)
+	}
+	s.reval.Trigger("settings")
+	return nil
+}
+
+func (s *SettingsService) SetPageHeroZoom(ctx context.Context, page string, zoom float64) error {
+	if !entity.IsPageHeroPage(page) {
+		return apperror.BadRequest("Halaman hero tidak dikenal.")
+	}
+	if zoom < 1 {
+		zoom = 1
+	} else if zoom > 3 {
+		zoom = 3
+	}
+	if err := s.repo.Set(ctx, entity.PageHeroZoomKey(page), strconv.FormatFloat(zoom, 'f', -1, 64)); err != nil {
 		return apperror.Internal(err)
 	}
 	s.reval.Trigger("settings")

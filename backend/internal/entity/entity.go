@@ -21,6 +21,7 @@ type Makanan struct {
 	Deskripsi    string      `gorm:"type:text;not null"`
 	FotoURL      string      `gorm:"size:500;not null;column:foto_url"`
 	FotoPosisi   string      `gorm:"size:20;not null;default:50% 50%;column:foto_posisi"`
+	FotoZoom     float64     `gorm:"not null;default:1;column:foto_zoom"`
 	IsUnggulan   bool        `gorm:"not null;default:false"`
 	VideoYoutube *string     `gorm:"size:500;column:video_youtube"`
 	Subsections  Subsections `gorm:"serializer:json;type:jsonb;column:subsections"`
@@ -37,6 +38,7 @@ type Budaya struct {
 	Deskripsi    string      `gorm:"type:text;not null"`
 	FotoURL      string      `gorm:"size:500;not null;column:foto_url"`
 	FotoPosisi   string      `gorm:"size:20;not null;default:50% 50%;column:foto_posisi"`
+	FotoZoom     float64     `gorm:"not null;default:1;column:foto_zoom"`
 	IsUnggulan   bool        `gorm:"not null;default:false"`
 	VideoYoutube *string     `gorm:"size:500;column:video_youtube"`
 	Subsections  Subsections `gorm:"serializer:json;type:jsonb;column:subsections"`
@@ -66,6 +68,7 @@ type Destinasi struct {
 	Lng          float64     `gorm:"not null"`
 	FotoURL      string      `gorm:"size:500;not null;column:foto_url"`
 	FotoPosisi   string      `gorm:"size:20;not null;default:50% 50%;column:foto_posisi"`
+	FotoZoom     float64     `gorm:"not null;default:1;column:foto_zoom"`
 	VideoYoutube *string     `gorm:"size:500;column:video_youtube"`
 	Subsections  Subsections `gorm:"serializer:json;type:jsonb;column:subsections"`
 	CreatedAt    time.Time
@@ -77,10 +80,11 @@ func (Destinasi) TableName() string { return "destinasi" }
 // HeroImage adalah satu foto latar carousel hero beranda. Urutan
 // menentukan giliran tampil; foto berganti otomatis di sisi frontend.
 type HeroImage struct {
-	ID         uint   `gorm:"primaryKey"`
-	FotoURL    string `gorm:"size:500;not null;column:foto_url"`
-	FotoPosisi string `gorm:"size:20;not null;default:50% 50%;column:foto_posisi"`
-	Urutan     int    `gorm:"not null;default:0"`
+	ID         uint    `gorm:"primaryKey"`
+	FotoURL    string  `gorm:"size:500;not null;column:foto_url"`
+	FotoPosisi string  `gorm:"size:20;not null;default:50% 50%;column:foto_posisi"`
+	FotoZoom   float64 `gorm:"not null;default:1;column:foto_zoom"`
+	Urutan     int     `gorm:"not null;default:0"`
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
 }
@@ -125,7 +129,9 @@ var PageHeroPages = []string{
 	"destinasi", "makanan", "budaya", "bahasa", "peta", "kedaruratan",
 }
 
-func PageHeroKey(page string) string { return "hero_" + page }
+func PageHeroKey(page string) string     { return "hero_" + page }
+func PageHeroPosKey(page string) string  { return "hero_" + page + "_pos" }
+func PageHeroZoomKey(page string) string { return "hero_" + page + "_zoom" }
 
 func IsPageHeroPage(page string) bool {
 	for _, p := range PageHeroPages {

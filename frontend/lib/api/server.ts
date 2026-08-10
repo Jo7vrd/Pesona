@@ -106,6 +106,23 @@ export async function getPageHeroImage(
   return settings.heroImages?.[page] || fallback;
 }
 
+/**
+ * Foto hero halaman modul beserta pembingkaiannya (titik pandang & zoom),
+ * agar tampilannya sama dengan yang diatur admin. Memakai bawaan bila
+ * belum diset.
+ */
+export async function getPageHero(
+  page: string,
+  fallback: string
+): Promise<{ url: string; position: string; zoom: number }> {
+  const settings = await getSiteSettings();
+  return {
+    url: settings.heroImages?.[page] || fallback,
+    position: settings.heroImagePos?.[page] || "50% 50%",
+    zoom: settings.heroImageZoom?.[page] || 1,
+  };
+}
+
 export async function getEmergencyContacts(): Promise<EmergencyContact[]> {
   const data = await fetchApi<EmergencyContact[]>(
     "/api/v1/kedaruratan",

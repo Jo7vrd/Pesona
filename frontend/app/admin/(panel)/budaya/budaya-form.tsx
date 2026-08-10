@@ -22,6 +22,7 @@ const EMPTY: BudayaInput = {
   deskripsi: "",
   fotoUrl: "",
   fotoPosisi: "50% 50%",
+  fotoZoom: 1,
   isUnggulan: false,
   videoYoutube: "",
   subsections: [],
@@ -31,6 +32,7 @@ function toForm(item: Budaya): BudayaInput {
   return {
     ...item,
     fotoPosisi: item.fotoPosisi ?? "50% 50%",
+    fotoZoom: item.fotoZoom ?? 1,
     videoYoutube: item.videoYoutube ?? "",
     subsections: item.subsections ?? [],
   };
@@ -79,9 +81,14 @@ export function BudayaForm({
               onChange={field.onChange}
               error={errors.fotoUrl?.message}
               modul="budaya"
+              aspectClass="aspect-[16/10]"
               position={watch("fotoPosisi")}
               onPositionChange={(p) =>
                 setValue("fotoPosisi", p, { shouldDirty: true })
+              }
+              zoom={watch("fotoZoom")}
+              onZoomChange={(zVal) =>
+                setValue("fotoZoom", zVal, { shouldDirty: true })
               }
             />
           )}

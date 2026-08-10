@@ -29,6 +29,7 @@ const EMPTY: DestinasiInput = {
   lng: 0,
   fotoUrl: "",
   fotoPosisi: "50% 50%",
+  fotoZoom: 1,
   videoYoutube: "",
   subsections: [],
 };
@@ -68,6 +69,7 @@ export function DestinasiForm({
         ? {
             ...initial,
             fotoPosisi: initial.fotoPosisi ?? "50% 50%",
+            fotoZoom: initial.fotoZoom ?? 1,
             videoYoutube: initial.videoYoutube ?? "",
             subsections: initial.subsections ?? [],
           }
@@ -92,9 +94,14 @@ export function DestinasiForm({
               onChange={field.onChange}
               error={errors.fotoUrl?.message}
               modul="destinasi"
+              aspectClass="aspect-[4/3]"
               position={watch("fotoPosisi")}
               onPositionChange={(p) =>
                 setValue("fotoPosisi", p, { shouldDirty: true })
+              }
+              zoom={watch("fotoZoom")}
+              onZoomChange={(zVal) =>
+                setValue("fotoZoom", zVal, { shouldDirty: true })
               }
             />
           )}

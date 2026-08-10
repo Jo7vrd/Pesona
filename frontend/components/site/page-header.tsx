@@ -12,6 +12,8 @@ export function PageHeader({
   title,
   description,
   imageUrl,
+  imagePosition,
+  imageZoom,
 }: {
   /** Kunci kamus i18n (t.pages[pageKey]); menimpa teks props bila ada. */
   pageKey?: string;
@@ -20,6 +22,9 @@ export function PageHeader({
   description?: string;
   /** Foto latar opsional, di-overlay gradien gelap agar teks tetap AA. */
   imageUrl?: string;
+  /** Pembingkaian foto latar (object-position & skala) yang diatur admin. */
+  imagePosition?: string;
+  imageZoom?: number;
 }) {
   const { t } = useLocale();
   const copy = pageKey ? t.pages[pageKey] : undefined;
@@ -39,6 +44,11 @@ export function PageHeader({
             sizes="100vw"
             placeholder="blur"
             blurDataURL={BLUR_DATA_URL}
+            style={{
+              objectPosition: imagePosition || "50% 50%",
+              transform: `scale(${imageZoom || 1})`,
+              transformOrigin: imagePosition || "50% 50%",
+            }}
             className="object-cover"
           />
           <div className="from-ocean-950/95 via-ocean-950/70 to-ocean-950/30 absolute inset-0 bg-gradient-to-br" />

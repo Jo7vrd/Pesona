@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ChevronDown, MapPin } from "lucide-react";
 
-import { getAllDestinasi, getPageHeroImage } from "@/lib/api/server";
+import { getAllDestinasi, getPageHero } from "@/lib/api/server";
 import { BLUR_DATA_URL } from "@/lib/blur";
 import { jenisSpotTr, spotDescTr } from "@/lib/content/i18n-content";
 import { Badge } from "@/components/ui/badge";
@@ -23,9 +23,9 @@ export const metadata: Metadata = {
 };
 
 export default async function DestinasiPage() {
-  const [spots, heroImg] = await Promise.all([
+  const [spots, hero] = await Promise.all([
     getAllDestinasi(),
-    getPageHeroImage("destinasi", "/images/u/1546484475-7f7bd55792da.jpg"),
+    getPageHero("destinasi", "/images/u/1546484475-7f7bd55792da.jpg"),
   ]);
   const denganVideo = spots.filter((s) => s.videoYoutube);
 
@@ -36,7 +36,9 @@ export default async function DestinasiPage() {
         eyebrow="Destinasi"
         title="Tempat-tempat yang membuat Kei dikenang"
         description="Dari pasir sehalus tepung hingga laguna tersembunyi di balik karst, inilah alasan orang datang jauh-jauh ke ujung timur Indonesia."
-        imageUrl={heroImg}
+        imageUrl={hero.url}
+        imagePosition={hero.position}
+        imageZoom={hero.zoom}
       />
 
       <section className="container-page py-12 md:py-16">
@@ -45,7 +47,7 @@ export default async function DestinasiPage() {
             <StaggerItem key={spot.id}>
               <TiltCard className="h-full">
                 <article className="group bg-card shadow-(--shadow-card) hover:shadow-(--shadow-card-hover) flex h-full flex-col overflow-hidden rounded-(--radius-card) transition-shadow duration-300">
-                <div className="relative aspect-[4/3] overflow-hidden">
+                <div className="relative aspect-[4/3] overflow-hidden transition-transform duration-700 ease-out group-hover:scale-105">
                   <Image
                     src={spot.fotoUrl}
                     alt={spot.nama}
@@ -53,8 +55,12 @@ export default async function DestinasiPage() {
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     placeholder="blur"
                     blurDataURL={BLUR_DATA_URL}
-                    style={{ objectPosition: spot.fotoPosisi || "50% 50%" }}
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    style={{
+                      objectPosition: spot.fotoPosisi || "50% 50%",
+                      transform: `scale(${spot.fotoZoom || 1})`,
+                      transformOrigin: spot.fotoPosisi || "50% 50%",
+                    }}
+                    className="object-cover"
                   />
                   <Badge className="bg-background/85 text-foreground absolute top-3 left-3 rounded-full border-0 backdrop-blur-sm">
                     <Tr

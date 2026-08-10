@@ -29,7 +29,11 @@ export function SpotlightRow({ item, flip }: { item: Budaya; flip?: boolean }) {
             sizes="(max-width: 768px) 100vw, 58vw"
             placeholder="blur"
             blurDataURL={BLUR_DATA_URL}
-            style={{ objectPosition: item.fotoPosisi || "50% 50%" }}
+            style={{
+              objectPosition: item.fotoPosisi || "50% 50%",
+              transform: `scale(${item.fotoZoom || 1})`,
+              transformOrigin: item.fotoPosisi || "50% 50%",
+            }}
             className="object-cover"
           />
         </div>

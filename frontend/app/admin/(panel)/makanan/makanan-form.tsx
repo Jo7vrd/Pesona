@@ -29,6 +29,7 @@ const EMPTY: MakananInput = {
   deskripsi: "",
   fotoUrl: "",
   fotoPosisi: "50% 50%",
+  fotoZoom: 1,
   isUnggulan: false,
   videoYoutube: "",
   subsections: [],
@@ -38,6 +39,7 @@ function toForm(item: Makanan): MakananInput {
   return {
     ...item,
     fotoPosisi: item.fotoPosisi ?? "50% 50%",
+    fotoZoom: item.fotoZoom ?? 1,
     videoYoutube: item.videoYoutube ?? "",
     subsections: item.subsections ?? [],
   };
@@ -86,9 +88,14 @@ export function MakananForm({
               onChange={field.onChange}
               error={errors.fotoUrl?.message}
               modul="makanan"
+              aspectClass="aspect-[4/5]"
               position={watch("fotoPosisi")}
               onPositionChange={(p) =>
                 setValue("fotoPosisi", p, { shouldDirty: true })
+              }
+              zoom={watch("fotoZoom")}
+              onZoomChange={(zVal) =>
+                setValue("fotoZoom", zVal, { shouldDirty: true })
               }
             />
           )}
