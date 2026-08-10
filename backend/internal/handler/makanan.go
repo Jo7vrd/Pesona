@@ -65,6 +65,7 @@ func (h *MakananHandler) Create(c *gin.Context) {
 		Kategori:     req.Kategori,
 		Deskripsi:    req.Deskripsi,
 		FotoURL:      req.FotoURL,
+		FotoPosisi:   dto.FotoPosisiOrDefault(req.FotoPosisi),
 		IsUnggulan:   req.IsUnggulan,
 		VideoYoutube: req.VideoYoutube,
 		Subsections:  dto.ToEntitySubsections(req.Subsections),
@@ -94,6 +95,7 @@ func (h *MakananHandler) Update(c *gin.Context) {
 		m.Kategori = req.Kategori
 		m.Deskripsi = req.Deskripsi
 		m.FotoURL = req.FotoURL
+		m.FotoPosisi = dto.FotoPosisiOrDefault(req.FotoPosisi)
 		m.IsUnggulan = req.IsUnggulan
 		m.VideoYoutube = req.VideoYoutube
 		m.Subsections = dto.ToEntitySubsections(req.Subsections)

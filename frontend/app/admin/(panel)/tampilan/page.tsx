@@ -113,6 +113,7 @@ function PageHeroesManager() {
 function HeroCarouselManager() {
   const queryClient = useQueryClient();
   const [staged, setStaged] = useState("");
+  const [stagedPos, setStagedPos] = useState("50% 50%");
   const [deleteTarget, setDeleteTarget] = useState<HeroImage | null>(null);
 
   const { data: images, isPending } = useQuery({
@@ -121,13 +122,14 @@ function HeroCarouselManager() {
   });
 
   const createMutation = useMutation({
-    mutationFn: (fotoUrl: string) => {
+    mutationFn: (input: { fotoUrl: string; fotoPosisi: string }) => {
       const urutan = (images?.length ?? 0) + 1;
-      return adminApi.hero.create({ fotoUrl, urutan });
+      return adminApi.hero.create({ ...input, urutan });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: HERO_KEY });
       setStaged("");
+      setStagedPos("50% 50%");
       toast.success("Foto hero ditambahkan");
     },
     onError: (error) => toast.error(error.message),
@@ -173,6 +175,7 @@ function HeroCarouselManager() {
                 fill
                 sizes="240px"
                 className="object-cover"
+                style={{ objectPosition: img.fotoPosisi || "50% 50%" }}
                 unoptimized={!img.fotoUrl.startsWith("/")}
               />
               <span className="bg-background/80 absolute top-1.5 left-1.5 flex items-center gap-1 rounded-md px-1.5 py-0.5 text-xs font-medium">
@@ -201,13 +204,21 @@ function HeroCarouselManager() {
 
       <div className="mt-5 border-t pt-5">
         <p className="mb-2 text-sm font-medium">Tambah foto hero</p>
-        <ImageField value={staged} onChange={setStaged} modul="hero" />
+        <ImageField
+          value={staged}
+          onChange={setStaged}
+          modul="hero"
+          position={stagedPos}
+          onPositionChange={setStagedPos}
+        />
         {staged ? (
           <Button
             type="button"
             className="mt-3"
             disabled={createMutation.isPending}
-            onClick={() => createMutation.mutate(staged)}
+            onClick={() =>
+              createMutation.mutate({ fotoUrl: staged, fotoPosisi: stagedPos })
+            }
           >
             {createMutation.isPending ? (
               <>

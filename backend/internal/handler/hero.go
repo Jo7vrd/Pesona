@@ -37,7 +37,11 @@ func (h *HeroHandler) Create(c *gin.Context) {
 		respondInvalid(c)
 		return
 	}
-	item := entity.HeroImage{FotoURL: req.FotoURL, Urutan: req.Urutan}
+	item := entity.HeroImage{
+		FotoURL:    req.FotoURL,
+		FotoPosisi: dto.FotoPosisiOrDefault(req.FotoPosisi),
+		Urutan:     req.Urutan,
+	}
 	if err := h.svc.Create(c.Request.Context(), &item); err != nil {
 		respondError(c, h.logger, err)
 		return

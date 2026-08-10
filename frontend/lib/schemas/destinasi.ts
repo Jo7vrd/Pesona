@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { fotoPosisiField } from "@/lib/schemas/foto-posisi";
 import { subsectionsField } from "@/lib/schemas/subsection";
 import { videoYoutubeField } from "@/lib/schemas/youtube";
 
@@ -26,6 +27,7 @@ export const destinasiSchema = z.object({
     .min(-180, "Longitude antara -180 dan 180")
     .max(180, "Longitude antara -180 dan 180"),
   fotoUrl: z.string().min(1, "Foto wajib diisi"),
+  fotoPosisi: fotoPosisiField,
   videoYoutube: videoYoutubeField,
   subsections: subsectionsField,
 });

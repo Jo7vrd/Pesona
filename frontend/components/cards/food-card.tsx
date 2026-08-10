@@ -20,6 +20,7 @@ export function FoodCard({ item }: { item: Makanan }) {
     <ContentCard
       href={`/makanan/${item.id}`}
       fotoUrl={item.fotoUrl}
+      fotoPosisi={item.fotoPosisi}
       nama={item.nama}
       kategori={
         <Tr

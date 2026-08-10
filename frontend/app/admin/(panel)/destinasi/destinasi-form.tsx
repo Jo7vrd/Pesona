@@ -28,6 +28,7 @@ const EMPTY: DestinasiInput = {
   lat: 0,
   lng: 0,
   fotoUrl: "",
+  fotoPosisi: "50% 50%",
   videoYoutube: "",
   subsections: [],
 };
@@ -46,12 +47,15 @@ export function DestinasiForm({
     handleSubmit,
     control,
     reset,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<DestinasiInput>({
     resolver: zodResolver(destinasiSchema),
     defaultValues: initial
       ? {
           ...initial,
+          fotoPosisi: initial.fotoPosisi ?? "50% 50%",
           videoYoutube: initial.videoYoutube ?? "",
           subsections: initial.subsections ?? [],
         }
@@ -60,7 +64,14 @@ export function DestinasiForm({
 
   useEffect(() => {
     reset(
-      initial ? { ...initial, videoYoutube: initial.videoYoutube ?? "" } : EMPTY
+      initial
+        ? {
+            ...initial,
+            fotoPosisi: initial.fotoPosisi ?? "50% 50%",
+            videoYoutube: initial.videoYoutube ?? "",
+            subsections: initial.subsections ?? [],
+          }
+        : EMPTY
     );
   }, [initial, reset]);
 
@@ -81,6 +92,10 @@ export function DestinasiForm({
               onChange={field.onChange}
               error={errors.fotoUrl?.message}
               modul="destinasi"
+              position={watch("fotoPosisi")}
+              onPositionChange={(p) =>
+                setValue("fotoPosisi", p, { shouldDirty: true })
+              }
             />
           )}
         />

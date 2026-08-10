@@ -31,22 +31,24 @@ func fromEntitySubsections(subs entity.Subsections) []SubsectionDTO {
 }
 
 type MakananRequest struct {
-	Nama         string  `json:"nama" binding:"required,min=3,max=100"`
-	Kategori     string  `json:"kategori" binding:"required,oneof=makanan minuman kudapan"`
-	Deskripsi    string  `json:"deskripsi" binding:"required,min=20,max=1000"`
-	FotoURL      string  `json:"fotoUrl" binding:"required,max=500"`
-	IsUnggulan   bool    `json:"isUnggulan"`
+	Nama         string          `json:"nama" binding:"required,min=3,max=100"`
+	Kategori     string          `json:"kategori" binding:"required,oneof=makanan minuman kudapan"`
+	Deskripsi    string          `json:"deskripsi" binding:"required,min=20,max=1000"`
+	FotoURL      string          `json:"fotoUrl" binding:"required,max=500"`
+	FotoPosisi   string          `json:"fotoPosisi" binding:"omitempty,max=20"`
+	IsUnggulan   bool            `json:"isUnggulan"`
 	VideoYoutube *string         `json:"videoYoutube" binding:"omitempty,max=500"`
 	Subsections  []SubsectionDTO `json:"subsections" binding:"omitempty,dive"`
 }
 
 type MakananResponse struct {
-	ID           uint    `json:"id"`
-	Nama         string  `json:"nama"`
-	Kategori     string  `json:"kategori"`
-	Deskripsi    string  `json:"deskripsi"`
-	FotoURL      string  `json:"fotoUrl"`
-	IsUnggulan   bool    `json:"isUnggulan"`
+	ID           uint            `json:"id"`
+	Nama         string          `json:"nama"`
+	Kategori     string          `json:"kategori"`
+	Deskripsi    string          `json:"deskripsi"`
+	FotoURL      string          `json:"fotoUrl"`
+	FotoPosisi   string          `json:"fotoPosisi"`
+	IsUnggulan   bool            `json:"isUnggulan"`
 	VideoYoutube *string         `json:"videoYoutube,omitempty"`
 	Subsections  []SubsectionDTO `json:"subsections"`
 }
@@ -58,6 +60,7 @@ func NewMakananResponse(m entity.Makanan) MakananResponse {
 		Kategori:     m.Kategori,
 		Deskripsi:    m.Deskripsi,
 		FotoURL:      m.FotoURL,
+		FotoPosisi:   FotoPosisiOrDefault(m.FotoPosisi),
 		IsUnggulan:   m.IsUnggulan,
 		VideoYoutube: m.VideoYoutube,
 		Subsections:  fromEntitySubsections(m.Subsections),
@@ -65,22 +68,24 @@ func NewMakananResponse(m entity.Makanan) MakananResponse {
 }
 
 type BudayaRequest struct {
-	Nama         string  `json:"nama" binding:"required,min=3,max=100"`
-	Kategori     string  `json:"kategori" binding:"required,min=3,max=50"`
-	Deskripsi    string  `json:"deskripsi" binding:"required,min=20,max=2000"`
-	FotoURL      string  `json:"fotoUrl" binding:"required,max=500"`
-	IsUnggulan   bool    `json:"isUnggulan"`
+	Nama         string          `json:"nama" binding:"required,min=3,max=100"`
+	Kategori     string          `json:"kategori" binding:"required,min=3,max=50"`
+	Deskripsi    string          `json:"deskripsi" binding:"required,min=20,max=2000"`
+	FotoURL      string          `json:"fotoUrl" binding:"required,max=500"`
+	FotoPosisi   string          `json:"fotoPosisi" binding:"omitempty,max=20"`
+	IsUnggulan   bool            `json:"isUnggulan"`
 	VideoYoutube *string         `json:"videoYoutube" binding:"omitempty,max=500"`
 	Subsections  []SubsectionDTO `json:"subsections" binding:"omitempty,dive"`
 }
 
 type BudayaResponse struct {
-	ID           uint    `json:"id"`
-	Nama         string  `json:"nama"`
-	Kategori     string  `json:"kategori"`
-	Deskripsi    string  `json:"deskripsi"`
-	FotoURL      string  `json:"fotoUrl"`
-	IsUnggulan   bool    `json:"isUnggulan"`
+	ID           uint            `json:"id"`
+	Nama         string          `json:"nama"`
+	Kategori     string          `json:"kategori"`
+	Deskripsi    string          `json:"deskripsi"`
+	FotoURL      string          `json:"fotoUrl"`
+	FotoPosisi   string          `json:"fotoPosisi"`
+	IsUnggulan   bool            `json:"isUnggulan"`
 	VideoYoutube *string         `json:"videoYoutube,omitempty"`
 	Subsections  []SubsectionDTO `json:"subsections"`
 }
@@ -92,6 +97,7 @@ func NewBudayaResponse(b entity.Budaya) BudayaResponse {
 		Kategori:     b.Kategori,
 		Deskripsi:    b.Deskripsi,
 		FotoURL:      b.FotoURL,
+		FotoPosisi:   FotoPosisiOrDefault(b.FotoPosisi),
 		IsUnggulan:   b.IsUnggulan,
 		VideoYoutube: b.VideoYoutube,
 		Subsections:  fromEntitySubsections(b.Subsections),
@@ -132,24 +138,26 @@ func ValidYouTubeURL(url string) bool {
 }
 
 type DestinasiRequest struct {
-	Nama         string  `json:"nama" binding:"required,min=3,max=100"`
-	Jenis        string  `json:"jenis" binding:"required,oneof=Pantai Snorkeling Gua Pulau"`
-	Deskripsi    string  `json:"deskripsi" binding:"required,min=20,max=1000"`
-	Lat          float64 `json:"lat" binding:"required,gte=-90,lte=90"`
-	Lng          float64 `json:"lng" binding:"required,gte=-180,lte=180"`
-	FotoURL      string  `json:"fotoUrl" binding:"required,max=500"`
+	Nama         string          `json:"nama" binding:"required,min=3,max=100"`
+	Jenis        string          `json:"jenis" binding:"required,oneof=Pantai Snorkeling Gua Pulau"`
+	Deskripsi    string          `json:"deskripsi" binding:"required,min=20,max=1000"`
+	Lat          float64         `json:"lat" binding:"required,gte=-90,lte=90"`
+	Lng          float64         `json:"lng" binding:"required,gte=-180,lte=180"`
+	FotoURL      string          `json:"fotoUrl" binding:"required,max=500"`
+	FotoPosisi   string          `json:"fotoPosisi" binding:"omitempty,max=20"`
 	VideoYoutube *string         `json:"videoYoutube" binding:"omitempty,max=500"`
 	Subsections  []SubsectionDTO `json:"subsections" binding:"omitempty,dive"`
 }
 
 type DestinasiResponse struct {
-	ID           uint    `json:"id"`
-	Nama         string  `json:"nama"`
-	Jenis        string  `json:"jenis"`
-	Deskripsi    string  `json:"deskripsi"`
-	Lat          float64 `json:"lat"`
-	Lng          float64 `json:"lng"`
-	FotoURL      string  `json:"fotoUrl"`
+	ID           uint            `json:"id"`
+	Nama         string          `json:"nama"`
+	Jenis        string          `json:"jenis"`
+	Deskripsi    string          `json:"deskripsi"`
+	Lat          float64         `json:"lat"`
+	Lng          float64         `json:"lng"`
+	FotoURL      string          `json:"fotoUrl"`
+	FotoPosisi   string          `json:"fotoPosisi"`
 	VideoYoutube *string         `json:"videoYoutube,omitempty"`
 	Subsections  []SubsectionDTO `json:"subsections"`
 }
@@ -163,24 +171,41 @@ func NewDestinasiResponse(d entity.Destinasi) DestinasiResponse {
 		Lat:          d.Lat,
 		Lng:          d.Lng,
 		FotoURL:      d.FotoURL,
+		FotoPosisi:   FotoPosisiOrDefault(d.FotoPosisi),
 		VideoYoutube: d.VideoYoutube,
 		Subsections:  fromEntitySubsections(d.Subsections),
 	}
 }
 
 type HeroImageRequest struct {
-	FotoURL string `json:"fotoUrl" binding:"required,max=500"`
-	Urutan  int    `json:"urutan" binding:"omitempty,gte=0,lte=999"`
+	FotoURL    string `json:"fotoUrl" binding:"required,max=500"`
+	FotoPosisi string `json:"fotoPosisi" binding:"omitempty,max=20"`
+	Urutan     int    `json:"urutan" binding:"omitempty,gte=0,lte=999"`
 }
 
 type HeroImageResponse struct {
-	ID      uint   `json:"id"`
-	FotoURL string `json:"fotoUrl"`
-	Urutan  int    `json:"urutan"`
+	ID         uint   `json:"id"`
+	FotoURL    string `json:"fotoUrl"`
+	FotoPosisi string `json:"fotoPosisi"`
+	Urutan     int    `json:"urutan"`
 }
 
 func NewHeroImageResponse(h entity.HeroImage) HeroImageResponse {
-	return HeroImageResponse{ID: h.ID, FotoURL: h.FotoURL, Urutan: h.Urutan}
+	return HeroImageResponse{
+		ID:         h.ID,
+		FotoURL:    h.FotoURL,
+		FotoPosisi: FotoPosisiOrDefault(h.FotoPosisi),
+		Urutan:     h.Urutan,
+	}
+}
+
+// FotoPosisiOrDefault memastikan nilai object-position selalu valid;
+// baris lama (sebelum migrasi) atau string kosong → tengah.
+func FotoPosisiOrDefault(v string) string {
+	if v == "" {
+		return "50% 50%"
+	}
+	return v
 }
 
 type EmergencyContactRequest struct {

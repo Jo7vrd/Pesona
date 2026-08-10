@@ -8,12 +8,15 @@ import { TiltCard } from "@/components/motion/tilt-card";
 export function ContentCard({
   href,
   fotoUrl,
+  fotoPosisi,
   nama,
   kategori,
   deskripsi,
 }: {
   href: string;
   fotoUrl: string;
+  /** Titik fokus foto (object-position); default tengah. */
+  fotoPosisi?: string;
   nama: string;
   kategori: React.ReactNode;
   deskripsi: React.ReactNode;
@@ -33,6 +36,7 @@ export function ContentCard({
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             placeholder="blur"
             blurDataURL={BLUR_DATA_URL}
+            style={{ objectPosition: fotoPosisi || "50% 50%" }}
             className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
           />
           <Badge className="bg-background/85 text-foreground absolute top-3 left-3 rounded-full border-0 backdrop-blur-sm">

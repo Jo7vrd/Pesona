@@ -53,6 +53,7 @@ export default async function DestinasiPage() {
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     placeholder="blur"
                     blurDataURL={BLUR_DATA_URL}
+                    style={{ objectPosition: spot.fotoPosisi || "50% 50%" }}
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />
                   <Badge className="bg-background/85 text-foreground absolute top-3 left-3 rounded-full border-0 backdrop-blur-sm">

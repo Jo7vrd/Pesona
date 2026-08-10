@@ -28,6 +28,7 @@ const EMPTY: MakananInput = {
   kategori: "makanan",
   deskripsi: "",
   fotoUrl: "",
+  fotoPosisi: "50% 50%",
   isUnggulan: false,
   videoYoutube: "",
   subsections: [],
@@ -36,6 +37,7 @@ const EMPTY: MakananInput = {
 function toForm(item: Makanan): MakananInput {
   return {
     ...item,
+    fotoPosisi: item.fotoPosisi ?? "50% 50%",
     videoYoutube: item.videoYoutube ?? "",
     subsections: item.subsections ?? [],
   };
@@ -55,6 +57,8 @@ export function MakananForm({
     handleSubmit,
     control,
     reset,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<MakananInput>({
     resolver: zodResolver(makananSchema),
@@ -82,6 +86,10 @@ export function MakananForm({
               onChange={field.onChange}
               error={errors.fotoUrl?.message}
               modul="makanan"
+              position={watch("fotoPosisi")}
+              onPositionChange={(p) =>
+                setValue("fotoPosisi", p, { shouldDirty: true })
+              }
             />
           )}
         />

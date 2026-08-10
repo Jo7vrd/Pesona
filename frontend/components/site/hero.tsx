@@ -127,6 +127,7 @@ export function Hero({ slides }: { slides?: HeroImage[] }) {
               priority={i === 0}
               sizes="100vw"
               className="object-cover"
+              style={{ objectPosition: slide.fotoPosisi || "50% 50%" }}
               unoptimized={!slide.fotoUrl.startsWith("/")}
             />
           </div>

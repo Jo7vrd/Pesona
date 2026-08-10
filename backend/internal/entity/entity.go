@@ -20,6 +20,7 @@ type Makanan struct {
 	Kategori     string      `gorm:"size:20;not null"`
 	Deskripsi    string      `gorm:"type:text;not null"`
 	FotoURL      string      `gorm:"size:500;not null;column:foto_url"`
+	FotoPosisi   string      `gorm:"size:20;not null;default:50% 50%;column:foto_posisi"`
 	IsUnggulan   bool        `gorm:"not null;default:false"`
 	VideoYoutube *string     `gorm:"size:500;column:video_youtube"`
 	Subsections  Subsections `gorm:"serializer:json;type:jsonb;column:subsections"`
@@ -35,6 +36,7 @@ type Budaya struct {
 	Kategori     string      `gorm:"size:50;not null"`
 	Deskripsi    string      `gorm:"type:text;not null"`
 	FotoURL      string      `gorm:"size:500;not null;column:foto_url"`
+	FotoPosisi   string      `gorm:"size:20;not null;default:50% 50%;column:foto_posisi"`
 	IsUnggulan   bool        `gorm:"not null;default:false"`
 	VideoYoutube *string     `gorm:"size:500;column:video_youtube"`
 	Subsections  Subsections `gorm:"serializer:json;type:jsonb;column:subsections"`
@@ -63,6 +65,7 @@ type Destinasi struct {
 	Lat          float64     `gorm:"not null"`
 	Lng          float64     `gorm:"not null"`
 	FotoURL      string      `gorm:"size:500;not null;column:foto_url"`
+	FotoPosisi   string      `gorm:"size:20;not null;default:50% 50%;column:foto_posisi"`
 	VideoYoutube *string     `gorm:"size:500;column:video_youtube"`
 	Subsections  Subsections `gorm:"serializer:json;type:jsonb;column:subsections"`
 	CreatedAt    time.Time
@@ -74,11 +77,12 @@ func (Destinasi) TableName() string { return "destinasi" }
 // HeroImage adalah satu foto latar carousel hero beranda. Urutan
 // menentukan giliran tampil; foto berganti otomatis di sisi frontend.
 type HeroImage struct {
-	ID        uint   `gorm:"primaryKey"`
-	FotoURL   string `gorm:"size:500;not null;column:foto_url"`
-	Urutan    int    `gorm:"not null;default:0"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID         uint   `gorm:"primaryKey"`
+	FotoURL    string `gorm:"size:500;not null;column:foto_url"`
+	FotoPosisi string `gorm:"size:20;not null;default:50% 50%;column:foto_posisi"`
+	Urutan     int    `gorm:"not null;default:0"`
+	CreatedAt  time.Time
+	UpdatedAt  time.Time
 }
 
 func (HeroImage) TableName() string { return "hero_images" }

@@ -62,6 +62,7 @@ export default async function BudayaDetailPage({ params }: Props) {
             fill
             priority
             sizes="(max-width: 1152px) 100vw, 1152px"
+            style={{ objectPosition: item.fotoPosisi || "50% 50%" }}
             className="object-cover"
           />
         </div>
@@ -160,6 +161,7 @@ export default async function BudayaDetailPage({ params }: Props) {
                   key={b.id}
                   href={`/budaya/${b.id}`}
                   fotoUrl={b.fotoUrl}
+                  fotoPosisi={b.fotoPosisi}
                   nama={b.nama}
                   kategori={
                     <Tr

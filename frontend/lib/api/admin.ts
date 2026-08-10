@@ -23,6 +23,7 @@ export type EmergencyContactInput = Omit<EmergencyContact, "id">;
 
 export interface HeroImageInput {
   fotoUrl: string;
+  fotoPosisi?: string;
   urutan: number;
 }
 

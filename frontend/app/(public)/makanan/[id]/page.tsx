@@ -61,6 +61,7 @@ export default async function MakananDetailPage({ params }: Props) {
               fill
               priority
               sizes="(max-width: 1024px) 100vw, 58vw"
+              style={{ objectPosition: item.fotoPosisi || "50% 50%" }}
               className="object-cover"
             />
           </div>

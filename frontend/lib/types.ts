@@ -12,6 +12,8 @@ export interface Makanan {
   kategori: KategoriMakanan;
   deskripsi: string;
   fotoUrl: string;
+  /** Titik fokus foto (CSS object-position, mis. "50% 30%"). Default tengah. */
+  fotoPosisi?: string;
   isUnggulan: boolean;
   /** Opsional; hanya tautan YouTube yang diterima. */
   videoYoutube?: string | null;
@@ -25,6 +27,8 @@ export interface Budaya {
   kategori: string;
   deskripsi: string;
   fotoUrl: string;
+  /** Titik fokus foto (CSS object-position, mis. "50% 30%"). Default tengah. */
+  fotoPosisi?: string;
   isUnggulan: boolean;
   /** Opsional; hanya tautan YouTube yang diterima. */
   videoYoutube?: string | null;
@@ -50,6 +54,8 @@ export interface Destinasi {
   lat: number;
   lng: number;
   fotoUrl: string;
+  /** Titik fokus foto (CSS object-position, mis. "50% 30%"). Default tengah. */
+  fotoPosisi?: string;
   /** Opsional; hanya tautan YouTube yang diterima. */
   videoYoutube?: string | null;
   /** Sub-bagian bertajuk opsional di bawah deskripsi. */
@@ -69,6 +75,8 @@ export interface AdminUser {
 export interface HeroImage {
   id: number;
   fotoUrl: string;
+  /** Titik fokus foto (CSS object-position, mis. "50% 30%"). Default tengah. */
+  fotoPosisi?: string;
   urutan: number;
 }
 

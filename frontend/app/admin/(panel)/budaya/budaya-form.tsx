@@ -21,6 +21,7 @@ const EMPTY: BudayaInput = {
   kategori: "",
   deskripsi: "",
   fotoUrl: "",
+  fotoPosisi: "50% 50%",
   isUnggulan: false,
   videoYoutube: "",
   subsections: [],
@@ -29,6 +30,7 @@ const EMPTY: BudayaInput = {
 function toForm(item: Budaya): BudayaInput {
   return {
     ...item,
+    fotoPosisi: item.fotoPosisi ?? "50% 50%",
     videoYoutube: item.videoYoutube ?? "",
     subsections: item.subsections ?? [],
   };
@@ -48,6 +50,8 @@ export function BudayaForm({
     handleSubmit,
     control,
     reset,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<BudayaInput>({
     resolver: zodResolver(budayaSchema),
@@ -75,6 +79,10 @@ export function BudayaForm({
               onChange={field.onChange}
               error={errors.fotoUrl?.message}
               modul="budaya"
+              position={watch("fotoPosisi")}
+              onPositionChange={(p) =>
+                setValue("fotoPosisi", p, { shouldDirty: true })
+              }
             />
           )}
         />

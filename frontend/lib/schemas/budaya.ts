@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { fotoPosisiField } from "@/lib/schemas/foto-posisi";
 import { subsectionsField } from "@/lib/schemas/subsection";
 import { videoYoutubeField } from "@/lib/schemas/youtube";
 
@@ -20,6 +21,7 @@ export const budayaSchema = z.object({
     .min(20, "Deskripsi minimal 20 karakter")
     .max(1000, "Deskripsi maksimal 1000 karakter"),
   fotoUrl: z.string().min(1, "Foto wajib diisi"),
+  fotoPosisi: fotoPosisiField,
   isUnggulan: z.boolean(),
   videoYoutube: videoYoutubeField,
   subsections: subsectionsField,

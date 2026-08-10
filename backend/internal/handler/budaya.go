@@ -65,6 +65,7 @@ func (h *BudayaHandler) Create(c *gin.Context) {
 		Kategori:     req.Kategori,
 		Deskripsi:    req.Deskripsi,
 		FotoURL:      req.FotoURL,
+		FotoPosisi:   dto.FotoPosisiOrDefault(req.FotoPosisi),
 		IsUnggulan:   req.IsUnggulan,
 		VideoYoutube: req.VideoYoutube,
 		Subsections:  dto.ToEntitySubsections(req.Subsections),
@@ -94,6 +95,7 @@ func (h *BudayaHandler) Update(c *gin.Context) {
 		b.Kategori = req.Kategori
 		b.Deskripsi = req.Deskripsi
 		b.FotoURL = req.FotoURL
+		b.FotoPosisi = dto.FotoPosisiOrDefault(req.FotoPosisi)
 		b.IsUnggulan = req.IsUnggulan
 		b.VideoYoutube = req.VideoYoutube
 		b.Subsections = dto.ToEntitySubsections(req.Subsections)
