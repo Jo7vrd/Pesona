@@ -17,10 +17,11 @@ jobs:
   backup:
     runs-on: ubuntu-latest
     steps:
-      # pg_dump v16 (cocok dgn server) dari repo resmi PostgreSQL/PGDG.
-      # Dijalankan di runner Ubuntu langsung, bukan container Alpine, agar
-      # actions/upload-artifact (butuh Node glibc) tetap berfungsi.
-      - name: Install PostgreSQL 16 client
+      # pg_dump v18 (cocok dgn server Railway yg sudah di-upgrade ke PG 18)
+      # dari repo resmi PostgreSQL/PGDG. Aturan: versi pg_dump harus >= versi
+      # server. Dijalankan di runner Ubuntu langsung, bukan container Alpine,
+      # agar actions/upload-artifact (butuh Node glibc) tetap berfungsi.
+      - name: Install PostgreSQL 18 client
         run: |
           sudo install -d /usr/share/postgresql-common/pgdg
           sudo curl -fsSL -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc \
@@ -28,7 +29,7 @@ jobs:
           echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" \
             | sudo tee /etc/apt/sources.list.d/pgdg.list >/dev/null
           sudo apt-get update
-          sudo apt-get install -y postgresql-client-16
+          sudo apt-get install -y postgresql-client-18
           pg_dump --version
 
       - name: Dump database
@@ -40,7 +41,7 @@ jobs:
             exit 1
           fi
           STAMP=$(date +%Y-%m-%d)
-          /usr/lib/postgresql/16/bin/pg_dump "$DATABASE_URL" \
+          /usr/lib/postgresql/18/bin/pg_dump "$DATABASE_URL" \
             --no-owner --no-privileges > "keikecil-$STAMP.sql"
           echo "BACKUP_FILE=keikecil-$STAMP.sql" >> "$GITHUB_ENV"
           ls -lh keikecil-*.sql
