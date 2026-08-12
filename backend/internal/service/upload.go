@@ -22,18 +22,14 @@ import (
 const (
 	// maksimal 10MB; sisi terpanjang dibatasi per-modul (lihat di bawah)
 	maxUploadSize = 10 * 1024 * 1024
-	jpegQuality   = 85
+	jpegQuality   = 90
 )
 
-// maxDimensionFor: foto hero & peta butuh detail lebih tinggi (bisa
-// di-zoom), sedangkan foto konten (kartu) cukup 800px.
+// maxDimensionFor: semua foto disimpan resolusi tinggi (2400px) agar tetap
+// tajam/HD di kartu, hero, dan halaman detail — terutama setelah admin bisa
+// memperbesar (zoom) bingkai foto.
 func maxDimensionFor(modul string) int {
-	switch modul {
-	case "hero", "umum":
-		return 2000
-	default:
-		return 800
-	}
+	return 2400
 }
 
 var allowedModul = map[string]bool{

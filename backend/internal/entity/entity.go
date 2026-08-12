@@ -123,10 +123,14 @@ const (
 	SettingPetaKarangDeskrip = "peta_karang_deskripsi"
 )
 
-// PageHeroPages adalah halaman modul yang foto hero-nya bisa diedit
-// admin. Disimpan di tabel settings dengan kunci "hero_<slug>".
+// PageHeroPages adalah slot foto yang bisa diedit admin dan disimpan di
+// tabel settings dengan kunci "hero_<slug>" (plus "_pos"/"_zoom"). Selain
+// foto hero tiap halaman, termasuk juga foto beranda: "sambutan" dan empat
+// banner ajakan ("banner_<modul>").
 var PageHeroPages = []string{
 	"destinasi", "makanan", "budaya", "bahasa", "peta", "kedaruratan",
+	"sambutan",
+	"banner_destinasi", "banner_makanan", "banner_budaya", "banner_bahasa",
 }
 
 func PageHeroKey(page string) string     { return "hero_" + page }

@@ -35,11 +35,29 @@ const HERO_PAGES = [
   { slug: "kedaruratan", label: "Kedaruratan" },
 ] as const;
 
+// Foto beranda yang bisa diedit: bagian sambutan + empat banner ajakan.
+const BERANDA_FOTOS = [
+  { slug: "sambutan", label: "Sambutan (foto samping)" },
+  { slug: "banner_destinasi", label: "Banner → Destinasi" },
+  { slug: "banner_makanan", label: "Banner → Kuliner" },
+  { slug: "banner_budaya", label: "Banner → Budaya" },
+  { slug: "banner_bahasa", label: "Banner → Bahasa Kei" },
+] as const;
+
 export default function AdminTampilanPage() {
   return (
     <div className="mx-auto max-w-4xl space-y-8">
       <HeroCarouselManager />
-      <PageHeroesManager />
+      <PageHeroImagesManager
+        pages={HERO_PAGES}
+        title="Foto hero tiap halaman"
+        description="Gambar besar di bagian atas tiap halaman. Unggah, atur bingkai (geser & zoom), lalu simpan. Kosongkan (tombol ✕) untuk kembali ke foto bawaan."
+      />
+      <PageHeroImagesManager
+        pages={BERANDA_FOTOS}
+        title="Foto beranda"
+        description="Foto di bagian sambutan beranda dan empat banner ajakan. Unggah, atur bingkai (geser & zoom), lalu simpan. Kosongkan (tombol ✕) untuk kembali ke foto bawaan."
+      />
       <PetaKarangSetting />
     </div>
   );
@@ -53,7 +71,15 @@ interface HeroDraft {
   zoom: number;
 }
 
-function PageHeroesManager() {
+function PageHeroImagesManager({
+  pages,
+  title,
+  description,
+}: {
+  pages: readonly { slug: string; label: string }[];
+  title: string;
+  description: string;
+}) {
   const queryClient = useQueryClient();
   const [savingSlug, setSavingSlug] = useState<string | null>(null);
   const [drafts, setDrafts] = useState<Record<string, HeroDraft>>({});
@@ -67,7 +93,7 @@ function PageHeroesManager() {
   useEffect(() => {
     if (!data) return;
     const seeded: Record<string, HeroDraft> = {};
-    for (const p of HERO_PAGES) {
+    for (const p of pages) {
       seeded[p.slug] = {
         url: data.heroImages?.[p.slug] ?? "",
         pos: data.heroImagePos?.[p.slug] ?? "50% 50%",
@@ -75,7 +101,7 @@ function PageHeroesManager() {
       };
     }
     setDrafts(seeded);
-  }, [data]);
+  }, [data, pages]);
 
   const mutation = useMutation({
     mutationFn: (v: { slug: string } & HeroDraft) =>
@@ -87,7 +113,7 @@ function PageHeroesManager() {
     onMutate: (v) => setSavingSlug(v.slug),
     onSuccess: (saved) => {
       queryClient.setQueryData(SETTINGS_KEY, saved);
-      toast.success("Foto hero halaman disimpan");
+      toast.success("Foto disimpan");
     },
     onError: (error) => toast.error(error.message),
     onSettled: () => setSavingSlug(null),
@@ -114,23 +140,19 @@ function PageHeroesManager() {
     <section className="bg-card rounded-xl border p-5">
       <div className="flex items-center gap-2">
         <PanelTop className="text-lagoon-600 size-4.5" aria-hidden />
-        <h2 className="font-semibold">Foto hero tiap halaman</h2>
+        <h2 className="font-semibold">{title}</h2>
       </div>
-      <p className="text-muted-foreground mt-1 text-sm">
-        Gambar besar di bagian atas tiap halaman. Unggah, atur bingkai (geser
-        &amp; zoom), lalu simpan. Kosongkan (tombol ✕) untuk kembali ke foto
-        bawaan.
-      </p>
+      <p className="text-muted-foreground mt-1 text-sm">{description}</p>
 
       {isPending ? (
         <div className="mt-4 grid gap-5 sm:grid-cols-2">
-          {HERO_PAGES.map((p) => (
+          {pages.map((p) => (
             <Skeleton key={p.slug} className="aspect-[16/9] w-full rounded-xl" />
           ))}
         </div>
       ) : (
         <div className="mt-4 grid gap-5 sm:grid-cols-2">
-          {HERO_PAGES.map((p) => {
+          {pages.map((p) => {
             const d = drafts[p.slug] ?? { url: "", pos: "50% 50%", zoom: 1 };
             return (
               <div key={p.slug}>

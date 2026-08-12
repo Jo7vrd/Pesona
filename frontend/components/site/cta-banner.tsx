@@ -8,22 +8,30 @@ import { BLUR_DATA_URL } from "@/lib/blur";
 import { useLocale } from "@/lib/i18n";
 import { StaggerGrid, StaggerItem } from "@/components/motion/stagger-grid";
 
-const fotoBanner: Record<string, string> = {
-  "/destinasi":
-    "/images/u/1546484475-7f7bd55792da.jpg",
-  "/makanan": "/images/kuliner-kei.jpg",
-  "/budaya":
-    "/images/u/1533900298318-6b8da08a523e.jpg",
-  "/bahasa":
-    "/images/u/1541417904950-b855846fe074.jpg",
+interface FotoFrame {
+  url: string;
+  position: string;
+  zoom: number;
+}
+
+const fotoBannerDefault: Record<string, FotoFrame> = {
+  "/destinasi": { url: "/images/u/1546484475-7f7bd55792da.jpg", position: "50% 50%", zoom: 1 },
+  "/makanan": { url: "/images/kuliner-kei.jpg", position: "50% 50%", zoom: 1 },
+  "/budaya": { url: "/images/u/1533900298318-6b8da08a523e.jpg", position: "50% 50%", zoom: 1 },
+  "/bahasa": { url: "/images/u/1541417904950-b855846fe074.jpg", position: "50% 50%", zoom: 1 },
 };
 
 /**
  * Empat banner ajakan ringkas. Foto memenuhi kartu; keterbacaan teks
  * dijaga overlay gradien brand multi-stop yang melebur mulus ke foto
  * (tanpa sambungan patah), plus tombol gradien oranye khas hero.
+ * `fotos` (dari setelan admin) menimpa foto bawaan bila ada.
  */
-export function CtaBanner() {
+export function CtaBanner({
+  fotos = fotoBannerDefault,
+}: {
+  fotos?: Record<string, FotoFrame>;
+}) {
   const { t } = useLocale();
 
   return (
@@ -35,15 +43,20 @@ export function CtaBanner() {
               href={banner.href}
               className="group focus-visible:ring-ring relative block overflow-hidden rounded-3xl shadow-lg transition-shadow duration-300 hover:shadow-xl focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
-              <div className="relative h-44 md:h-48">
+              <div className="relative h-44 overflow-hidden transition-transform duration-700 ease-out group-hover:scale-105 md:h-48">
                 <Image
-                  src={fotoBanner[banner.href]}
+                  src={(fotos[banner.href] ?? fotoBannerDefault[banner.href]).url}
                   alt=""
                   fill
                   sizes="(max-width: 640px) 100vw, 50vw"
                   placeholder="blur"
                   blurDataURL={BLUR_DATA_URL}
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  style={{
+                    objectPosition: (fotos[banner.href] ?? fotoBannerDefault[banner.href]).position,
+                    transform: `scale(${(fotos[banner.href] ?? fotoBannerDefault[banner.href]).zoom})`,
+                    transformOrigin: (fotos[banner.href] ?? fotoBannerDefault[banner.href]).position,
+                  }}
+                  className="object-cover"
                 />
                 <div
                   className="absolute inset-0"

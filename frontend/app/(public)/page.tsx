@@ -4,7 +4,9 @@ import {
   getFeaturedBudaya,
   getFeaturedMakanan,
   getHeroImages,
+  getSiteSettings,
 } from "@/lib/api/server";
+import type { SiteSettings } from "@/lib/types";
 import { BLUR_DATA_URL } from "@/lib/blur";
 import { FadeIn } from "@/components/motion/fade-in";
 import { StaggerGrid, StaggerItem } from "@/components/motion/stagger-grid";
@@ -19,12 +21,34 @@ import {
 } from "@/components/site/landing-copy";
 import { MarqueeStrip } from "@/components/site/marquee-strip";
 
+/** Ambil foto beranda (url + bingkai) dari setelan, dengan fallback bawaan. */
+function pickFoto(settings: SiteSettings, slug: string, fallback: string) {
+  return {
+    url: settings.heroImages?.[slug] || fallback,
+    position: settings.heroImagePos?.[slug] || "50% 50%",
+    zoom: settings.heroImageZoom?.[slug] || 1,
+  };
+}
+
 export default async function LandingPage() {
-  const [makanan, budaya, heroImages] = await Promise.all([
+  const [makanan, budaya, heroImages, settings] = await Promise.all([
     getFeaturedMakanan(),
     getFeaturedBudaya(),
     getHeroImages(),
+    getSiteSettings(),
   ]);
+
+  const sambutan = pickFoto(
+    settings,
+    "sambutan",
+    "/images/u/1544551763-46a013bb70d5.jpg"
+  );
+  const bannerFotos = {
+    "/destinasi": pickFoto(settings, "banner_destinasi", "/images/u/1546484475-7f7bd55792da.jpg"),
+    "/makanan": pickFoto(settings, "banner_makanan", "/images/kuliner-kei.jpg"),
+    "/budaya": pickFoto(settings, "banner_budaya", "/images/u/1533900298318-6b8da08a523e.jpg"),
+    "/bahasa": pickFoto(settings, "banner_bahasa", "/images/u/1541417904950-b855846fe074.jpg"),
+  };
 
   return (
     <>
@@ -38,12 +62,17 @@ export default async function LandingPage() {
           <FadeIn delay={0.15} className="lg:col-span-7">
             <div className="relative aspect-[16/11] overflow-hidden rounded-(--radius-card)">
               <Image
-                src="/images/u/1544551763-46a013bb70d5.jpg"
+                src={sambutan.url}
                 alt="Perairan jernih Kei Kecil dilihat dari atas"
                 fill
                 sizes="(max-width: 1024px) 100vw, 58vw"
                 placeholder="blur"
                 blurDataURL={BLUR_DATA_URL}
+                style={{
+                  objectPosition: sambutan.position,
+                  transform: `scale(${sambutan.zoom})`,
+                  transformOrigin: sambutan.position,
+                }}
                 className="object-cover"
               />
             </div>
@@ -81,7 +110,7 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      <CtaBanner />
+      <CtaBanner fotos={bannerFotos} />
     </>
   );
 }
