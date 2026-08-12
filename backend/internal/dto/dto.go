@@ -341,15 +341,18 @@ type SettingsRequest struct {
 	HeroImages        map[string]*string  `json:"heroImages"`
 	HeroImagePos      map[string]*string  `json:"heroImagePos"`
 	HeroImageZoom     map[string]*float64 `json:"heroImageZoom"`
+	// BerandaTeks: field → bahasa → teks. Pembaruan menimpa seluruhnya.
+	BerandaTeks *map[string]map[string]string `json:"berandaTeks"`
 }
 
 type SettingsResponse struct {
-	BahasaVideo       *string            `json:"bahasaVideo"`
-	PetaKarangFoto    *string            `json:"petaKarangFoto"`
-	PetaKarangDeskrip *string            `json:"petaKarangDeskripsi"`
-	HeroImages        map[string]string  `json:"heroImages"`
-	HeroImagePos      map[string]string  `json:"heroImagePos"`
-	HeroImageZoom     map[string]float64 `json:"heroImageZoom"`
+	BahasaVideo       *string                      `json:"bahasaVideo"`
+	PetaKarangFoto    *string                      `json:"petaKarangFoto"`
+	PetaKarangDeskrip *string                      `json:"petaKarangDeskripsi"`
+	HeroImages        map[string]string            `json:"heroImages"`
+	HeroImagePos      map[string]string            `json:"heroImagePos"`
+	HeroImageZoom     map[string]float64           `json:"heroImageZoom"`
+	BerandaTeks       map[string]map[string]string `json:"berandaTeks"`
 }
 
 func strPtrOrNil(v string) *string {
@@ -359,7 +362,7 @@ func strPtrOrNil(v string) *string {
 	return &v
 }
 
-func NewSettingsResponse(bahasaVideo, petaKarangFoto, petaKarangDeskrip string, heroImages map[string]string, heroImagePos map[string]string, heroImageZoom map[string]float64) SettingsResponse {
+func NewSettingsResponse(bahasaVideo, petaKarangFoto, petaKarangDeskrip string, heroImages map[string]string, heroImagePos map[string]string, heroImageZoom map[string]float64, berandaTeks map[string]map[string]string) SettingsResponse {
 	if heroImages == nil {
 		heroImages = map[string]string{}
 	}
@@ -369,6 +372,9 @@ func NewSettingsResponse(bahasaVideo, petaKarangFoto, petaKarangDeskrip string, 
 	if heroImageZoom == nil {
 		heroImageZoom = map[string]float64{}
 	}
+	if berandaTeks == nil {
+		berandaTeks = map[string]map[string]string{}
+	}
 	return SettingsResponse{
 		BahasaVideo:       strPtrOrNil(bahasaVideo),
 		PetaKarangFoto:    strPtrOrNil(petaKarangFoto),
@@ -376,5 +382,6 @@ func NewSettingsResponse(bahasaVideo, petaKarangFoto, petaKarangDeskrip string, 
 		HeroImages:        heroImages,
 		HeroImagePos:      heroImagePos,
 		HeroImageZoom:     heroImageZoom,
+		BerandaTeks:       berandaTeks,
 	}
 }

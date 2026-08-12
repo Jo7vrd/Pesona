@@ -12,6 +12,7 @@ import { FadeIn } from "@/components/motion/fade-in";
 import { StaggerGrid, StaggerItem } from "@/components/motion/stagger-grid";
 import { FoodCard } from "@/components/cards/food-card";
 import { SpotlightRow } from "@/components/cards/spotlight-row";
+import { BerandaCopyProvider } from "@/lib/beranda-copy";
 import { CtaBanner } from "@/components/site/cta-banner";
 import { Hero } from "@/components/site/hero";
 import {
@@ -51,7 +52,7 @@ export default async function LandingPage() {
   };
 
   return (
-    <>
+    <BerandaCopyProvider value={settings.berandaTeks}>
       <Hero slides={heroImages} />
 
       <section id="sambutan" className="section-y" aria-labelledby="sambutan-judul">
@@ -111,6 +112,6 @@ export default async function LandingPage() {
       </section>
 
       <CtaBanner fotos={bannerFotos} />
-    </>
+    </BerandaCopyProvider>
   );
 }

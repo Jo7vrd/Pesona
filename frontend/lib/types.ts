@@ -140,4 +140,6 @@ export interface SiteSettings {
   heroImagePos?: Record<string, string>;
   /** Skala/zoom foto hero per halaman: slug → angka (1–3). */
   heroImageZoom?: Record<string, number>;
+  /** Teks beranda editable: field → bahasa (id/en/zh) → teks. */
+  berandaTeks?: Record<string, Record<string, string>>;
 }

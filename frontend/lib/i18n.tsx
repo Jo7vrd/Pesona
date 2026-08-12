@@ -326,6 +326,9 @@ const dictionaries = {
 
 export type Dictionary = (typeof dictionaries)[Locale];
 
+/** Teks bawaan Bahasa Indonesia — dipakai sebagai default editor teks beranda. */
+export const idCopy = dictionaries.id;
+
 /** Isi placeholder {x} pada string kamus: fmt("{n} sajian", { n: 8 }) */
 export function fmt(
   template: string,

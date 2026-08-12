@@ -76,6 +76,24 @@ func (s *SettingsService) SetPetaKarangDeskripsi(ctx context.Context, text strin
 	return nil
 }
 
+// BerandaTeks mengembalikan JSON teks beranda (mentah); string kosong
+// berarti belum ada override (frontend memakai teks bawaan i18n).
+func (s *SettingsService) BerandaTeks(ctx context.Context) (string, error) {
+	v, _, err := s.repo.Get(ctx, entity.SettingBerandaTeks)
+	if err != nil {
+		return "", apperror.Internal(err)
+	}
+	return v, nil
+}
+
+func (s *SettingsService) SetBerandaTeks(ctx context.Context, jsonStr string) error {
+	if err := s.repo.Set(ctx, entity.SettingBerandaTeks, jsonStr); err != nil {
+		return apperror.Internal(err)
+	}
+	s.reval.Trigger("settings")
+	return nil
+}
+
 // PageHeroes mengembalikan peta slug-halaman → URL foto hero untuk
 // halaman yang sudah disetel (yang kosong dilewati).
 func (s *SettingsService) PageHeroes(ctx context.Context) (map[string]string, error) {

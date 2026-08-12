@@ -17,6 +17,7 @@ import {
   Moon,
   Siren,
   Sun,
+  Type,
   Users,
   UtensilsCrossed,
 } from "lucide-react";
@@ -50,6 +51,7 @@ type MenuItem = {
 const menu: MenuItem[] = [
   { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
   { label: "Tampilan", href: "/admin/tampilan", icon: Images },
+  { label: "Teks Beranda", href: "/admin/teks", icon: Type },
   { label: "Destinasi", href: "/admin/destinasi", icon: MapPin },
   { label: "Kuliner", href: "/admin/makanan", icon: UtensilsCrossed },
   { label: "Budaya", href: "/admin/budaya", icon: Landmark },

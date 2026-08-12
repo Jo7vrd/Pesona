@@ -13,6 +13,7 @@ import {
 import { ChevronDown } from "lucide-react";
 
 import type { HeroImage } from "@/lib/types";
+import { useCopy } from "@/lib/beranda-copy";
 import { fallbackHero } from "@/lib/content/fallback";
 import { useLocale } from "@/lib/i18n";
 import { GlowButton } from "@/components/site/glow-button";
@@ -31,6 +32,7 @@ declare global {
 export function Hero({ slides }: { slides?: HeroImage[] }) {
   const ref = useRef<HTMLElement>(null);
   const { t } = useLocale();
+  const c = useCopy();
   const reduceMotion = useReducedMotion();
 
   const images =
@@ -152,10 +154,10 @@ export function Hero({ slides }: { slides?: HeroImage[] }) {
           className="mb-4 text-3xl text-white md:text-4xl"
           style={{ fontFamily: "var(--font-brush)" }}
         >
-          Maluku Tenggara, Indonesia
+          {c("hero_eyebrow", "Maluku Tenggara, Indonesia")}
         </motion.p>
         <h1 className="font-display text-display-xl max-w-4xl font-bold text-balance">
-          {t.hero.title.split(" ").map((kata, i) => (
+          {c("hero_title", t.hero.title).split(" ").map((kata, i) => (
             <motion.span
               key={i}
               className="inline-block whitespace-pre will-change-transform"
@@ -177,7 +179,7 @@ export function Hero({ slides }: { slides?: HeroImage[] }) {
           transition={{ duration: 0.8, delay: 0.35, ease: EASE_OUT_EXPO }}
           className="text-lede mt-6 max-w-xl text-white/85"
         >
-          {t.hero.lede}
+          {c("hero_lede", t.hero.lede)}
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: reduceMotion ? 0 : 20 }}
@@ -185,7 +187,9 @@ export function Hero({ slides }: { slides?: HeroImage[] }) {
           transition={{ duration: 0.8, delay: 0.5, ease: EASE_OUT_EXPO }}
           className="mt-10"
         >
-          <GlowButton onClick={scrollToSambutan}>{t.hero.cta}</GlowButton>
+          <GlowButton onClick={scrollToSambutan}>
+            {c("hero_cta", t.hero.cta)}
+          </GlowButton>
         </motion.div>
       </motion.div>
 

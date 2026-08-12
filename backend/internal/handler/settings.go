@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"encoding/json"
 	"log/slog"
 	"net/http"
 
@@ -52,7 +53,18 @@ func (h *SettingsHandler) snapshot(c *gin.Context) (dto.SettingsResponse, bool) 
 		respondError(c, h.logger, err)
 		return dto.SettingsResponse{}, false
 	}
-	return dto.NewSettingsResponse(video, petaFoto, petaDesk, heroes, heroPos, heroZoom), true
+	berandaRaw, err := h.svc.BerandaTeks(ctx)
+	if err != nil {
+		respondError(c, h.logger, err)
+		return dto.SettingsResponse{}, false
+	}
+	var berandaTeks map[string]map[string]string
+	if berandaRaw != "" {
+		if err := json.Unmarshal([]byte(berandaRaw), &berandaTeks); err != nil {
+			h.logger.Warn("beranda_teks tidak valid JSON, diabaikan", "error", err)
+		}
+	}
+	return dto.NewSettingsResponse(video, petaFoto, petaDesk, heroes, heroPos, heroZoom, berandaTeks), true
 }
 
 // GET /api/v1/settings — publik (dikonsumsi RSC halaman Bahasa Kei, Peta,
@@ -140,6 +152,22 @@ func (h *SettingsHandler) Update(c *gin.Context) {
 			zoom = *zoomPtr
 		}
 		if err := h.svc.SetPageHeroZoom(ctx, page, zoom); err != nil {
+			respondError(c, h.logger, err)
+			return
+		}
+	}
+
+	if req.BerandaTeks != nil {
+		encoded, err := json.Marshal(*req.BerandaTeks)
+		if err != nil {
+			respondInvalid(c)
+			return
+		}
+		if len(encoded) > 20000 {
+			respondInvalid(c)
+			return
+		}
+		if err := h.svc.SetBerandaTeks(ctx, string(encoded)); err != nil {
 			respondError(c, h.logger, err)
 			return
 		}

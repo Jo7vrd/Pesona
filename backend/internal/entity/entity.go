@@ -121,6 +121,9 @@ const (
 	SettingBahasaVideo       = "bahasa_video"
 	SettingPetaKarangFoto    = "peta_karang_foto"
 	SettingPetaKarangDeskrip = "peta_karang_deskripsi"
+	// SettingBerandaTeks menyimpan teks beranda yang bisa diedit admin
+	// sebagai JSON: { "<field>": { "id": "...", "en": "...", "zh": "..." } }.
+	SettingBerandaTeks = "beranda_teks"
 )
 
 // PageHeroPages adalah slot foto yang bisa diedit admin dan disimpan di

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import { BLUR_DATA_URL } from "@/lib/blur";
+import { useCopy } from "@/lib/beranda-copy";
 import { useLocale } from "@/lib/i18n";
 import { StaggerGrid, StaggerItem } from "@/components/motion/stagger-grid";
 
@@ -33,11 +34,12 @@ export function CtaBanner({
   fotos?: Record<string, FotoFrame>;
 }) {
   const { t } = useLocale();
+  const c = useCopy();
 
   return (
     <div className="container-page pb-(--spacing-section) [contain-intrinsic-size:auto_500px] [content-visibility:auto]">
       <StaggerGrid className="grid gap-5 sm:grid-cols-2">
-        {t.banners.map((banner) => (
+        {t.banners.map((banner, i) => (
           <StaggerItem key={banner.href}>
             <Link
               href={banner.href}
@@ -69,7 +71,7 @@ export function CtaBanner({
 
               <div className="absolute inset-0 flex flex-col justify-between p-6">
                 <p className="font-display text-shadow-soft max-w-[15rem] text-lg leading-snug font-bold text-white md:text-xl">
-                  {banner.title}
+                  {c(`banner_${i}_title`, banner.title)}
                 </p>
                 <span
                   className="inline-flex w-fit items-center gap-2 rounded-full px-5 py-2 text-sm font-bold text-white shadow-md transition-transform duration-300 group-hover:scale-105"
@@ -78,7 +80,7 @@ export function CtaBanner({
                       "linear-gradient(135deg, #f4784a, #d46634)",
                   }}
                 >
-                  {banner.cta}
+                  {c(`banner_${i}_cta`, banner.cta)}
                   <ArrowRight
                     className="size-4 transition-transform duration-300 group-hover:translate-x-0.5"
                     aria-hidden

@@ -295,6 +295,10 @@ export const mockDb = {
         heroImageZoom: input.heroImageZoom
           ? { ...(base.heroImageZoom ?? {}), ...input.heroImageZoom }
           : base.heroImageZoom,
+        berandaTeks:
+          input.berandaTeks !== undefined
+            ? input.berandaTeks
+            : base.berandaTeks,
       };
       window.localStorage.setItem(KEYS.settings, JSON.stringify(next));
       return next;
