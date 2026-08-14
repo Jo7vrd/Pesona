@@ -5,7 +5,9 @@ import { Search } from "lucide-react";
 
 import {
   bahasaCatatanTr,
+  bahasaGlossByText,
   bahasaGlossTr,
+  bahasaKategoriTr,
 } from "@/lib/content/i18n-content";
 import { fmt, useLocale } from "@/lib/i18n";
 import type { BahasaLokal } from "@/lib/types";
@@ -16,20 +18,25 @@ export function DictionarySearch({ entries }: { entries: BahasaLokal[] }) {
   const { t, locale } = useLocale();
   const [query, setQuery] = useState("");
 
-  // Tampilkan glos sesuai bahasa antarmuka; kata Kei selalu tetap
-  const glos = (e: BahasaLokal) =>
-    locale === "en"
-      ? (bahasaGlossTr[e.id]?.en ?? e.bahasaIndonesia)
-      : locale === "zh"
-        ? (bahasaGlossTr[e.id]?.zh ?? e.bahasaIndonesia)
-        : e.bahasaIndonesia;
+  // Terjemahan glos: id (entri lama) atau teks Indonesia (250 kosakata).
+  // Kata Kei selalu tetap.
+  const glos = (e: BahasaLokal) => {
+    if (locale === "id") return e.bahasaIndonesia;
+    const tr =
+      bahasaGlossTr[e.id] ??
+      bahasaGlossByText[e.bahasaIndonesia.trim().toLowerCase()];
+    return (locale === "en" ? tr?.en : tr?.zh) ?? e.bahasaIndonesia;
+  };
 
-  const catatan = (e: BahasaLokal) =>
-    locale === "en"
-      ? (bahasaCatatanTr[e.id]?.en ?? e.catatan)
-      : locale === "zh"
-        ? (bahasaCatatanTr[e.id]?.zh ?? e.catatan)
-        : e.catatan;
+  // Catatan bisa berupa keterangan khusus (entri lama) atau nama kategori
+  // (250 kosakata) — keduanya diterjemahkan.
+  const catatan = (e: BahasaLokal) => {
+    if (locale === "id") return e.catatan;
+    const tr =
+      bahasaCatatanTr[e.id] ??
+      (e.catatan ? bahasaKategoriTr[e.catatan.trim()] : undefined);
+    return (locale === "en" ? tr?.en : tr?.zh) ?? e.catatan;
+  };
 
   const visible = useMemo(() => {
     const q = query.trim().toLowerCase();
