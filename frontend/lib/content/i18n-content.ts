@@ -50,8 +50,8 @@ export const budayaDescTr: Record<number, ContentTr> = {
     zh: "在特定时间与海域禁止捕捞的习俗。数百年来，Sasi守护着凯岛的珊瑚礁与鱼群，这一地方智慧如今被视为现代保护实践。违者由部族协商裁决。",
   },
   2: {
-    en: "The oldest customary law of the Kei Islands, 'red blood and the spear from Bali', governing social harmony, respect for one another, and land rights. It remains the Kei people's compass to this day.",
-    zh: "凯群岛最古老的习惯法，'红血与来自巴厘的矛'，规范社会和谐、彼此尊重与土地权利，至今仍是凯岛人的生活准则。",
+    en: "Across the islands of Southeast Maluku — Kei Besar, Kei Kecil, and smaller isles such as Kur, Tayando, and Dullah — lies a local wisdom that has bound its people for centuries. Larvul Ngabal is a customary legal system born from the long history of the two main islands, still upheld today as the identity and guiding principle of the Kei people. This article draws on accounts passed down through generations by the people of Ohoi Elaar.",
+    zh: "在东南马鲁古的群岛之间——凯大岛、凯小岛，以及库尔、塔扬多、杜拉等周边小岛——流传着一份维系其人民数百年的地方智慧。Larvul Ngabal 是源自两座主岛悠久历史的习惯法体系，至今仍被凯岛人奉为身份认同与生活准则。本文根据 Ohoi Elaar 世代口传的叙述整理而成。",
   },
   3: {
     en: "An annual festival greeting the meti, the extreme low tide that unveils vast sand flats. Villagers fish together, hold food bazaars, and perform traditions upon the receded sea.",
@@ -129,6 +129,96 @@ export const bahasaGlossTr: Record<number, ContentTr> = {
   10: { en: "Village", zh: "村庄" },
   11: { en: "Kei Islands", zh: "凯群岛" },
   12: { en: "One for all, all for one", zh: "人人为我，我为人人" },
+};
+
+/**
+ * Terjemahan sub-bagian konten, dikunci per id budaya → larik searah
+ * indeks sub-bagian. Untuk entri "Larvul Ngabal" (id 2).
+ */
+export const budayaSubTr: Record<
+  number,
+  Array<{ judul?: ContentTr; isi?: ContentTr }>
+> = {
+  2: [
+    {
+      judul: { en: "Larvul", zh: "Larvul" },
+      isi: {
+        en: "The law of Larvul Ngabal was originally the union of two customary laws. The Larvul law was born on Kei Kecil Island, marked by the slaughter of a buffalo belonging to Dit Sak Mas. The name Larvul comes from Lar, meaning blood, and Vul, meaning red.\n\nThe slaughter was witnessed by nine groups representing each Ohoi (village), known as Ur Siu (the Nine Clans). The Ur Siu gathered at Elaar to witness this symbolic rite. The buffalo's body parts were then distributed among the Ur Siu, each part carrying its own philosophical meaning for the Ohoi that received it.",
+        zh: "Larvul Ngabal 法起初是两套习惯法的结合。Larvul 法诞生于凯小岛，以宰杀一头属于 Dit Sak Mas 的水牛为标志。Larvul 之名源自 Lar（意为血）与 Vul（意为红）。\n\n宰杀仪式由代表各个 Ohoi（村庄）的九个群体见证，称为 Ur Siu（九支族）。Ur Siu 齐聚 Elaar 见证这一象征性仪式。水牛的各个部位随后分给各 Ur Siu，每个部位都为受赠的 Ohoi 承载独特的哲理寓意。",
+      },
+    },
+    {
+      judul: {
+        en: "Distribution of the Buffalo's Body (Ur Siu)",
+        zh: "水牛身体的分配（Ur Siu）",
+      },
+      isi: {
+        en: "1. Head — symbolises leadership. Given to Ohoi Danar, whose village has produced many leaders.\n2. Eyes — symbolise oversight. Given to Ohoi Ngursoin, who guarded the boundaries of customary land; its people are believed to have broad and keen vision.\n3. Teeth — given to the people of Elaar, believed to have measured speech and charisma. Unlike other Ohoi, the people of Elaar produce no kings but serve as customary senators.\n4. Horns — meaning resilience and wisdom. Received by Ohoi Mastur, believed able to make decisions rightly and wisely.\n5. Heart and liver — symbolise a mother's love. Given to Ohoi Wain, where Dit Sak Mas once stopped, as an inherited form of affection.\n6. Intestines — symbolise the granary. Handed to Ohoi Ohoinol, believed to this day to enjoy an abundance of food.\n7. Shinbone — the buffalo's support for walking, a symbol of firm principle. Given to Ohoi Uf, whose people could once travel far to deliver important news.\n8. Back — symbolises the one responsible for the interests of many. Given to Ohoi Yatvav.\n9. Gall — with its distinctive bitter taste, symbolically linked to Ohoi Ohoider as part of its people's philosophy.\n10. Tailbone — given to Ohoi Madwaeer, for the last king ever installed came from this Ohoi. It signifies the closing that locks all in place.",
+        zh: "1. 头部——象征领导。授予 Ohoi Danar，其村落孕育了众多领袖。\n2. 眼睛——象征监督。授予 Ohoi Ngursoin，负责守护习俗领地的边界；其人被认为目光开阔而敏锐。\n3. 牙齿——授予 Elaar 之民，被认为言语有度、富有魅力。与其他 Ohoi 不同，Elaar 之民不出国王，而担任习俗议员。\n4. 牛角——寓意坚韧与智慧。由 Ohoi Mastur 领受，被认为能作出正确而明智的决断。\n5. 心与肝——象征母亲的慈爱。授予 Ohoi Wain，Dit Sak Mas 曾在此停留，作为世代相传的关爱。\n6. 肠——象征粮仓。交予 Ohoi Ohoinol，至今被认为粮食丰足。\n7. 胫骨——水牛行走的支撑，象征坚定的原则。授予 Ohoi Uf，其人昔日能远行传递重要消息。\n8. 背——象征肩负众人利益之人。授予 Ohoi Yatvav。\n9. 胆——味苦而独特，在象征上与 Ohoi Ohoider 相联系，成为其民哲理的一部分。\n10. 尾骨——授予 Ohoi Madwaeer，因为最后一位受封的国王出自此 Ohoi。寓意锁定一切的收尾。",
+      },
+    },
+    {
+      judul: { en: "The Larvul Site", zh: "Larvul 圣地" },
+      isi: {
+        en: "This is the place where Dit Sak Mas's buffalo was slaughtered, and also the sacred tomb of the law's founder. Only direct descendants of the founder may enter. Those who breach the customary law come here with the site's keeper to atone for their wrongdoing.",
+        zh: "此地是宰杀 Dit Sak Mas 水牛之处，也是这套习惯法创立者受尊崇的圣墓。唯有创立者的直系后裔方可进入。触犯习惯法者会在守护者陪同下来到此地赎罪。",
+      },
+    },
+    {
+      judul: { en: "Ngabal", zh: "Ngabal" },
+      isi: {
+        en: "Unlike Larvul, whose history lies on Kei Kecil, Ngabal was born on Kei Besar Island, at Ler Ohoilim. Here a whale was symbolically cut, its body parts distributed among five groups known as Lor Lim (the Five Clans).\n\nThe cutting was performed by Jangra, brother of Kasdew (father of Dit Sak Mas). Jangra and Kasdew are known to have come from Bali. From this arose the name Ngabal, from Nga meaning spear and Bal meaning Bali — a direct reference to the tool used to cut the whale.",
+        zh: "与史迹在凯小岛的 Larvul 不同，Ngabal 诞生于凯大岛，位于 Ler Ohoilim。人们在此象征性地切割一头鲸鱼，将其身体各部分分给五个群体，称为 Lor Lim（五支族）。\n\n切割仪式由 Jangra 主持，他是 Kasdew（Dit Sak Mas 之父）的兄弟。Jangra 与 Kasdew 据传是来自巴厘岛的移民。Ngabal 之名由此而来，源自 Nga（意为矛）与 Bal（意为巴厘）——直接指向切割鲸鱼所用的工具。",
+      },
+    },
+    {
+      judul: { en: "The Ngabal Monument", zh: "Ngabal 纪念碑" },
+      isi: {
+        en: "This monument marks where the Bali Spear (Ngabal) was laid. For those who breach the customary law, sanctions are handed down here. The monument serves as the place of the prosecutor, where punishment is set. As with Larvul, only direct descendants of the law's founder may approach this area.",
+        zh: "这座纪念碑标记着巴厘之矛（Ngabal）安放之处。触犯习惯法者的处罚在此裁定。纪念碑充当“公诉”之所，即裁定刑罚之地。与 Larvul 一样，唯有习惯法创立者的直系后裔方可靠近此地。",
+      },
+    },
+    {
+      judul: {
+        en: "Larwul Ngabal — The Path of Peace",
+        zh: "Larwul Ngabal——和平之路",
+      },
+      isi: {
+        en: "The Ur Siu — seven groups from Kei Kecil — and the Lor Lim — five clans from Kei Besar — often clashed in the past. The middle path that finally reconciled the two was to unite their customary laws and live side by side. The cutting of the whale symbolises the alliance of five, while the slaughter of the buffalo symbolises the alliance of siwa (nine).",
+        zh: "Ur Siu 是凯小岛的七个群体，Lor Lim 是凯大岛的五支族，昔日两者常有争斗。最终使双方和解的折中之道，是将各自的习惯法合而为一、比邻而居。切割鲸鱼象征五方联盟，宰杀水牛象征 siwa（九方）联盟。",
+      },
+    },
+    {
+      judul: {
+        en: "The Seven Articles of Larvul Ngabal",
+        zh: "Larvul Ngabal 七条律法",
+      },
+      isi: {
+        en: "Criminal law (articles 1–4):\n1. Uud natauk tavunad — the head rests on the shoulders. One must not behead or sever a person's head from their body.\n2. Ul nit nanvil atumud — the skin wraps the body. One must not wound a person's skin.\n3. Laar nakmut i vud — the blood held within the human body. One must not shed a person's blood.\n4. Rek fo kelmutun — one must not cross at will the bounds of the bedroom and the living room.\n\nCivil law (articles 5–7):\n5. Moryaib fo mahiling — the duty to guard the sanctity of the family room and of a young woman.\n6. Hira ni natub fo i ni it did natub fo it did — one must not claim another's belongings as one's own.\n7. Hira ni sa natub fo ni sa ni ken natub fo ni ken — the duty to acknowledge one's wrongdoing, and to judge right and wrong wisely.",
+        zh: "刑法（第 1–4 条）：\n1. Uud natauk tavunad——头颅安于肩上。意即不得砍下或使人首身分离。\n2. Ul nit nanvil atumud——皮肤包裹身体。意即不得伤及他人肌肤。\n3. Laar nakmut i vud——血液存于人体之内。意即不得使人流血。\n4. Rek fo kelmutun——不得随意逾越卧室与客厅的界限。\n\n民法（第 5–7 条）：\n5. Moryaib fo mahiling——须守护家室与少女的贞洁。\n6. Hira ni natub fo i ni it did natub fo it did——不得将他人之物据为己有。\n7. Hira ni sa natub fo ni sa ni ken natub fo ni ken——须承认自己的过错，并明辨是非、秉公裁断。",
+      },
+    },
+    {
+      judul: {
+        en: "The Seven Articles of Sa sa Sorfit",
+        zh: "Sa sa Sorfit 七条律法",
+      },
+      isi: {
+        en: "The Kei people hold a principle of life captured in the phrase “To die for the boundary of the land and for one's sisters.” In connection with this, there are seven articles called Sa sa Sorfit governing acts forbidden against women:\n1. Savar si buuk / sis af — whistling or hissing at a young woman.\n2. Kifuk matko — winking at a woman or girl.\n3. Kis kafir - temar u muur — disturbing or pinching a woman or girl.\n4. A lebak - humak voan — embracing and kissing a woman or girl.\n5. Tod es — forcibly pulling and dragging a woman or girl.\n6. Val siran baraang - yan vot ded lean — forcibly removing a woman or girl's clothing (rape).\n7. Manu - u, Ma - rai — eloping with a girl or another man's wife.",
+        zh: "凯岛人秉持一条生活准则，凝练于“为了土地的边界与姐妹而死”这句话。与此相关，有七条名为 Sa sa Sorfit 的律法，规范禁止对女性所为之事：\n1. Savar si buuk / sis af——向少女吹口哨或发出嘘声。\n2. Kifuk matko——向妇女或少女眨眼。\n3. Kis kafir - temar u muur——骚扰或捏掐妇女或少女。\n4. A lebak - humak voan——拥抱并亲吻妇女或少女。\n5. Tod es——强行拉拽并拖行妇女或少女。\n6. Val siran baraang - yan vot ded lean——强行脱去妇女或少女的衣物（强奸）。\n7. Manu - u, Ma - rai——带走少女或他人之妻（私奔）。",
+      },
+    },
+    {
+      judul: {
+        en: "Customary Sanctions and Their Meaning",
+        zh: "习俗制裁及其意义",
+      },
+      isi: {
+        en: "When the articles are breached, the case is handled through a council hearing (Dewan Seniri). The sanction varies with the severity of the offence: the lightest is a reprimand or counsel, then a fine of gold or goods, and the heaviest is paying with one's life by being drowned at sea.\n\nThe existence of Larvul Ngabal proves that the values of justice and respect for human rights took deep root in the land of Kei long before modern law was formed. More than mere law, Larvul Ngabal is a cultural heritage that forms the identity and pride of the Kei people, and a cultural tourism draw that can introduce this local wisdom to a wider audience.",
+        zh: "一旦触犯上述律法，案件将由议事会（Dewan Seniri）审理。制裁依违规轻重而不同：最轻为训诫或劝导，其次为黄金或财物的罚款，最重则以性命抵偿——被沉入海中。\n\nLarvul Ngabal 的存在证明，早在现代法律形成之前，公正与尊重人权的价值便已深植凯岛。它不仅是律法，更是构成凯岛人身份与自豪的文化遗产，也是一处文化旅游魅力，能将这份地方智慧介绍给更广泛的人群。",
+      },
+    },
+  ],
 };
 
 export const bahasaCatatanTr: Record<number, ContentTr> = {

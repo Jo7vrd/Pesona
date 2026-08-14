@@ -8,6 +8,7 @@ import { getAllBudaya, getBudayaById } from "@/lib/api/server";
 import { getBudayaExtra } from "@/lib/content/budaya-extra";
 import {
   budayaDescTr,
+  budayaSubTr,
   kategoriBudayaTr,
 } from "@/lib/content/i18n-content";
 import { Badge } from "@/components/ui/badge";
@@ -89,7 +90,11 @@ export default async function BudayaDetailPage({ params }: Props) {
               zh={budayaDescTr[item.id]?.zh}
             />
           </p>
-          <Subsections items={item.subsections} className="mt-8" />
+          <Subsections
+            items={item.subsections}
+            tr={budayaSubTr[item.id]}
+            className="mt-8"
+          />
         </div>
       </FadeIn>
 
