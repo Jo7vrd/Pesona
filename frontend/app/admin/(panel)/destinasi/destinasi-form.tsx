@@ -233,6 +233,7 @@ export function DestinasiForm({
             <SubsectionEditor
               value={field.value ?? []}
               onChange={field.onChange}
+              modul="destinasi"
             />
           )}
         />

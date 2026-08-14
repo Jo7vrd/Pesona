@@ -7,9 +7,13 @@ import "time"
 
 // Subsection adalah blok bertajuk opsional di bawah deskripsi konten
 // (mis. "Tujuh Pasal Larvul Ngabal"). Disimpan JSONB via serializer GORM.
+// Foto opsional (mis. foto sisipan artikel) dengan pembingkaian sendiri.
 type Subsection struct {
-	Judul string `json:"judul"`
-	Isi   string `json:"isi"`
+	Judul      string  `json:"judul"`
+	Isi        string  `json:"isi"`
+	Foto       string  `json:"foto,omitempty"`
+	FotoPosisi string  `json:"fotoPosisi,omitempty"`
+	FotoZoom   float64 `json:"fotoZoom,omitempty"`
 }
 
 type Subsections []Subsection

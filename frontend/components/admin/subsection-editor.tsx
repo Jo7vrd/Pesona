@@ -3,21 +3,25 @@
 import { GripVertical, Plus, X } from "lucide-react";
 
 import type { Subsection } from "@/lib/types";
+import { ImageField } from "@/components/admin/image-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 /**
- * Editor daftar sub-bagian (judul + isi) untuk memperkaya deskripsi
- * konten, mis. "Tujuh Pasal Larvul Ngabal". Terkontrol lewat value/onChange
+ * Editor daftar sub-bagian untuk memperkaya deskripsi konten, mis.
+ * "Tujuh Pasal Larvul Ngabal". Tiap blok bisa berisi judul, teks, dan/atau
+ * foto sisipan (dengan editor geser+zoom). Terkontrol lewat value/onChange
  * sehingga bisa dipakai dengan Controller react-hook-form.
  */
 export function SubsectionEditor({
   value,
   onChange,
+  modul = "umum",
 }: {
   value: Subsection[];
   onChange: (value: Subsection[]) => void;
+  modul?: string;
 }) {
   const items = value ?? [];
 
@@ -71,9 +75,23 @@ export function SubsectionEditor({
             value={s.isi}
             onChange={(e) => patch(i, { isi: e.target.value })}
             rows={3}
-            placeholder="Isi sub-bagian…"
+            placeholder="Isi sub-bagian… (boleh kosong bila hanya foto)"
             aria-label={`Isi sub-bagian ${i + 1}`}
           />
+          <div>
+            <p className="text-muted-foreground mb-1.5 text-xs font-medium">
+              Foto sisipan (opsional)
+            </p>
+            <ImageField
+              value={s.foto ?? ""}
+              onChange={(url) => patch(i, { foto: url })}
+              modul={modul}
+              position={s.fotoPosisi}
+              onPositionChange={(p) => patch(i, { fotoPosisi: p })}
+              zoom={s.fotoZoom}
+              onZoomChange={(z) => patch(i, { fotoZoom: z })}
+            />
+          </div>
         </div>
       ))}
 

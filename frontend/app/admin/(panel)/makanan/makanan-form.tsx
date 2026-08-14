@@ -193,6 +193,7 @@ export function MakananForm({
             <SubsectionEditor
               value={field.value ?? []}
               onChange={field.onChange}
+              modul="makanan"
             />
           )}
         />

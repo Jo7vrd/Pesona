@@ -176,6 +176,7 @@ export function BudayaForm({
             <SubsectionEditor
               value={field.value ?? []}
               onChange={field.onChange}
+              modul="budaya"
             />
           )}
         />

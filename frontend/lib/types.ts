@@ -2,6 +2,12 @@
 export interface Subsection {
   judul: string;
   isi: string;
+  /** Foto sisipan opsional untuk blok ini. */
+  foto?: string;
+  /** Titik pandang foto (object-position). Default tengah. */
+  fotoPosisi?: string;
+  /** Skala/zoom foto (1–3). Default 1. */
+  fotoZoom?: number;
 }
 
 export type KategoriMakanan = "makanan" | "minuman" | "kudapan";

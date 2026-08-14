@@ -10,14 +10,23 @@ import (
 // Nama field JSON mengikuti kontrak frontend (web/lib/types.ts) persis.
 
 type SubsectionDTO struct {
-	Judul string `json:"judul" binding:"required,min=1,max=120"`
-	Isi   string `json:"isi" binding:"required,min=1,max=4000"`
+	Judul      string  `json:"judul" binding:"omitempty,max=120"`
+	Isi        string  `json:"isi" binding:"omitempty,max=4000"`
+	Foto       string  `json:"foto" binding:"omitempty,max=500"`
+	FotoPosisi string  `json:"fotoPosisi" binding:"omitempty,max=20"`
+	FotoZoom   float64 `json:"fotoZoom" binding:"omitempty,gte=1,lte=3"`
 }
 
 func ToEntitySubsections(subs []SubsectionDTO) entity.Subsections {
 	out := make(entity.Subsections, len(subs))
 	for i, s := range subs {
-		out[i] = entity.Subsection{Judul: s.Judul, Isi: s.Isi}
+		out[i] = entity.Subsection{
+			Judul:      s.Judul,
+			Isi:        s.Isi,
+			Foto:       s.Foto,
+			FotoPosisi: s.FotoPosisi,
+			FotoZoom:   s.FotoZoom,
+		}
 	}
 	return out
 }
@@ -25,7 +34,13 @@ func ToEntitySubsections(subs []SubsectionDTO) entity.Subsections {
 func fromEntitySubsections(subs entity.Subsections) []SubsectionDTO {
 	out := make([]SubsectionDTO, len(subs))
 	for i, s := range subs {
-		out[i] = SubsectionDTO{Judul: s.Judul, Isi: s.Isi}
+		out[i] = SubsectionDTO{
+			Judul:      s.Judul,
+			Isi:        s.Isi,
+			Foto:       s.Foto,
+			FotoPosisi: s.FotoPosisi,
+			FotoZoom:   s.FotoZoom,
+		}
 	}
 	return out
 }
