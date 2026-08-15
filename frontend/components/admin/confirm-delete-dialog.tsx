@@ -48,7 +48,8 @@ export function ConfirmDeleteDialog({
               e.preventDefault();
               onConfirm();
             }}
-            className="bg-destructive text-white hover:bg-destructive/90"
+            style={{ backgroundColor: "#9c5a5a" }}
+            className="text-white transition hover:brightness-90"
           >
             {deleting ? (
               <>

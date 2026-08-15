@@ -193,6 +193,19 @@ export const mockDb = {
       save(KEYS.hero, db);
       return item;
     },
+    async reorder(ids: number[]): Promise<void> {
+      await delay(200);
+      const db = load<HeroImage>(KEYS.hero, fallbackHero);
+      const byId = new Map(db.items.map((it) => [it.id, it]));
+      db.items = ids
+        .map((id, i) => {
+          const it = byId.get(id);
+          return it ? { ...it, urutan: i } : null;
+        })
+        .filter((it): it is HeroImage => it !== null);
+      db.updatedAt = new Date().toISOString();
+      save(KEYS.hero, db);
+    },
     async remove(id: number): Promise<void> {
       await delay();
       const db = load<HeroImage>(KEYS.hero, fallbackHero);

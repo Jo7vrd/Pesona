@@ -20,8 +20,8 @@ import { GlowButton } from "@/components/site/glow-button";
 
 const EASE_OUT_EXPO = [0.16, 1, 0.3, 1] as const;
 
-// Foto hero berganti otomatis tiap 7 detik (permintaan operator desa).
-const SLIDE_INTERVAL_MS = 7000;
+// Foto hero berganti otomatis tiap 5 detik (permintaan operator desa).
+const SLIDE_INTERVAL_MS = 5000;
 
 declare global {
   interface Window {

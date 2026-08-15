@@ -45,6 +45,14 @@ func (s *HeroService) Create(ctx context.Context, item *entity.HeroImage) error 
 	return nil
 }
 
+func (s *HeroService) Reorder(ctx context.Context, ids []uint) error {
+	if err := s.repo.Reorder(ctx, ids); err != nil {
+		return apperror.Internal(err)
+	}
+	s.reval.Trigger("hero")
+	return nil
+}
+
 func (s *HeroService) Delete(ctx context.Context, id uint) error {
 	existing, err := s.repo.ByID(ctx, id)
 	if err != nil {

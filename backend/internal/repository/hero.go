@@ -15,6 +15,8 @@ type HeroRepository interface {
 	ByID(ctx context.Context, id uint) (*entity.HeroImage, error)
 	Create(ctx context.Context, h *entity.HeroImage) error
 	Delete(ctx context.Context, id uint) (int64, error)
+	// Reorder menyetel kolom urutan sesuai posisi id pada slice (0-based).
+	Reorder(ctx context.Context, ids []uint) error
 }
 
 type gormHeroRepo struct{ db *gorm.DB }
@@ -46,4 +48,17 @@ func (r *gormHeroRepo) Create(ctx context.Context, h *entity.HeroImage) error {
 func (r *gormHeroRepo) Delete(ctx context.Context, id uint) (int64, error) {
 	res := r.db.WithContext(ctx).Delete(&entity.HeroImage{}, id)
 	return res.RowsAffected, res.Error
+}
+
+func (r *gormHeroRepo) Reorder(ctx context.Context, ids []uint) error {
+	return r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		for i, id := range ids {
+			if err := tx.Model(&entity.HeroImage{}).
+				Where("id = ?", id).
+				Update("urutan", i).Error; err != nil {
+				return err
+			}
+		}
+		return nil
+	})
 }

@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { Reorder } from "framer-motion";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   GripVertical,
@@ -203,6 +204,32 @@ function HeroCarouselManager() {
     queryFn: () => adminApi.hero.list(),
   });
 
+  // Urutan lokal untuk drag; disinkronkan dari server & disimpan saat lepas.
+  const [order, setOrder] = useState<HeroImage[]>([]);
+  const orderRef = useRef<HeroImage[]>([]);
+  orderRef.current = order;
+  useEffect(() => {
+    if (images) setOrder(images);
+  }, [images]);
+
+  const reorderMutation = useMutation({
+    mutationFn: (ids: number[]) => adminApi.hero.reorder(ids),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: HERO_KEY });
+      toast.success("Urutan foto disimpan");
+    },
+    onError: (error) => toast.error(error.message),
+  });
+
+  function persistOrder() {
+    const ids = orderRef.current.map((h) => h.id);
+    const current = (images ?? []).map((h) => h.id);
+    // Hanya simpan bila urutan benar-benar berubah.
+    if (ids.length === current.length && ids.every((id, i) => id === current[i]))
+      return;
+    reorderMutation.mutate(ids);
+  }
+
   const createMutation = useMutation({
     mutationFn: (input: { fotoUrl: string; fotoPosisi: string; fotoZoom: number }) => {
       const urutan = (images?.length ?? 0) + 1;
@@ -236,57 +263,67 @@ function HeroCarouselManager() {
       </div>
       <p className="text-muted-foreground mt-1 text-sm">
         Foto latar besar di bagian atas beranda. Bila lebih dari satu, foto
-        berganti otomatis setiap 7 detik. Foto pertama tampil lebih dulu.
+        berganti otomatis setiap 5 detik. <strong>Seret</strong> (drag) untuk
+        mengubah urutan — foto teratas tampil lebih dulu.
       </p>
 
       {isPending ? (
-        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+        <div className="mt-4 space-y-2">
           {Array.from({ length: 3 }).map((_, i) => (
-            <Skeleton key={i} className="aspect-[16/10] w-full rounded-lg" />
+            <Skeleton key={i} className="h-16 w-full rounded-lg" />
           ))}
         </div>
+      ) : order.length === 0 ? (
+        <p className="text-muted-foreground py-4 text-sm">
+          Belum ada foto hero. Tambahkan minimal satu di bawah.
+        </p>
       ) : (
-        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
-          {(images ?? []).map((img, i) => (
-            <div
+        <Reorder.Group
+          axis="y"
+          values={order}
+          onReorder={setOrder}
+          className="mt-4 space-y-2"
+        >
+          {order.map((img, i) => (
+            <Reorder.Item
               key={img.id}
-              className="group relative aspect-[16/10] overflow-hidden rounded-lg border"
+              value={img}
+              onDragEnd={persistOrder}
+              className="bg-card flex cursor-grab items-center gap-3 rounded-lg border p-2 active:cursor-grabbing"
             >
-              <Image
-                src={img.fotoUrl}
-                alt={`Foto hero ${i + 1}`}
-                fill
-                sizes="240px"
-                className="object-cover"
-                style={{
-                  objectPosition: img.fotoPosisi || "50% 50%",
-                  transform: `scale(${img.fotoZoom || 1})`,
-                  transformOrigin: img.fotoPosisi || "50% 50%",
-                }}
-                unoptimized={!img.fotoUrl.startsWith("/")}
+              <GripVertical
+                className="text-muted-foreground size-5 shrink-0"
+                aria-hidden
               />
-              <span className="bg-background/80 absolute top-1.5 left-1.5 flex items-center gap-1 rounded-md px-1.5 py-0.5 text-xs font-medium">
-                <GripVertical className="size-3" aria-hidden />
-                {i + 1}
-              </span>
+              <div className="relative h-14 w-24 shrink-0 overflow-hidden rounded-md">
+                <Image
+                  src={img.fotoUrl}
+                  alt={`Foto hero ${i + 1}`}
+                  fill
+                  sizes="96px"
+                  className="object-cover"
+                  style={{
+                    objectPosition: img.fotoPosisi || "50% 50%",
+                    transform: `scale(${img.fotoZoom || 1})`,
+                    transformOrigin: img.fotoPosisi || "50% 50%",
+                  }}
+                  unoptimized={!img.fotoUrl.startsWith("/")}
+                />
+              </div>
+              <span className="text-sm font-medium">Foto {i + 1}</span>
               <Button
                 type="button"
                 size="icon"
-                variant="secondary"
+                variant="ghost"
                 aria-label={`Hapus foto hero ${i + 1}`}
-                className="absolute top-1.5 right-1.5 opacity-0 transition-opacity group-hover:opacity-100"
+                className="text-destructive hover:text-destructive ml-auto shrink-0"
                 onClick={() => setDeleteTarget(img)}
               >
                 <Trash2 className="size-4" />
               </Button>
-            </div>
+            </Reorder.Item>
           ))}
-          {(images?.length ?? 0) === 0 ? (
-            <p className="text-muted-foreground col-span-full py-4 text-sm">
-              Belum ada foto hero. Tambahkan minimal satu di bawah.
-            </p>
-          ) : null}
-        </div>
+        </Reorder.Group>
       )}
 
       <div className="mt-5 border-t pt-5">

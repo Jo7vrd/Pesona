@@ -208,6 +208,10 @@ type HeroImageRequest struct {
 	Urutan     int     `json:"urutan" binding:"omitempty,gte=0,lte=999"`
 }
 
+type HeroReorderRequest struct {
+	IDs []uint `json:"ids" binding:"required,min=1,dive,gt=0"`
+}
+
 type HeroImageResponse struct {
 	ID         uint    `json:"id"`
 	FotoURL    string  `json:"fotoUrl"`

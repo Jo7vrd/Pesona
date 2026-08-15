@@ -105,6 +105,7 @@ export interface AdminApi {
   hero: {
     list(): Promise<HeroImage[]>;
     create(input: HeroImageInput): Promise<HeroImage>;
+    reorder(ids: number[]): Promise<void>;
     remove(id: number): Promise<void>;
   };
   admins: {
@@ -238,6 +239,9 @@ function httpApi(baseURL: string): AdminApi {
       create: async (input) =>
         (await http.post<{ data: HeroImage }>("/api/v1/admin/hero", input)).data
           .data,
+      reorder: async (ids) => {
+        await http.put("/api/v1/admin/hero/reorder", { ids });
+      },
       remove: async (id) => {
         await http.delete(`/api/v1/admin/hero/${id}`);
       },

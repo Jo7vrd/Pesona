@@ -116,6 +116,7 @@ func New(d Deps) *gin.Engine {
 
 	admin.GET("/hero", heroH.List)
 	admin.POST("/hero", heroH.Create)
+	admin.PUT("/hero/reorder", heroH.Reorder)
 	admin.DELETE("/hero/:id", heroH.Delete)
 
 	admin.GET("/kedaruratan", emergencyH.List)

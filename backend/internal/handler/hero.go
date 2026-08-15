@@ -50,6 +50,20 @@ func (h *HeroHandler) Create(c *gin.Context) {
 	respondData(c, http.StatusCreated, dto.NewHeroImageResponse(item))
 }
 
+// PUT /api/v1/admin/hero/reorder — admin. Simpan urutan baru.
+func (h *HeroHandler) Reorder(c *gin.Context) {
+	var req dto.HeroReorderRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		respondInvalid(c)
+		return
+	}
+	if err := h.svc.Reorder(c.Request.Context(), req.IDs); err != nil {
+		respondError(c, h.logger, err)
+		return
+	}
+	respondData(c, http.StatusOK, gin.H{"reordered": true})
+}
+
 // DELETE /api/v1/admin/hero/:id — admin.
 func (h *HeroHandler) Delete(c *gin.Context) {
 	id, ok := paramID(c)
