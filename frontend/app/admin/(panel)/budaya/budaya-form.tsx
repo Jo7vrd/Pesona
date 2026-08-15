@@ -6,6 +6,7 @@ import { Loader2 } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
 import { budayaSchema, type BudayaInput } from "@/lib/schemas/budaya";
+import { normalizeSubsections } from "@/lib/schemas/subsection";
 import type { Budaya } from "@/lib/types";
 import { ImageField } from "@/components/admin/image-field";
 import { SubsectionEditor } from "@/components/admin/subsection-editor";
@@ -34,7 +35,7 @@ function toForm(item: Budaya): BudayaInput {
     fotoPosisi: item.fotoPosisi ?? "50% 50%",
     fotoZoom: item.fotoZoom ?? 1,
     videoYoutube: item.videoYoutube ?? "",
-    subsections: item.subsections ?? [],
+    subsections: normalizeSubsections(item.subsections),
   };
 }
 

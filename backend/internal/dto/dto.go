@@ -12,9 +12,9 @@ import (
 type SubsectionDTO struct {
 	Judul      string  `json:"judul" binding:"omitempty,max=120"`
 	Isi        string  `json:"isi" binding:"omitempty,max=4000"`
-	Foto       string  `json:"foto" binding:"omitempty,max=500"`
-	FotoPosisi string  `json:"fotoPosisi" binding:"omitempty,max=20"`
-	FotoZoom   float64 `json:"fotoZoom" binding:"omitempty,gte=1,lte=3"`
+	Foto       string  `json:"foto,omitempty" binding:"omitempty,max=500"`
+	FotoPosisi string  `json:"fotoPosisi,omitempty" binding:"omitempty,max=20"`
+	FotoZoom   float64 `json:"fotoZoom,omitempty" binding:"omitempty,gte=1,lte=3"`
 }
 
 func ToEntitySubsections(subs []SubsectionDTO) entity.Subsections {

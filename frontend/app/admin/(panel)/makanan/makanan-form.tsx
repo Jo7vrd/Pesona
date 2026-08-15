@@ -6,6 +6,7 @@ import { Loader2 } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
 import { makananSchema, type MakananInput } from "@/lib/schemas/makanan";
+import { normalizeSubsections } from "@/lib/schemas/subsection";
 import type { Makanan } from "@/lib/types";
 import { ImageField } from "@/components/admin/image-field";
 import { SubsectionEditor } from "@/components/admin/subsection-editor";
@@ -41,7 +42,7 @@ function toForm(item: Makanan): MakananInput {
     fotoPosisi: item.fotoPosisi ?? "50% 50%",
     fotoZoom: item.fotoZoom ?? 1,
     videoYoutube: item.videoYoutube ?? "",
-    subsections: item.subsections ?? [],
+    subsections: normalizeSubsections(item.subsections),
   };
 }
 

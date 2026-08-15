@@ -20,7 +20,11 @@ export function FadeIn({
       className={className}
       initial={{ opacity: 0, y: reduceMotion ? 0 : 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
+      // amount "some": terpicu begitu sebagian elemen terlihat. Ambang 0.2
+      // membuat konten yang lebih tinggi dari viewport (mis. artikel panjang)
+      // tak pernah mencapai 20% → tetap opacity 0 (tampak blank) sampai
+      // di-zoom-out. "some" mencegah itu.
+      viewport={{ once: true, amount: "some" }}
       transition={{ duration: 0.6, delay, ease: EASE_OUT_EXPO }}
     >
       {children}

@@ -6,6 +6,7 @@ import { Loader2, Video } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
 import { destinasiSchema, type DestinasiInput } from "@/lib/schemas/destinasi";
+import { normalizeSubsections } from "@/lib/schemas/subsection";
 import type { Destinasi } from "@/lib/types";
 import { ImageField } from "@/components/admin/image-field";
 import { SubsectionEditor } from "@/components/admin/subsection-editor";
@@ -58,7 +59,7 @@ export function DestinasiForm({
           ...initial,
           fotoPosisi: initial.fotoPosisi ?? "50% 50%",
           videoYoutube: initial.videoYoutube ?? "",
-          subsections: initial.subsections ?? [],
+          subsections: normalizeSubsections(initial.subsections),
         }
       : EMPTY,
   });
@@ -71,7 +72,7 @@ export function DestinasiForm({
             fotoPosisi: initial.fotoPosisi ?? "50% 50%",
             fotoZoom: initial.fotoZoom ?? 1,
             videoYoutube: initial.videoYoutube ?? "",
-            subsections: initial.subsections ?? [],
+            subsections: normalizeSubsections(initial.subsections),
           }
         : EMPTY
     );
