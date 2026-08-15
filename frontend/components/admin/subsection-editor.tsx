@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import { GripVertical, Plus, X } from "lucide-react";
 
 import type { Subsection } from "@/lib/types";
@@ -25,8 +26,19 @@ export function SubsectionEditor({
 }) {
   const items = value ?? [];
 
+  // Sinkronkan ref ke nilai terkini tiap render. patch() menulis ref ini
+  // secara sinkron agar beberapa pembaruan beruntun dalam satu tick (mis.
+  // ImageField memanggil onChange + onPositionChange + onZoomChange) saling
+  // menumpuk, bukan saling menimpa memakai closure basi.
+  const itemsRef = useRef(items);
+  itemsRef.current = items;
+
   function patch(i: number, next: Partial<Subsection>) {
-    onChange(items.map((it, idx) => (idx === i ? { ...it, ...next } : it)));
+    const updated = itemsRef.current.map((it, idx) =>
+      idx === i ? { ...it, ...next } : it
+    );
+    itemsRef.current = updated;
+    onChange(updated);
   }
   function add() {
     onChange([...items, { judul: "", isi: "" }]);
