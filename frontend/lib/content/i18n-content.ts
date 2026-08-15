@@ -190,16 +190,6 @@ export const budayaSubTr: Record<
     },
     {
       judul: {
-        en: "The Seven Articles of Larvul Ngabal",
-        zh: "Larvul Ngabal 七条律法",
-      },
-      isi: {
-        en: "Criminal law (articles 1–4):\n1. Uud natauk tavunad — the head rests on the shoulders. One must not behead or sever a person's head from their body.\n2. Ul nit nanvil atumud — the skin wraps the body. One must not wound a person's skin.\n3. Laar nakmut i vud — the blood held within the human body. One must not shed a person's blood.\n4. Rek fo kelmutun — one must not cross at will the bounds of the bedroom and the living room.\n\nCivil law (articles 5–7):\n5. Moryaib fo mahiling — the duty to guard the sanctity of the family room and of a young woman.\n6. Hira ni natub fo i ni it did natub fo it did — one must not claim another's belongings as one's own.\n7. Hira ni sa natub fo ni sa ni ken natub fo ni ken — the duty to acknowledge one's wrongdoing, and to judge right and wrong wisely.",
-        zh: "刑法（第 1–4 条）：\n1. Uud natauk tavunad——头颅安于肩上。意即不得砍下或使人首身分离。\n2. Ul nit nanvil atumud——皮肤包裹身体。意即不得伤及他人肌肤。\n3. Laar nakmut i vud——血液存于人体之内。意即不得使人流血。\n4. Rek fo kelmutun——不得随意逾越卧室与客厅的界限。\n\n民法（第 5–7 条）：\n5. Moryaib fo mahiling——须守护家室与少女的贞洁。\n6. Hira ni natub fo i ni it did natub fo it did——不得将他人之物据为己有。\n7. Hira ni sa natub fo ni sa ni ken natub fo ni ken——须承认自己的过错，并明辨是非、秉公裁断。",
-      },
-    },
-    {
-      judul: {
         en: "The Seven Articles of Sa sa Sorfit",
         zh: "Sa sa Sorfit 七条律法",
       },

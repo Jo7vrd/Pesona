@@ -121,10 +121,14 @@ export default async function BudayaDetailPage({ params }: Props) {
         >
           <FadeIn>
             <h2 id="pasal-judul" className="font-display text-display font-bold">
-              {extra.judul}
+              <Tr id={extra.judul} en={extra.judulTr?.en} zh={extra.judulTr?.zh} />
             </h2>
             <p className="text-muted-foreground mt-3 leading-relaxed">
-              {extra.pengantar}
+              <Tr
+                id={extra.pengantar}
+                en={extra.pengantarTr?.en}
+                zh={extra.pengantarTr?.zh}
+              />
             </p>
             <ol className="mt-8 space-y-4">
               {extra.pasal.map((p) => (
@@ -137,21 +141,29 @@ export default async function BudayaDetailPage({ params }: Props) {
                       {p.nomor}
                     </span>
                     <Badge variant="secondary" className="rounded-full">
-                      {p.kelompok}
+                      <Tr
+                        id={p.kelompok}
+                        en={p.kelompokTr?.en}
+                        zh={p.kelompokTr?.zh}
+                      />
                     </Badge>
                   </div>
                   <p className="font-display mt-4 text-lg font-semibold italic">
                     &ldquo;{p.kei}&rdquo;
                   </p>
                   <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
-                    {p.arti}
+                    <Tr id={p.arti} en={p.artiTr?.en} zh={p.artiTr?.zh} />
                   </p>
                 </li>
               ))}
             </ol>
             {extra.catatan ? (
               <p className="text-muted-foreground mt-6 text-xs leading-relaxed">
-                {extra.catatan}
+                <Tr
+                  id={extra.catatan}
+                  en={extra.catatanTr?.en}
+                  zh={extra.catatanTr?.zh}
+                />
               </p>
             ) : null}
           </FadeIn>
