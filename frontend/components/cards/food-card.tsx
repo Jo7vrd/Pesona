@@ -30,7 +30,7 @@ export function FoodCard({ item }: { item: Makanan }) {
           zh={kategoriTr?.zh}
         />
       }
-      deskripsi={<Tr id={item.deskripsi} en={descTr?.en} zh={descTr?.zh} />}
+      deskripsi={<Tr id={item.deskripsi} en={descTr?.en} zh={descTr?.zh} strip />}
     />
   );
 }

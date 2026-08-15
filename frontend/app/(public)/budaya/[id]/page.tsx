@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "@/components/motion/fade-in";
 import { ContentCard } from "@/components/cards/content-card";
 import { Subsections } from "@/components/site/subsections";
+import { RichTr } from "@/components/site/rich-text";
 import { Tr } from "@/components/site/tr";
 import { YouTubeEmbed } from "@/components/site/youtube-embed";
 
@@ -83,13 +84,12 @@ export default async function BudayaDetailPage({ params }: Props) {
           <h1 className="font-display text-display-lg mt-4 text-balance">
             {item.nama}
           </h1>
-          <p className="text-muted-foreground mt-6 leading-relaxed">
-            <Tr
-              id={item.deskripsi}
-              en={budayaDescTr[item.id]?.en}
-              zh={budayaDescTr[item.id]?.zh}
-            />
-          </p>
+          <RichTr
+            id={item.deskripsi}
+            en={budayaDescTr[item.id]?.en}
+            zh={budayaDescTr[item.id]?.zh}
+            className="text-muted-foreground mt-6 leading-relaxed"
+          />
           <Subsections
             items={item.subsections}
             tr={budayaSubTr[item.id]}
@@ -197,6 +197,7 @@ export default async function BudayaDetailPage({ params }: Props) {
                       id={b.deskripsi}
                       en={budayaDescTr[b.id]?.en}
                       zh={budayaDescTr[b.id]?.zh}
+                      strip
                     />
                   }
                 />

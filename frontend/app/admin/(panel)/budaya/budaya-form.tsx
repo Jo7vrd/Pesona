@@ -10,12 +10,12 @@ import { normalizeSubsections } from "@/lib/schemas/subsection";
 import type { Budaya } from "@/lib/types";
 import { ImageField } from "@/components/admin/image-field";
 import { SubsectionEditor } from "@/components/admin/subsection-editor";
+import { RichTextEditor } from "@/components/admin/rich-text-editor";
 import { VideoYoutubeField } from "@/components/admin/video-youtube-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
 
 const EMPTY: BudayaInput = {
   nama: "",
@@ -128,12 +128,19 @@ export function BudayaForm({
 
       <div className="space-y-2">
         <Label htmlFor="deskripsi">Deskripsi</Label>
-        <Textarea
-          id="deskripsi"
-          rows={5}
-          placeholder="Jelaskan makna, sejarah, dan bagaimana tradisi ini dijalankan…"
-          aria-invalid={!!errors.deskripsi}
-          {...register("deskripsi")}
+        <Controller
+          control={control}
+          name="deskripsi"
+          render={({ field }) => (
+            <RichTextEditor
+              id="deskripsi"
+              value={field.value}
+              onChange={field.onChange}
+              rows={5}
+              placeholder="Jelaskan makna, sejarah, dan bagaimana tradisi ini dijalankan…"
+              error={!!errors.deskripsi}
+            />
+          )}
         />
         {errors.deskripsi ? (
           <p role="alert" className="text-destructive text-sm">

@@ -53,6 +53,7 @@ export function SpotlightRow({ item, flip }: { item: Budaya; flip?: boolean }) {
               id={item.deskripsi}
               en={budayaDescTr[item.id]?.en}
               zh={budayaDescTr[item.id]?.zh}
+              strip
             />
           </p>
           <Link

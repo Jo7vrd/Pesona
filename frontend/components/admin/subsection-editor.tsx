@@ -5,9 +5,9 @@ import { GripVertical, Plus, X } from "lucide-react";
 
 import type { Subsection } from "@/lib/types";
 import { ImageField } from "@/components/admin/image-field";
+import { RichTextEditor } from "@/components/admin/rich-text-editor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 
 /**
  * Editor daftar sub-bagian untuk memperkaya deskripsi konten, mis.
@@ -83,12 +83,11 @@ export function SubsectionEditor({
               <X className="size-4" />
             </Button>
           </div>
-          <Textarea
+          <RichTextEditor
             value={s.isi}
-            onChange={(e) => patch(i, { isi: e.target.value })}
+            onChange={(v) => patch(i, { isi: v })}
             rows={3}
             placeholder="Isi sub-bagian… (boleh kosong bila hanya foto)"
-            aria-label={`Isi sub-bagian ${i + 1}`}
           />
           <div>
             <p className="text-muted-foreground mb-1.5 text-xs font-medium">

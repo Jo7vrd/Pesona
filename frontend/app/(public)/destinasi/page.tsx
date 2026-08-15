@@ -12,6 +12,7 @@ import { StaggerGrid, StaggerItem } from "@/components/motion/stagger-grid";
 import { TiltCard } from "@/components/motion/tilt-card";
 import { Subsections } from "@/components/site/subsections";
 import { PageHeader } from "@/components/site/page-header";
+import { RichTr } from "@/components/site/rich-text";
 import { Tr } from "@/components/site/tr";
 import { YouTubeEmbed } from "@/components/site/youtube-embed";
 
@@ -74,13 +75,12 @@ export default async function DestinasiPage() {
                   <h2 className="font-display text-xl font-semibold">
                     {spot.nama}
                   </h2>
-                  <p className="text-muted-foreground mt-2 flex-1 text-sm leading-relaxed">
-                    <Tr
-                      id={spot.deskripsi}
-                      en={spotDescTr[spot.id]?.en}
-                      zh={spotDescTr[spot.id]?.zh}
-                    />
-                  </p>
+                  <RichTr
+                    id={spot.deskripsi}
+                    en={spotDescTr[spot.id]?.en}
+                    zh={spotDescTr[spot.id]?.zh}
+                    className="text-muted-foreground mt-2 flex-1 text-sm leading-relaxed"
+                  />
                   {spot.subsections && spot.subsections.length > 0 ? (
                     <details className="group/sub mt-3">
                       <summary className="text-lagoon-700 hover:text-lagoon-600 flex cursor-pointer list-none items-center gap-1 text-sm font-medium">

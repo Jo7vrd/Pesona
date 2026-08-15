@@ -9,6 +9,7 @@ import { makananSchema, type MakananInput } from "@/lib/schemas/makanan";
 import { normalizeSubsections } from "@/lib/schemas/subsection";
 import type { Makanan } from "@/lib/types";
 import { ImageField } from "@/components/admin/image-field";
+import { RichTextEditor } from "@/components/admin/rich-text-editor";
 import { SubsectionEditor } from "@/components/admin/subsection-editor";
 import { VideoYoutubeField } from "@/components/admin/video-youtube-field";
 import { Button } from "@/components/ui/button";
@@ -22,7 +23,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
 
 const EMPTY: MakananInput = {
   nama: "",
@@ -145,12 +145,19 @@ export function MakananForm({
 
       <div className="space-y-2">
         <Label htmlFor="deskripsi">Deskripsi</Label>
-        <Textarea
-          id="deskripsi"
-          rows={5}
-          placeholder="Ceritakan bahan, rasa, dan kapan sajian ini biasa dinikmati…"
-          aria-invalid={!!errors.deskripsi}
-          {...register("deskripsi")}
+        <Controller
+          control={control}
+          name="deskripsi"
+          render={({ field }) => (
+            <RichTextEditor
+              id="deskripsi"
+              value={field.value}
+              onChange={field.onChange}
+              rows={5}
+              placeholder="Ceritakan bahan, rasa, dan kapan sajian ini biasa dinikmati…"
+              error={!!errors.deskripsi}
+            />
+          )}
         />
         {errors.deskripsi ? (
           <p role="alert" className="text-destructive text-sm">

@@ -10,6 +10,7 @@ import { normalizeSubsections } from "@/lib/schemas/subsection";
 import type { Destinasi } from "@/lib/types";
 import { ImageField } from "@/components/admin/image-field";
 import { SubsectionEditor } from "@/components/admin/subsection-editor";
+import { RichTextEditor } from "@/components/admin/rich-text-editor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,7 +21,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 
 const EMPTY: DestinasiInput = {
   nama: "",
@@ -152,12 +152,19 @@ export function DestinasiForm({
 
       <div className="space-y-2">
         <Label htmlFor="deskripsi">Deskripsi</Label>
-        <Textarea
-          id="deskripsi"
-          rows={5}
-          placeholder="Ceritakan keistimewaan tempat ini dan tips berkunjung…"
-          aria-invalid={!!errors.deskripsi}
-          {...register("deskripsi")}
+        <Controller
+          control={control}
+          name="deskripsi"
+          render={({ field }) => (
+            <RichTextEditor
+              id="deskripsi"
+              value={field.value}
+              onChange={field.onChange}
+              rows={5}
+              placeholder="Ceritakan keistimewaan tempat ini dan tips berkunjung…"
+              error={!!errors.deskripsi}
+            />
+          )}
         />
         {errors.deskripsi ? (
           <p role="alert" className="text-destructive text-sm">

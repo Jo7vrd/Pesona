@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { BLUR_DATA_URL } from "@/lib/blur";
 import type { Subsection } from "@/lib/types";
+import { RichTr } from "@/components/site/rich-text";
 import { Tr } from "@/components/site/tr";
 
 /** Terjemahan opsional per sub-bagian (judul & isi), searah indeks items. */
@@ -38,9 +39,12 @@ export function Subsections({
                 </h3>
               ) : null}
               {s.isi ? (
-                <p className="text-muted-foreground mt-1.5 leading-relaxed whitespace-pre-line">
-                  <Tr id={s.isi} en={tr?.[i]?.isi?.en} zh={tr?.[i]?.isi?.zh} />
-                </p>
+                <RichTr
+                  id={s.isi}
+                  en={tr?.[i]?.isi?.en}
+                  zh={tr?.[i]?.isi?.zh}
+                  className="text-muted-foreground mt-1.5 leading-relaxed"
+                />
               ) : null}
             </div>
           ) : null}

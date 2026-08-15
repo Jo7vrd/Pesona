@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "@/components/motion/fade-in";
 import { FoodCard, kategoriMakananLabel } from "@/components/cards/food-card";
 import { Subsections } from "@/components/site/subsections";
+import { RichTr } from "@/components/site/rich-text";
 import { Tr } from "@/components/site/tr";
 import { YouTubeEmbed } from "@/components/site/youtube-embed";
 
@@ -80,13 +81,12 @@ export default async function MakananDetailPage({ params }: Props) {
             <h1 className="font-display text-display-lg mt-4 text-balance">
               {item.nama}
             </h1>
-            <p className="text-muted-foreground mt-6 leading-relaxed">
-              <Tr
-                id={item.deskripsi}
-                en={makananDescTr[item.id]?.en}
-                zh={makananDescTr[item.id]?.zh}
-              />
-            </p>
+            <RichTr
+              id={item.deskripsi}
+              en={makananDescTr[item.id]?.en}
+              zh={makananDescTr[item.id]?.zh}
+              className="text-muted-foreground mt-6 leading-relaxed"
+            />
             <Subsections items={item.subsections} className="mt-8" />
           </div>
         </div>
