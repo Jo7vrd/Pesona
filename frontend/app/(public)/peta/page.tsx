@@ -42,24 +42,6 @@ export default async function PetaPage() {
 
       <section className="container-page py-12 md:py-16">
         <FadeIn>
-          <div className="overflow-hidden rounded-(--radius-card) border shadow-(--shadow-card)">
-            <iframe
-              title="Peta Kei Kecil, OpenStreetMap"
-              src="https://www.openstreetmap.org/export/embed.html?bbox=132.35%2C-6.00%2C132.95%2C-5.30&layer=mapnik"
-              className="h-[420px] w-full md:h-[520px]"
-              loading="lazy"
-            />
-          </div>
-          <p className="text-muted-foreground mt-3 text-xs">
-            <Tr
-              id="Peta oleh OpenStreetMap. Titik lokasi adalah perkiraan, selalu konfirmasi rute dengan pemandu lokal."
-              en="Map by OpenStreetMap. Locations are approximate; always confirm routes with a local guide."
-              zh="地图来自OpenStreetMap。地点为大致位置，请务必与当地向导确认路线。"
-            />
-          </p>
-        </FadeIn>
-
-        <FadeIn className="mt-12">
           <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
             <div>
               <p className="eyebrow text-lagoon-700 mb-1">WebGIS</p>
