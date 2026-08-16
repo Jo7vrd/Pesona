@@ -59,6 +59,45 @@ export default async function PetaPage() {
           </p>
         </FadeIn>
 
+        <FadeIn className="mt-12">
+          <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
+            <div>
+              <p className="eyebrow text-lagoon-700 mb-1">WebGIS</p>
+              <h2 className="font-display text-display-sm font-semibold">
+                <Tr
+                  id="Peta tematik Kei Kecil"
+                  en="Kei Kecil thematic map"
+                  zh="小凯岛专题地图"
+                />
+              </h2>
+            </div>
+            <a
+              href="/webgis/index.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-lagoon-700 hover:text-lagoon-600 inline-flex items-center gap-1.5 text-sm font-semibold transition-colors"
+            >
+              <MapPin className="size-4" aria-hidden />
+              <Tr id="Buka layar penuh" en="Open fullscreen" zh="全屏打开" />
+            </a>
+          </div>
+          <div className="overflow-hidden rounded-(--radius-card) shadow-(--shadow-card)">
+            <iframe
+              title="WebGIS Kei Kecil, tutupan lahan & demografi"
+              src="/webgis/index.html"
+              className="h-[520px] w-full md:h-[620px]"
+              loading="lazy"
+            />
+          </div>
+          <p className="text-muted-foreground mt-3 text-xs">
+            <Tr
+              id="Peta tutupan lahan dan demografi Ohoi Elaar. Klik kontrol lapisan di kanan atas untuk menampilkan/menyembunyikan data."
+              en="Land cover and demographics of Ohoi Elaar. Use the layer control (top-right) to toggle data layers."
+              zh="Ohoi Elaar 的土地覆盖与人口数据。点击右上角的图层控件以显示/隐藏图层。"
+            />
+          </p>
+        </FadeIn>
+
         <FadeIn className="mt-10">
           <ReefMapViewer
             src={petaKarangFoto}

@@ -1,0 +1,47 @@
+/* =========================================================================
+   FONT MONTSERRAT VERSI OFFLINE
+   -------------------------------------------------------------------------
+   Cara pakai:
+   1. Buka https://fonts.google.com/specimen/Montserrat -> "Get font" ->
+      "Download all". Ekstrak file zip-nya.
+   2. Ambil 4 file berikut dari folder "static" (format .ttf) ATAU konversi ke
+      .woff2 di https://cloudconvert.com/ttf-to-woff2 (ukuran jauh lebih kecil):
+         Montserrat-Regular   -> montserrat-400.woff2
+         Montserrat-Medium    -> montserrat-500.woff2
+         Montserrat-SemiBold  -> montserrat-600.woff2
+         Montserrat-Bold      -> montserrat-700.woff2
+   3. Taruh keempat file itu di folder:  webfonts/
+   4. Di index.html: komentari 3 baris <link> Google Fonts, lalu hapus tanda
+      komentar pada baris <link rel="stylesheet" href="./resources/font-lokal.css">
+   Kalau file .ttf yang dipakai (bukan .woff2), ganti saja ekstensi dan
+   format('woff2') menjadi format('truetype') di bawah ini.
+   ========================================================================= */
+
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../webfonts/montserrat-400.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('../webfonts/montserrat-500.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('../webfonts/montserrat-600.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('../webfonts/montserrat-700.woff2') format('woff2');
+}

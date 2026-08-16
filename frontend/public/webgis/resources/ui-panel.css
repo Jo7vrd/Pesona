@@ -1,0 +1,328 @@
+/* =========================================================================
+   UI kustom WebGIS  -  Layer Kontrol + Judul Peta
+   File ini menimpa tampilan bawaan qgis2web. Aman dihapus jika ingin
+   kembali ke tampilan asli (hapus juga <link> & <script> di index.html).
+   ========================================================================= */
+
+:root {
+    --ui-teal:        #116e75;
+    --ui-teal-dark:   #0c565c;
+    --ui-ink:         #16232b;
+    --ui-line:        #14232b;
+    --ui-on:          #2f5fa5;
+    --ui-off:         #c3ccd3;
+    --ui-radius:      14px;
+    --ui-font: 'Montserrat', 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* pastikan panel/judul diposisikan terhadap kotak peta */
+#map { position: relative; }
+
+/* ---------- Judul peta ---------- */
+#peta-judul {
+    position: absolute;
+    top: 14px;
+    left: 64px;
+    right: 14px;
+    z-index: 30;
+    padding: 12px 22px;
+    border-radius: var(--ui-radius);
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+    font-family: var(--ui-font);
+    color: var(--ui-ink);
+    pointer-events: none;
+}
+#peta-judul h1 {
+    margin: 0;
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    line-height: 1.25;
+}
+#peta-judul p {
+    margin: 2px 0 0;
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0.75;
+}
+
+/* ---------- Wadah panel ---------- */
+#layer-kontrol {
+    position: absolute;
+    left: 14px;
+    top: 108px;
+    z-index: 30;
+    width: 350px;
+    max-height: calc(100% - 150px);
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--ui-radius);
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.28);
+    font-family: var(--ui-font);
+    color: var(--ui-ink);
+    transition: opacity .18s ease, transform .18s ease;
+}
+#layer-kontrol.tersembunyi {
+    opacity: 0;
+    transform: translateX(-14px);
+    pointer-events: none;
+}
+
+/* header */
+.lk-head {
+    background: var(--ui-teal);
+    color: #fff;
+    padding: 13px 18px;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: .2px;
+    flex: 0 0 auto;
+}
+
+/* isi yang bisa discroll */
+.lk-body {
+    background: #fff;
+    padding: 4px 0 10px;
+    overflow-y: auto;
+    flex: 1 1 auto;
+}
+.lk-body::-webkit-scrollbar { width: 8px; }
+.lk-body::-webkit-scrollbar-thumb { background: #cfd8dd; border-radius: 8px; }
+
+.lk-subjudul {
+    padding: 10px 18px 6px;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: #33434d;
+    border-bottom: 1px solid #e6ebee;
+    margin-bottom: 6px;
+}
+
+/* ---------- Baris layer (pill) ---------- */
+.lk-item { padding: 5px 14px; }
+
+.lk-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px 8px 14px;
+    border: 1.6px solid var(--ui-line);
+    border-radius: 999px;
+    background: #fff;
+}
+.lk-nama {
+    flex: 1 1 auto;
+    font-size: 13.5px;
+    font-weight: 600;
+    line-height: 1.2;
+    cursor: pointer;
+}
+.lk-chev {
+    flex: 0 0 auto;
+    width: 20px; height: 20px;
+    display: flex; align-items: center; justify-content: center;
+    border: none; background: transparent; cursor: pointer;
+    color: #4a5a64; font-size: 11px; padding: 0;
+    transition: transform .18s ease;
+}
+.lk-item.terbuka .lk-chev { transform: rotate(180deg); }
+
+/* ---------- Toggle switch ---------- */
+.lk-switch {
+    position: relative;
+    flex: 0 0 auto;
+    width: 46px; height: 25px;
+    cursor: pointer;
+}
+.lk-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+.lk-slider {
+    position: absolute; inset: 0;
+    background: var(--ui-off);
+    border-radius: 999px;
+    transition: background .18s ease;
+}
+.lk-slider::before {
+    content: "";
+    position: absolute;
+    height: 19px; width: 19px;
+    left: 3px; top: 3px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,.35);
+    transition: transform .18s ease;
+}
+.lk-switch input:checked + .lk-slider { background: var(--ui-on); }
+.lk-switch input:checked + .lk-slider::before { transform: translateX(21px); }
+.lk-switch input:focus-visible + .lk-slider { outline: 2px solid var(--ui-teal); outline-offset: 2px; }
+
+/* ---------- Legenda ---------- */
+.lk-legenda {
+    display: none;
+    padding: 8px 6px 4px 12px;
+    margin: 2px 4px 0;
+    border-left: 2px solid #e3e9ec;
+}
+.lk-item.terbuka .lk-legenda { display: block; }
+
+.lk-legenda-baris {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 0;
+    font-size: 12.2px;
+    color: #2b3a43;
+    line-height: 1.25;
+}
+.lk-legenda-baris img {
+    flex: 0 0 auto;
+    width: auto; height: auto;
+    max-width: 20px; max-height: 20px;
+}
+
+/* legenda simbol lingkaran bergradasi (Demografi) */
+.lk-legenda-lingkaran .lk-legenda-baris { padding: 4px 0; }
+.lk-slot {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.lk-bulat {
+    display: block;
+    border-radius: 50%;
+    border: 1.5px solid #801119;
+    box-sizing: border-box;
+}
+
+/* slider opasitas */
+.lk-opasitas {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 0 2px;
+    font-size: 11.5px; color: #56666f; font-weight: 500;
+}
+.lk-opasitas > span:first-child { flex: 0 0 auto; }
+.lk-opasitas > span:last-child {
+    flex: 0 0 auto;
+    min-width: 34px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+.lk-opasitas input[type=range] {
+    flex: 1 1 auto;
+    min-width: 0;
+    accent-color: var(--ui-teal);
+    height: 3px;
+}
+
+/* ---------- Peta dasar ---------- */
+.lk-basemap {
+    display: flex; align-items: center; gap: 9px;
+    padding: 6px 4px;
+    font-size: 13px; font-weight: 500;
+    cursor: pointer;
+}
+.lk-basemap input { accent-color: var(--ui-teal); width: 15px; height: 15px; }
+
+/* ---------- Footer ---------- */
+.lk-foot {
+    background: var(--ui-teal);
+    padding: 10px;
+    text-align: center;
+    flex: 0 0 auto;
+}
+.lk-foot button {
+    border: none;
+    background: #fff;
+    color: var(--ui-ink);
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 7px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(0,0,0,.2);
+}
+.lk-foot button:hover { background: #f1f5f6; }
+
+/* ---------- Tombol buka kembali ---------- */
+#lk-buka {
+    position: absolute;
+    left: 14px; top: 108px;
+    z-index: 30;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    background: var(--ui-teal);
+    color: #fff;
+    font-family: var(--ui-font);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 11px 17px;
+    border-radius: var(--ui-radius);
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,.28);
+}
+#lk-buka.tampil { display: flex; }
+#lk-buka:hover { background: var(--ui-teal-dark); }
+
+/* ---------- Rapikan kontrol bawaan OpenLayers ---------- */
+#top-left-container .ol-zoom { margin: 14px 0 0 14px; }
+.ol-zoom button {
+    border-radius: 8px !important;
+    font-size: 17px !important;
+    width: 30px; height: 30px;
+}
+.layer-switcher { display: none !important; }   /* layer switcher bawaan dimatikan */
+
+/* popup sedikit dipercantik, isi tetap default qgis2web */
+.ol-popup {
+    z-index: 40 !important;          /* selalu di atas panel */
+    border-radius: 12px !important;
+    font-family: var(--ui-font);
+    box-shadow: 0 6px 24px rgba(0,0,0,.35) !important;
+    /* wadah overlay OpenLayers lebarnya 0 -> popup ikut menyempit & teks jadi
+       memanjang ke bawah. max-content memaksa popup selebar isinya. */
+    width: max-content !important;
+    max-width: min(360px, 78vw) !important;
+    padding: 14px 18px !important;
+}
+#popup-content { max-width: none !important; }
+#popup-content ul { list-style: none; margin: 0; padding: 0; }
+#popup-content table { border-collapse: collapse; width: 100%; }
+#popup-content th {
+    text-align: left; padding: 3px 10px 3px 0;
+    color: var(--ui-teal); font-weight: 600; white-space: nowrap; vertical-align: top;
+}
+#popup-content td { padding: 2px 0 8px; vertical-align: top; font-size: 12.5px; }
+#popup-content strong {
+    display: inline-block;
+    margin-top: 4px;
+    color: var(--ui-teal);
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: .3px;
+    text-transform: uppercase;
+}
+#popup-content b {
+    display: block;
+    color: var(--ui-ink);
+    font-size: 13.5px;
+    padding-bottom: 6px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid #e6ebee;
+}
+
+/* ---------- Layar kecil ---------- */
+@media (max-width: 650px) {
+    #peta-judul { left: 56px; padding: 9px 14px; }
+    #peta-judul h1 { font-size: 15px; }
+    #peta-judul p  { font-size: 11px; }
+    #layer-kontrol, #lk-buka { top: 88px; }
+    #layer-kontrol { width: calc(100% - 28px); max-width: 360px; max-height: calc(100% - 130px); }
+}
