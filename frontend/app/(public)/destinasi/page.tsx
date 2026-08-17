@@ -47,7 +47,7 @@ export default async function DestinasiPage() {
           {spots.map((spot) => (
             <StaggerItem key={spot.id}>
               <TiltCard className="h-full">
-                <article className="group bg-card shadow-(--shadow-card) hover:shadow-(--shadow-card-hover) flex h-full flex-col overflow-hidden rounded-(--radius-card) transition-shadow duration-300">
+                <article className="group bg-card shadow-(--shadow-card) hover:shadow-(--shadow-card-hover) flex h-full flex-col overflow-hidden rounded-(--radius-card) border transition-shadow duration-300">
                 <div className="relative aspect-[4/3] overflow-hidden transition-transform duration-700 ease-out group-hover:scale-105">
                   <Image
                     src={spot.fotoUrl}

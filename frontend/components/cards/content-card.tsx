@@ -30,7 +30,7 @@ export function ContentCard({
       className="group focus-visible:ring-ring block rounded-(--radius-card) focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
     >
       <TiltCard>
-        <article className="bg-card shadow-(--shadow-card) hover:shadow-(--shadow-card-hover) overflow-hidden rounded-(--radius-card) transition-shadow duration-300">
+        <article className="bg-card shadow-(--shadow-card) hover:shadow-(--shadow-card-hover) overflow-hidden rounded-(--radius-card) border transition-shadow duration-300">
         <div className="relative aspect-[4/5] overflow-hidden transition-transform duration-700 ease-out group-hover:scale-105">
           <Image
             src={fotoUrl}
